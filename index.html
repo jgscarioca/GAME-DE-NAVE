@@ -2,241 +2,2386 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Space Shooter - Piloto Arthur</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cosmic Striker - Retro Arcade Space Shooter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; touch-action: manipulation; user-select: none; }
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background: #050510;
-      color: #fff;
-      font-family: Arial, sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background-color: #050711;
+      background-image: 
+        radial-gradient(circle at 50% 10%, rgba(30, 20, 60, 0.6) 0%, transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(10, 40, 70, 0.5) 0%, transparent 50%);
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
       overflow: hidden;
+      color: #e0f2fe;
     }
-    #game-container {
+
+    /* Container do Jogo */
+    .game-wrapper {
       position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
+      box-shadow: 0 0 50px rgba(0, 240, 255, 0.15), 0 0 100px rgba(138, 43, 226, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      background: #030712;
     }
-    canvas {
-      border: 2px solid #33f;
-      box-shadow: 0 0 15px rgba(51, 51, 255, 0.5);
-      background: #000;
-      max-width: 100vw;
-      max-height: 70vh;
-    }
-    
-    /* Controles para Celular */
-    .touch-controls {
+
+    /* Top Bar HUD */
+    .hud-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 16px 24px;
       display: flex;
       justify-content: space-between;
-      width: 100%;
-      max-width: 400px;
-      margin-top: 15px;
-      padding: 0 10px;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+      background: linear-gradient(to bottom, rgba(3, 7, 18, 0.85) 0%, transparent 100%);
+      text-transform: uppercase;
     }
-    .d-pad {
+
+    .hud-item {
       display: flex;
-      gap: 10px;
+      flex-direction: column;
     }
-    .btn-touch {
-      background: rgba(255, 255, 255, 0.2);
-      border: 2px solid #fff;
-      color: #fff;
-      font-size: 20px;
-      font-weight: bold;
-      padding: 15px 25px;
+
+    .hud-label {
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #7dd3fc;
+      opacity: 0.8;
+    }
+
+    .hud-value {
+      font-family: 'Orbitron', monospace;
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      text-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+    }
+
+    .lives-container {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .life-icon {
+      width: 22px;
+      height: 22px;
+      filter: drop-shadow(0 0 8px rgba(255, 42, 109, 0.85));
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease, filter 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .life-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .life-icon.danger {
+      animation: heartbeat 0.75s infinite ease-in-out;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      20% { transform: scale(1.25); filter: drop-shadow(0 0 12px #ff2a6d); }
+      40% { transform: scale(1.05); }
+      60% { transform: scale(1.18); filter: drop-shadow(0 0 10px #ff2a6d); }
+    }
+
+    .life-icon.lost {
+      opacity: 0.22;
+      filter: grayscale(1) opacity(0.3);
+      transform: scale(0.8);
+    }
+
+    /* Botão de Som no Canto Superior Direito */
+    .audio-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 30;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    .audio-btn:hover {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: #38bdf8;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+      transform: scale(1.05);
+    }
+
+    /* Canvas */
+    canvas {
+      display: block;
+      background: #02040a;
+    }
+
+    /* Rodapé Informativo */
+    .controls-hint {
+      margin-top: 12px;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: #64748b;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .key-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 4px;
+      color: #93c5fd;
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
+      margin: 0 3px;
+    }
+
+    /* Telas de Overlay (Start & Game Over) */
+    .overlay-screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(3, 7, 18, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 20;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .overlay-screen.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .title-glitch {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 46px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: #f8fafc;
+      text-shadow: 
+        0 0 10px #00f0ff,
+        0 0 20px #00f0ff,
+        0 0 40px #0077ff;
+      margin-bottom: 8px;
+      animation: pulseTitle 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseTitle {
+      0% { text-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff, 0 0 40px #0077ff; transform: scale(1); }
+      100% { text-shadow: 0 0 15px #00f0ff, 0 0 35px #00e1ff, 0 0 60px #7928ca; transform: scale(1.02); }
+    }
+
+    .subtitle {
+      font-size: 16px;
+      letter-spacing: 3px;
+      color: #38bdf8;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+    }
+
+    .game-over-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: 5px;
+      color: #ef4444;
+      text-shadow: 0 0 20px rgba(239, 68, 68, 0.8), 0 0 40px rgba(185, 28, 28, 0.6);
+      margin-bottom: 6px;
+      animation: shakeText 0.6s ease-in-out;
+    }
+
+    @keyframes shakeText {
+      0%, 100% { transform: translate(0, 0); }
+      20% { transform: translate(-4px, 3px); }
+      40% { transform: translate(4px, -3px); }
+      60% { transform: translate(-3px, -2px); }
+      80% { transform: translate(3px, 2px); }
+    }
+
+    .score-summary {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(56, 189, 248, 0.2);
       border-radius: 12px;
-      active-bg: rgba(255, 255, 255, 0.5);
+      padding: 20px 36px;
+      margin: 20px 0 30px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 280px;
     }
-    .btn-fire {
-      background: rgba(255, 0, 0, 0.4);
-      border-color: #f00;
-      padding: 15px 30px;
+
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+    }
+
+    .score-row .label {
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    .score-row .val {
+      font-family: 'Orbitron', monospace;
+      font-weight: 800;
+      color: #ffffff;
+      font-size: 20px;
+    }
+
+    .new-record-tag {
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+      color: #ffffff;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-family: 'Orbitron', monospace;
+      font-weight: 800;
+      display: inline-block;
+      margin-top: 4px;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+      animation: bounceRecord 1s infinite alternate;
+    }
+
+    @keyframes bounceRecord {
+      0% { transform: scale(0.95); }
+      100% { transform: scale(1.05); }
+    }
+
+    .action-btn {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 14px 40px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #0284c7 0%, #06b6d4 50%, #3b82f6 100%);
+      color: #ffffff;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.3);
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(6, 182, 212, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+
+    .action-btn:active {
+      transform: translateY(1px);
+    }
+
+    .prompt-text {
+      margin-top: 14px;
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: #94a3b8;
+      font-family: 'Orbitron', monospace;
+      opacity: 0.8;
+      animation: blinkPrompt 1.4s infinite;
+    }
+
+    @keyframes blinkPrompt {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    .features-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+      text-align: left;
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feature-item svg {
+      width: 16px;
+      height: 16px;
+      fill: #38bdf8;
+    }
+
+    /* =========================================================================
+       MODAL DE PERSONALIZAÇÃO (INSPIRADO FIELMENTE NA REFERÊNCIA)
+       ========================================================================= */
+    .custom-modal-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(3, 7, 20, 0.9);
+      backdrop-filter: blur(10px);
+      z-index: 25;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      padding: 12px;
+    }
+
+    .custom-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .custom-window {
+      width: 580px;
+      max-width: 98%;
+      background: #090d1f;
+      border: 2px solid #00d8ff;
+      border-radius: 12px;
+      box-shadow: 
+        0 0 35px rgba(0, 216, 255, 0.4),
+        inset 0 0 25px rgba(0, 216, 255, 0.08),
+        0 20px 50px rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalPop 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalPop {
+      0% { transform: scale(0.92) translateY(12px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    /* Top Bar Header */
+    .custom-header {
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, rgba(0, 216, 255, 0.12) 0%, rgba(217, 70, 239, 0.15) 100%);
+      border-bottom: 2px solid;
+      border-image: linear-gradient(90deg, #00d8ff 40%, #d946ef 100%) 1;
+    }
+
+    .custom-header-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(0, 216, 255, 0.8);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .custom-close-btn {
+      width: 28px;
+      height: 28px;
+      background: rgba(217, 70, 239, 0.15);
+      border: 1.5px solid #d946ef;
+      border-radius: 6px;
+      color: #f472b6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 900;
+      transition: all 0.2s ease;
+      line-height: 1;
+    }
+
+    .custom-close-btn:hover {
+      background: rgba(217, 70, 239, 0.45);
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(217, 70, 239, 0.8);
+      transform: scale(1.08);
+    }
+
+    .custom-body {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Perfil do Piloto */
+    .pilot-profile-section {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .pilot-avatar-box {
+      width: 80px;
+      height: 80px;
+      border: 2px solid #00d8ff;
+      border-radius: 8px;
+      background: #0f172a;
+      box-shadow: 0 0 16px rgba(0, 216, 255, 0.4);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .pilot-avatar-box svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .pilot-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .pilot-name-display {
+      font-family: 'Orbitron', monospace;
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      background: linear-gradient(90deg, #22d3ee 0%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.6));
+      text-transform: uppercase;
+    }
+
+    .pilot-desc {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: #94a3b8;
+    }
+
+    /* Galeria de Naves */
+    .ships-selection-area {
+      display: flex;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .selected-ship-card {
+      width: 175px;
+      border: 2px solid #00d8ff;
+      border-radius: 10px;
+      background: rgba(6, 182, 212, 0.08);
+      box-shadow: 0 0 20px rgba(0, 216, 255, 0.25);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 8px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .selected-ship-canvas-wrap {
+      width: 155px;
+      height: 95px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .selected-ship-canvas-wrap canvas {
+      background: transparent;
+    }
+
+    .selected-ship-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #e2e8f0;
+      text-align: center;
+      margin-top: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 160px;
+    }
+
+    .ships-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      flex: 1;
+    }
+
+    .ship-tile {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1.5px solid rgba(56, 189, 248, 0.25);
+      border-radius: 8px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      padding: 2px;
+    }
+
+    .ship-tile:hover {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    }
+
+    .ship-tile.active {
+      border-color: #00d8ff;
+      background: rgba(6, 182, 212, 0.25);
+      box-shadow: 0 0 16px rgba(0, 216, 255, 0.6), inset 0 0 10px rgba(0, 216, 255, 0.2);
+    }
+
+    .ship-tile canvas {
+      pointer-events: none;
+      background: transparent;
+    }
+
+    /* Footer: Input e Botões */
+    .custom-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 10px;
+      border-top: 1px solid rgba(56, 189, 248, 0.2);
+      gap: 12px;
+    }
+
+    .name-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .name-input-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #94a3b8;
+      letter-spacing: 1px;
+    }
+
+    .pilot-input {
+      background: rgba(2, 6, 23, 0.85);
+      border: 2px solid #00d8ff;
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: #ffffff;
+      font-family: 'Orbitron', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      outline: none;
+      box-shadow: inset 0 0 10px rgba(0, 216, 255, 0.2);
+      transition: all 0.2s ease;
+      width: 100%;
+      max-width: 250px;
+    }
+
+    .pilot-input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.6), inset 0 0 10px rgba(0, 216, 255, 0.3);
+    }
+
+    .footer-btn-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-custom {
+      font-family: 'Orbitron', monospace;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+    }
+
+    .btn-save-ui {
+      background: #0284c7;
+      border: 1.5px solid #38bdf8;
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(2, 132, 199, 0.5);
+    }
+
+    .btn-save-ui:hover {
+      background: #0369a1;
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.8);
+      transform: translateY(-1px);
+    }
+
+    .btn-play-ui {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      border: 1.5px solid #34d399;
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+    }
+
+    .btn-play-ui:hover {
+      background: linear-gradient(135deg, #047857 0%, #059669 100%);
+      box-shadow: 0 0 20px rgba(52, 211, 153, 0.8);
+      transform: translateY(-1px);
+    }
+
+    .btn-back-ui {
+      background: rgba(147, 51, 234, 0.15);
+      border: 1.5px solid #c084fc;
+      color: #e9d5ff;
+    }
+
+    .btn-back-ui:hover {
+      background: rgba(147, 51, 234, 0.35);
+      box-shadow: 0 0 12px rgba(192, 132, 252, 0.6);
+      transform: translateY(-1px);
     }
   </style>
 </head>
 <body>
 
-  <div id="game-container">
-    <canvas id="gameCanvas" width="400" height="600"></canvas>
-    
-    <!-- Controles de Toque para Celular -->
-    <div class="touch-controls">
-      <div class="d-pad">
-        <button class="btn-touch" id="btnLeft">⬅️</button>
-        <button class="btn-touch" id="btnRight">➡️</button>
+  <div class="game-wrapper">
+    <!-- Top HUD -->
+    <div class="hud-top">
+      <div class="hud-item">
+        <span class="hud-label">SCORE</span>
+        <span class="hud-value" id="hud-score">000000</span>
       </div>
-      <button class="btn-touch btn-fire" id="btnFire">🚀 ATIRAR</button>
+
+      <div class="hud-item" style="align-items: center;">
+        <span class="hud-label">PILOTO</span>
+        <span class="hud-value" id="hud-pilot" style="font-size: 16px; color: #38bdf8;">ARTHUR</span>
+      </div>
+
+      <div class="hud-item" style="align-items: center;">
+        <span class="hud-label">HIGH SCORE</span>
+        <span class="hud-value" id="hud-highscore" style="font-size: 17px; color: #facc15;">000000</span>
+      </div>
+
+      <div class="hud-item" style="align-items: flex-end; margin-right: 48px;">
+        <span class="hud-label">VIDAS</span>
+        <div class="lives-container" id="hud-lives">
+          <!-- Gerado dinamicamente -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Mute / Unmute Button -->
+    <button class="audio-btn" id="audio-toggle" title="Ativar/Desativar Som">🔊</button>
+
+    <!-- Canvas do Jogo -->
+    <canvas id="gameCanvas" width="640" height="780"></canvas>
+
+    <!-- Tela Inicial / Start Screen -->
+    <div class="overlay-screen active" id="start-screen">
+      <h1 class="title-glitch">COSMIC STRIKER</h1>
+      <p class="subtitle">Defenda o quadrante estelar</p>
+
+      <div class="features-list">
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 4.5l6.5 11.5h-13L12 6.5z"/></svg>
+          <span>Drones Rápidos (100 pts)</span>
+        </div>
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z"/></svg>
+          <span>Caças Zigzag (250 pts)</span>
+        </div>
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg>
+          <span>Cruzador Pesado (500 pts)</span>
+        </div>
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          <span>Combos de Destruição</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 6px; justify-content: center; flex-wrap: wrap;">
+        <button class="action-btn" id="start-btn">INICIAR MISSÃO</button>
+        <button class="action-btn" id="open-custom-btn" style="background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #d946ef 100%); box-shadow: 0 0 22px rgba(168, 85, 247, 0.55);">
+          🛸 PERSONALIZAR
+        </button>
+      </div>
+      <div class="prompt-text">OU PRESSIONE [ESPAÇO] PARA INICIAR</div>
+    </div>
+
+    <!-- Tela de Game Over -->
+    <div class="overlay-screen" id="gameover-screen">
+      <h2 class="game-over-title">GAME OVER</h2>
+      <p class="subtitle" style="color: #f87171;">Sua nave foi destruída</p>
+
+      <div class="score-summary">
+        <div class="score-row">
+          <span class="label">Piloto:</span>
+          <span class="val" id="final-pilot" style="color: #38bdf8;">ARTHUR</span>
+        </div>
+        <div class="score-row">
+          <span class="label">Pontuação Final:</span>
+          <span class="val" id="final-score" style="color: #38bdf8;">0</span>
+        </div>
+        <div class="score-row">
+          <span class="label">Inimigos Abatidos:</span>
+          <span class="val" id="final-kills">0</span>
+        </div>
+        <div class="score-row">
+          <span class="label">Melhor Recorde:</span>
+          <span class="val" id="final-highscore" style="color: #facc15;">0</span>
+        </div>
+        <div id="new-record-badge" style="display: none;">
+          <span class="new-record-tag">★ NOVO RECORDE ★</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 4px; justify-content: center; flex-wrap: wrap;">
+        <button class="action-btn" id="restart-btn">JOGAR NOVAMENTE</button>
+        <button class="action-btn" id="gameover-custom-btn" style="background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #d946ef 100%); box-shadow: 0 0 20px rgba(168, 85, 247, 0.55);">
+          🛸 PERSONALIZAR
+        </button>
+      </div>
+      <div class="prompt-text">OU PRESSIONE [ESPAÇO]</div>
+    </div>
+
+    <!-- MODAL DE PERSONALIZAÇÃO (REFERÊNCIA FIEL) -->
+    <div class="custom-modal-overlay" id="customization-modal">
+      <div class="custom-window">
+        <!-- Top Bar Header -->
+        <div class="custom-header">
+          <div class="custom-header-title">
+            <span id="modal-header-pilot">PILOT: ARTHUR</span>
+          </div>
+          <button class="custom-close-btn" id="modal-close-btn" title="Fechar">✖</button>
+        </div>
+
+        <div class="custom-body">
+          <!-- Perfil do Piloto -->
+          <div class="pilot-profile-section">
+            <div class="pilot-avatar-box">
+              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="avBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#0e1e38"/>
+                    <stop offset="100%" stop-color="#1b2a47"/>
+                  </linearGradient>
+                  <linearGradient id="avHairGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#8b522b"/>
+                    <stop offset="50%" stop-color="#643b1f"/>
+                    <stop offset="100%" stop-color="#3d2110"/>
+                  </linearGradient>
+                  <linearGradient id="avSkinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#ffe4c4"/>
+                    <stop offset="100%" stop-color="#f5cba7"/>
+                  </linearGradient>
+                  <linearGradient id="avSuitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#e2e8f0"/>
+                    <stop offset="50%" stop-color="#94a3b8"/>
+                    <stop offset="100%" stop-color="#475569"/>
+                  </linearGradient>
+                  <linearGradient id="avArmorCyan" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#00f0ff"/>
+                    <stop offset="100%" stop-color="#0284c7"/>
+                  </linearGradient>
+                </defs>
+                <rect width="100" height="100" fill="url(#avBgGrad)"/>
+                <circle cx="50" cy="50" r="44" fill="none" stroke="#22d3ee" stroke-width="1" opacity="0.3"/>
+                <!-- Space Suit / Armor -->
+                <path d="M12 100 Q15 78 30 74 L38 80 L50 82 L62 80 L70 74 Q85 78 88 100 Z" fill="url(#avSuitGrad)"/>
+                <path d="M30 74 L38 80 L50 82 L62 80 L70 74 L66 86 L50 88 L34 86 Z" fill="url(#avArmorCyan)"/>
+                <circle cx="50" cy="85" r="2.8" fill="#ffffff"/>
+                <!-- Neck -->
+                <path d="M42 66 L58 66 L56 78 L44 78 Z" fill="#ebba97"/>
+                <!-- Face -->
+                <path d="M34 40 C34 31 40 27 50 27 C60 27 66 31 66 40 C66 54 58 66 50 67 C42 66 34 54 34 40 Z" fill="url(#avSkinGrad)"/>
+                <circle cx="33" cy="45" r="4" fill="#f5cba7"/>
+                <circle cx="67" cy="45" r="4" fill="#f5cba7"/>
+                <!-- Eyes -->
+                <ellipse cx="43" cy="43" rx="3.5" ry="4.5" fill="#0f172a"/>
+                <ellipse cx="57" cy="43" rx="3.5" ry="4.5" fill="#0f172a"/>
+                <circle cx="42" cy="41.5" r="1.4" fill="#ffffff"/>
+                <circle cx="56" cy="41.5" r="1.4" fill="#ffffff"/>
+                <circle cx="44.5" cy="44.5" r="0.8" fill="#38bdf8"/>
+                <circle cx="58.5" cy="44.5" r="0.8" fill="#38bdf8"/>
+                <!-- Eyebrows -->
+                <path d="M38 37 Q43 35 47 37" stroke="#452714" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+                <path d="M53 37 Q57 35 62 37" stroke="#452714" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+                <!-- Nose and Mouth -->
+                <path d="M50 45 L49 49 L52 49" stroke="#d4976c" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M47 54 Q51 57 55 54" stroke="#8b522b" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+                <!-- Cheeks -->
+                <ellipse cx="40" cy="49" rx="3" ry="1.5" fill="#f43f5e" opacity="0.25"/>
+                <ellipse cx="60" cy="49" rx="3" ry="1.5" fill="#f43f5e" opacity="0.25"/>
+                <!-- Hair -->
+                <path d="M33 36 C31 23 40 16 50 16 C62 16 69 22 68 36 C66 30 62 25 55 24 C58 28 58 32 57 34 C54 28 48 25 44 26 C45 30 44 34 41 36 C38 32 35 34 33 36 Z" fill="url(#avHairGrad)"/>
+                <polygon points="40,26 43,36 38,32" fill="#8b522b"/>
+                <polygon points="46,25 49,38 44,34" fill="#8b522b"/>
+                <polygon points="52,25 54,37 50,33" fill="#643b1f"/>
+                <polygon points="57,26 61,35 56,32" fill="#643b1f"/>
+                <!-- Comm Headset -->
+                <rect x="29" y="41" width="4" height="8" rx="2" fill="#22d3ee"/>
+                <path d="M31 49 Q36 57 44 57" stroke="#22d3ee" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <circle cx="44" cy="57" r="1.5" fill="#f43f5e"/>
+              </svg>
+            </div>
+            <div class="pilot-meta">
+              <div class="pilot-name-display" id="modal-display-name">ARTHUR</div>
+              <div class="pilot-desc">Personalizar Naves</div>
+            </div>
+          </div>
+
+          <!-- Galeria de Naves -->
+          <div class="ships-selection-area">
+            <!-- Preview da Nave Selecionada (Destaque) -->
+            <div class="selected-ship-card">
+              <div class="selected-ship-canvas-wrap">
+                <canvas id="selected-ship-canvas" width="155" height="95"></canvas>
+              </div>
+              <div class="selected-ship-label" id="selected-ship-label">Nave do Arthur</div>
+            </div>
+
+            <!-- Grade de 6 Naves -->
+            <div class="ships-grid" id="ships-grid">
+              <!-- Renderizado dinamicamente via JS -->
+            </div>
+          </div>
+
+          <!-- Footer: Input e Botões -->
+          <div class="custom-footer">
+            <div class="name-input-group">
+              <label class="name-input-label" for="pilot-name-input">Editar Nome do Piloto</label>
+              <input type="text" id="pilot-name-input" class="pilot-input" value="ARTHUR" maxlength="15" autocomplete="off" spellcheck="false" />
+            </div>
+            <div class="footer-btn-group">
+              <button class="btn-custom btn-save-ui" id="btn-save-custom">Salvar</button>
+              <button class="btn-custom btn-play-ui" id="btn-play-custom">Jogar</button>
+              <button class="btn-custom btn-back-ui" id="btn-back-custom">Voltar</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
+  <!-- Dicas de Controle no Rodapé -->
+  <div class="controls-hint">
+    <span><span class="key-badge">←</span><span class="key-badge">→</span> ou <span class="key-badge">A</span><span class="key-badge">D</span> Mover</span>
+    <span><span class="key-badge">↑</span><span class="key-badge">↓</span> Ajuste de Posição</span>
+    <span><span class="key-badge">ESPAÇO</span> Disparo Laser</span>
+    <span><span class="key-badge">M</span> Som</span>
+  </div>
+
   <script>
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
+    /* =========================================================================
+       SISTEMA DE ÁUDIO SINTETIZADO (Web Audio API - Sem Arquivos Externos)
+       ========================================================================= */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
 
-    let score = 0;
-    let gameOver = false;
-    let pilotName = "ARTHUR";
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
 
-    const player = {
-      x: canvas.width / 2 - 15,
-      y: canvas.height - 50,
-      width: 30,
-      height: 30,
-      speed: 5,
-      dx: 0
-    };
+      playLaser() {
+        if (this.muted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
 
-    const bullets = [];
-    const enemies = [];
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.exponentialRampToValueAtTime(110, now + 0.12);
 
-    // --- Controles de Teclado (PC) ---
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') player.dx = -player.speed;
-      if (e.key === 'ArrowRight') player.dx = player.speed;
-      if (e.key === ' ' && !gameOver) shoot();
-      if ((e.key === 'r' || e.key === 'R') && gameOver) restartGame();
-    });
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
 
-    document.addEventListener('keyup', (e) => {
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') player.dx = 0;
-    });
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
 
-    // --- Controles de Toque (Celular) ---
-    const btnLeft = document.getElementById('btnLeft');
-    const btnRight = document.getElementById('btnRight');
-    const btnFire = document.getElementById('btnFire');
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
 
-    btnLeft.addEventListener('touchstart', (e) => { e.preventDefault(); player.dx = -player.speed; });
-    btnLeft.addEventListener('touchend', (e) => { e.preventDefault(); player.dx = 0; });
+      playExplosion(type = 'medium') {
+        if (this.muted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const duration = type === 'large' ? 0.6 : 0.35;
 
-    btnRight.addEventListener('touchstart', (e) => { e.preventDefault(); player.dx = player.speed; });
-    btnRight.addEventListener('touchend', (e) => { e.preventDefault(); player.dx = 0; });
-
-    btnFire.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      if (gameOver) restartGame();
-      else shoot();
-    });
-
-    function shoot() {
-      bullets.push({ x: player.x + player.width / 2 - 2, y: player.y, width: 4, height: 10, speed: 7 });
-    }
-
-    function spawnEnemy() {
-      if (gameOver) return;
-      const x = Math.random() * (canvas.width - 30);
-      enemies.push({ x: x, y: -30, width: 30, height: 30, speed: 2 + Math.random() * 2 });
-    }
-    setInterval(spawnEnemy, 1000);
-
-    function update() {
-      if (gameOver) return;
-
-      player.x += player.dx;
-      if (player.x < 0) player.x = 0;
-      if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
-
-      bullets.forEach((b, index) => {
-        b.y -= b.speed;
-        if (b.y < 0) bullets.splice(index, 1);
-      });
-
-      enemies.forEach((enemy, eIndex) => {
-        enemy.y += enemy.speed;
-
-        if (
-          player.x < enemy.x + enemy.width &&
-          player.x + player.width > enemy.x &&
-          player.y < enemy.y + enemy.height &&
-          player.y + player.height > enemy.y
-        ) {
-          gameOver = true;
+        // Gerar buffer de ruído branco
+        const bufferSize = this.ctx.sampleRate * duration;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
         }
 
-        bullets.forEach((bullet, bIndex) => {
-          if (
-            bullet.x < enemy.x + enemy.width &&
-            bullet.x + bullet.width > enemy.x &&
-            bullet.y < enemy.y + enemy.height &&
-            bullet.y + bullet.height > enemy.y
-          ) {
-            enemies.splice(eIndex, 1);
-            bullets.splice(bIndex, 1);
-            score += 10;
-          }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(type === 'large' ? 600 : 900, now);
+        filter.frequency.exponentialRampToValueAtTime(40, now + duration);
+
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(type === 'large' ? 0.5 : 0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + duration);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        noise.start(now);
+      }
+
+      playHit() {
+        if (this.muted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.exponentialRampToValueAtTime(80, now + 0.08);
+
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.08);
+      }
+
+      playPlayerDamage() {
+        if (this.muted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.linearRampToValueAtTime(40, now + 0.3);
+
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.3);
+      }
+
+      playGameOver() {
+        if (this.muted || !this.ctx) return;
+        const notes = [330, 293, 261, 220, 164];
+        notes.forEach((freq, idx) => {
+          const now = this.ctx.currentTime + idx * 0.15;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now);
+
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(now);
+          osc.stop(now + 0.3);
         });
+      }
 
-        if (enemy.y > canvas.height) enemies.splice(eIndex, 1);
-      });
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Jogador
-      ctx.fillStyle = '#00f';
-      ctx.beginPath();
-      ctx.moveTo(player.x + player.width / 2, player.y);
-      ctx.lineTo(player.x, player.y + player.height);
-      ctx.lineTo(player.x + player.width, player.y + player.height);
-      ctx.fill();
-
-      // Tiros
-      ctx.fillStyle = '#0f0';
-      bullets.forEach(b => ctx.fillRect(b.x, b.y, b.width, b.height));
-
-      // Inimigos
-      ctx.fillStyle = '#f00';
-      enemies.forEach(e => ctx.fillRect(e.x, e.y, e.width, e.height));
-
-      // HUD Nome do Piloto e Pontos
-      ctx.fillStyle = '#fff';
-      ctx.font = 'bold 14px Arial';
-      ctx.fillText(`PILOTO: ${pilotName}`, 10, 25);
-      ctx.fillText(`PONTOS: ${score}`, 10, 45);
-
-      if (gameOver) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = '#ff3333';
-        ctx.font = 'bold 28px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 10);
-
-        ctx.fillStyle = '#fff';
-        ctx.font = '16px Arial';
-        ctx.fillText(`Pontuação do Arthur: ${score}`, canvas.width / 2, canvas.height / 2 + 20);
-        ctx.fillText('Toque em ATIRAR para reiniciar', canvas.width / 2, canvas.height / 2 + 60);
-        ctx.textAlign = 'left';
+      toggleMute() {
+        this.muted = !this.muted;
+        return this.muted;
       }
     }
 
-    function restartGame() {
-      score = 0;
-      bullets.length = 0;
-      enemies.length = 0;
-      player.x = canvas.width / 2 - 15;
-      gameOver = false;
-      loop();
+    /* =========================================================================
+       GERADOR DE ESTRELAS E FUNDO PARALAXE (Starfield)
+       ========================================================================= */
+    class Starfield {
+      constructor(width, height) {
+        this.width = width;
+        this.height = height;
+        this.layers = [
+          { count: 60, speed: 0.4, size: 1.0, alpha: 0.4, stars: [] },
+          { count: 40, speed: 1.0, size: 1.6, alpha: 0.7, stars: [] },
+          { count: 20, speed: 2.2, size: 2.4, alpha: 0.95, stars: [] }
+        ];
+        this.init();
+      }
+
+      init() {
+        this.layers.forEach(layer => {
+          layer.stars = [];
+          for (let i = 0; i < layer.count; i++) {
+            layer.stars.push({
+              x: Math.random() * this.width,
+              y: Math.random() * this.height,
+              twinkle: Math.random() * Math.PI * 2
+            });
+          }
+        });
+      }
+
+      update() {
+        this.layers.forEach(layer => {
+          layer.stars.forEach(star => {
+            star.y += layer.speed;
+            star.twinkle += 0.05;
+            if (star.y > this.height) {
+              star.y = 0;
+              star.x = Math.random() * this.width;
+            }
+          });
+        });
+      }
+
+      draw(ctx) {
+        this.layers.forEach(layer => {
+          layer.stars.forEach(star => {
+            const currentAlpha = layer.alpha * (0.6 + 0.4 * Math.sin(star.twinkle));
+            ctx.fillStyle = `rgba(224, 242, 254, ${currentAlpha})`;
+            ctx.shadowBlur = layer.size > 2 ? 6 : 0;
+            ctx.shadowColor = '#38bdf8';
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, layer.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          });
+        });
+      }
     }
 
-    function loop() {
-      update();
-      draw();
-      if (!gameOver) requestAnimationFrame(loop);
+    /* =========================================================================
+       SISTEMA DE PARTÍCULAS (Explosões, Rastro e Faíscas)
+       ========================================================================= */
+    class Particle {
+      constructor(x, y, color, speedScale = 1) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        const angle = Math.random() * Math.PI * 2;
+        const speed = (Math.random() * 4 + 1.5) * speedScale;
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+        this.size = Math.random() * 3 + 2;
+        this.life = 1.0;
+        this.decay = Math.random() * 0.025 + 0.015;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vx *= 0.96;
+        this.vy *= 0.96;
+        this.life -= this.decay;
+      }
+
+      draw(ctx) {
+        if (this.life <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, this.life);
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = this.color;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size * this.life, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
     }
 
-    loop();
+    /* =========================================================================
+       TEXTOS FLUTUANTES (Score Popups)
+       ========================================================================= */
+    class FloatingText {
+      constructor(text, x, y, color = '#38bdf8') {
+        this.text = text;
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.life = 1.0;
+        this.vy = -1.5;
+      }
+
+      update() {
+        this.y += this.vy;
+        this.life -= 0.025;
+      }
+
+      draw(ctx) {
+        if (this.life <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, this.life);
+        ctx.font = 'bold 15px "Orbitron", monospace';
+        ctx.fillStyle = this.color;
+        ctx.shadowColor = this.color;
+        ctx.shadowBlur = 8;
+        ctx.textAlign = 'center';
+        ctx.fillText(this.text, this.x, this.y);
+        ctx.restore();
+      }
+    }
+
+    /* =========================================================================
+       DADOS DAS NAVES SELECIONÁVEIS (GALERIA)
+       ========================================================================= */
+    const SHIPS_DATA = [
+      {
+        id: 'arthur_blue',
+        name: 'Nave do Arthur',
+        modelName: 'Interceptor Azul',
+        type: 'spearhead',
+        laserColor: '#00f0ff',
+        engineColors: ['#38bdf8', '#0284c7']
+      },
+      {
+        id: 'valkyrie_green',
+        name: 'Valkyrie Esmeralda',
+        modelName: 'Caça Verde',
+        type: 'forward_wing',
+        laserColor: '#10b981',
+        engineColors: ['#34d399', '#10b981']
+      },
+      {
+        id: 'phoenix_red',
+        name: 'Phoenix Carmesim',
+        modelName: 'Interceptor Vermelho',
+        type: 'needle',
+        laserColor: '#ff2a6d',
+        engineColors: ['#f97316', '#ef4444']
+      },
+      {
+        id: 'nebula_purple',
+        name: 'Nebula Cósmica',
+        modelName: 'Caça Roxo',
+        type: 'stealth',
+        laserColor: '#e879f9',
+        engineColors: ['#c084fc', '#ec4899']
+      },
+      {
+        id: 'dreadnought_jade',
+        name: 'Dreadnought Jade',
+        modelName: 'Cruzador Verde',
+        type: 'heavy',
+        laserColor: '#84cc16',
+        engineColors: ['#84cc16', '#eab308']
+      },
+      {
+        id: 'vanguard_solar',
+        name: 'Vanguard Solar',
+        modelName: 'Caça Prata/Laranja',
+        type: 'twin_prong',
+        laserColor: '#fbbf24',
+        engineColors: ['#f59e0b', '#ea580c']
+      }
+    ];
+
+    /* =========================================================================
+       FUNÇÃO DE RENDERIZAÇÃO GRÁFICA DAS NAVES (GALERIA & GAMEPLAY)
+       ========================================================================= */
+    function drawShipShape(ctx, ship, x, y, scale = 1.0) {
+      if (!ship) ship = SHIPS_DATA[0];
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(scale, scale);
+
+      ctx.shadowBlur = 14;
+      ctx.shadowColor = ship.laserColor || '#00f0ff';
+
+      if (ship.type === 'spearhead') {
+        // Nave 1: Arthur Blue (Interceptor)
+        ctx.beginPath();
+        ctx.moveTo(0, -26);
+        ctx.lineTo(15, 10);
+        ctx.lineTo(24, 18);
+        ctx.lineTo(8, 16);
+        ctx.lineTo(4, 22);
+        ctx.lineTo(-4, 22);
+        ctx.lineTo(-8, 16);
+        ctx.lineTo(-24, 18);
+        ctx.lineTo(-15, 10);
+        ctx.closePath();
+
+        const grad = ctx.createLinearGradient(0, -26, 0, 22);
+        grad.addColorStop(0, '#e0f2fe');
+        grad.addColorStop(0.5, '#0284c7');
+        grad.addColorStop(1, '#0f172a');
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.lineWidth = 1.8;
+        ctx.strokeStyle = '#38bdf8';
+        ctx.stroke();
+
+        // Aletas de asa laranjas
+        ctx.fillStyle = '#f97316';
+        ctx.beginPath();
+        ctx.moveTo(15, 10);
+        ctx.lineTo(24, 18);
+        ctx.lineTo(18, 20);
+        ctx.lineTo(11, 14);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(-15, 10);
+        ctx.lineTo(-24, 18);
+        ctx.lineTo(-18, 20);
+        ctx.lineTo(-11, 14);
+        ctx.closePath();
+        ctx.fill();
+
+        // Cockpit
+        ctx.beginPath();
+        ctx.moveTo(0, -16);
+        ctx.lineTo(5, -2);
+        ctx.lineTo(0, 4);
+        ctx.lineTo(-5, -2);
+        ctx.closePath();
+        ctx.fillStyle = '#67e8f9';
+        ctx.shadowColor = '#ffffff';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+
+      } else if (ship.type === 'forward_wing') {
+        // Nave 2: Valkyrie Esmeralda
+        ctx.beginPath();
+        ctx.moveTo(0, -24);
+        ctx.lineTo(8, -8);
+        ctx.lineTo(22, 2);
+        ctx.lineTo(26, 16);
+        ctx.lineTo(18, 14);
+        ctx.lineTo(12, 22);
+        ctx.lineTo(-12, 22);
+        ctx.lineTo(-18, 14);
+        ctx.lineTo(-26, 16);
+        ctx.lineTo(-22, 2);
+        ctx.lineTo(-8, -8);
+        ctx.closePath();
+
+        const grad = ctx.createLinearGradient(0, -24, 0, 22);
+        grad.addColorStop(0, '#6ee7b7');
+        grad.addColorStop(0.5, '#10b981');
+        grad.addColorStop(1, '#064e3b');
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.lineWidth = 1.8;
+        ctx.strokeStyle = '#34d399';
+        ctx.stroke();
+
+        // Pontas douradas dos canhões
+        ctx.fillStyle = '#fbbf24';
+        ctx.fillRect(21, 2, 4, 12);
+        ctx.fillRect(-25, 2, 4, 12);
+
+        // Cockpit
+        ctx.beginPath();
+        ctx.ellipse(0, -4, 5, 11, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#a7f3d0';
+        ctx.shadowColor = '#ffffff';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+
+      } else if (ship.type === 'needle') {
+        // Nave 3: Phoenix Vermelha
+        ctx.beginPath();
+        ctx.moveTo(0, -28);
+        ctx.lineTo(6, -6);
+        ctx.lineTo(24, 16);
+        ctx.lineTo(12, 18);
+        ctx.lineTo(5, 23);
+        ctx.lineTo(-5, 23);
+        ctx.lineTo(-12, 18);
+        ctx.lineTo(-24, 16);
+        ctx.lineTo(-6, -6);
+        ctx.closePath();
+
+        const grad = ctx.createLinearGradient(0, -28, 0, 23);
+        grad.addColorStop(0, '#fca5a5');
+        grad.addColorStop(0.5, '#ef4444');
+        grad.addColorStop(1, '#450a0a');
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.lineWidth = 1.8;
+        ctx.strokeStyle = '#f87171';
+        ctx.stroke();
+
+        // Asas brancas
+        ctx.fillStyle = '#f8fafc';
+        ctx.beginPath();
+        ctx.moveTo(12, 8);
+        ctx.lineTo(24, 16);
+        ctx.lineTo(17, 18);
+        ctx.lineTo(10, 14);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(-12, 8);
+        ctx.lineTo(-24, 16);
+        ctx.lineTo(-17, 18);
+        ctx.lineTo(-10, 14);
+        ctx.closePath();
+        ctx.fill();
+
+        // Cockpit solar
+        ctx.beginPath();
+        ctx.moveTo(0, -18);
+        ctx.lineTo(4, -4);
+        ctx.lineTo(0, 3);
+        ctx.lineTo(-4, -4);
+        ctx.closePath();
+        ctx.fillStyle = '#fef08a';
+        ctx.shadowColor = '#fbbf24';
+        ctx.shadowBlur = 9;
+        ctx.fill();
+
+      } else if (ship.type === 'stealth') {
+        // Nave 4: Nebula Cósmica (Roxa)
+        ctx.beginPath();
+        ctx.moveTo(0, -22);
+        ctx.lineTo(12, -4);
+        ctx.lineTo(22, 6);
+        ctx.lineTo(18, 20);
+        ctx.lineTo(8, 14);
+        ctx.lineTo(4, 21);
+        ctx.lineTo(-4, 21);
+        ctx.lineTo(-8, 14);
+        ctx.lineTo(-18, 20);
+        ctx.lineTo(-22, 6);
+        ctx.lineTo(-12, -4);
+        ctx.closePath();
+
+        const grad = ctx.createLinearGradient(0, -22, 0, 21);
+        grad.addColorStop(0, '#d8b4fe');
+        grad.addColorStop(0.5, '#8b5cf6');
+        grad.addColorStop(1, '#2e1065');
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.lineWidth = 1.8;
+        ctx.strokeStyle = '#c084fc';
+        ctx.stroke();
+
+        // Pods laterais ciano
+        ctx.fillStyle = '#22d3ee';
+        ctx.fillRect(16, 6, 5, 10);
+        ctx.fillRect(-21, 6, 5, 10);
+
+        // Cockpit magenta neon
+        ctx.beginPath();
+        ctx.ellipse(0, -3, 5, 10, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#f472b6';
+        ctx.shadowColor = '#ec4899';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+
+      } else if (ship.type === 'heavy') {
+        // Nave 5: Dreadnought Jade
+        ctx.beginPath();
+        ctx.moveTo(0, -20);
+        ctx.lineTo(10, -12);
+        ctx.lineTo(22, -2);
+        ctx.lineTo(24, 18);
+        ctx.lineTo(14, 22);
+        ctx.lineTo(6, 17);
+        ctx.lineTo(-6, 17);
+        ctx.lineTo(-14, 22);
+        ctx.lineTo(-24, 18);
+        ctx.lineTo(-22, -2);
+        ctx.lineTo(-10, -12);
+        ctx.closePath();
+
+        const grad = ctx.createLinearGradient(0, -20, 0, 22);
+        grad.addColorStop(0, '#86efac');
+        grad.addColorStop(0.5, '#059669');
+        grad.addColorStop(1, '#022c22');
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.lineWidth = 1.8;
+        ctx.strokeStyle = '#4ade80';
+        ctx.stroke();
+
+        // Turbinas reforçadas
+        ctx.fillStyle = '#84cc16';
+        ctx.fillRect(15, 10, 6, 10);
+        ctx.fillRect(-21, 10, 6, 10);
+
+        // Cockpit púrpura
+        ctx.beginPath();
+        ctx.moveTo(0, -14);
+        ctx.lineTo(6, -2);
+        ctx.lineTo(0, 5);
+        ctx.lineTo(-6, -2);
+        ctx.closePath();
+        ctx.fillStyle = '#c084fc';
+        ctx.shadowColor = '#a855f7';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+
+      } else if (ship.type === 'twin_prong') {
+        // Nave 6: Vanguard Solar (Duplo bico)
+        ctx.beginPath();
+        ctx.moveTo(-6, -26);
+        ctx.lineTo(-2, -26);
+        ctx.lineTo(-2, -14);
+        ctx.lineTo(2, -14);
+        ctx.lineTo(2, -26);
+        ctx.lineTo(6, -26);
+        ctx.lineTo(10, -6);
+        ctx.lineTo(22, 8);
+        ctx.lineTo(18, 22);
+        ctx.lineTo(8, 18);
+        ctx.lineTo(0, 22);
+        ctx.lineTo(-8, 18);
+        ctx.lineTo(-18, 22);
+        ctx.lineTo(-22, 8);
+        ctx.lineTo(-10, -6);
+        ctx.closePath();
+
+        const grad = ctx.createLinearGradient(0, -26, 0, 22);
+        grad.addColorStop(0, '#ffffff');
+        grad.addColorStop(0.5, '#94a3b8');
+        grad.addColorStop(1, '#1e293b');
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.lineWidth = 1.8;
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.stroke();
+
+        // Motores laterais laranja solar
+        ctx.fillStyle = '#ea580c';
+        ctx.fillRect(14, 8, 6, 12);
+        ctx.fillRect(-20, 8, 6, 12);
+
+        // Cockpit central âmbar
+        ctx.beginPath();
+        ctx.ellipse(0, -2, 4, 9, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#fde047';
+        ctx.shadowColor = '#fbbf24';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+      }
+
+      ctx.restore();
+    }
+
+    /* =========================================================================
+       DISPAROS LASER
+       ========================================================================= */
+    class Laser {
+      constructor(x, y, speed = 12, color = '#00f0ff') {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.color = color;
+        this.width = 4;
+        this.height = 18;
+        this.active = true;
+      }
+
+      update() {
+        this.y -= this.speed;
+        if (this.y + this.height < 0) {
+          this.active = false;
+        }
+      }
+
+      draw(ctx) {
+        ctx.save();
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = this.color;
+        
+        // Gradiente do Laser baseado na nave
+        const grad = ctx.createLinearGradient(this.x, this.y, this.x, this.y + this.height);
+        grad.addColorStop(0, '#ffffff');
+        grad.addColorStop(0.4, this.color);
+        grad.addColorStop(1, 'rgba(0, 0, 0, 0.1)');
+
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.roundRect(this.x - this.width / 2, this.y, this.width, this.height, 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    /* =========================================================================
+       CLASSE DO JOGADOR (NAVE)
+       ========================================================================= */
+    class Player {
+      constructor(x, y, shipConfig = SHIPS_DATA[0]) {
+        this.x = x;
+        this.y = y;
+        this.width = 44;
+        this.height = 50;
+        this.speed = 6;
+        this.shootCooldown = 0;
+        this.maxCooldown = 12; // Frames entre disparos contínuos
+        this.invulnerableTimer = 0;
+        this.engineParticles = [];
+        this.ship = shipConfig || SHIPS_DATA[0];
+      }
+
+      update(keys, canvasWidth, canvasHeight) {
+        // Movimentação horizontal
+        if (keys['ArrowLeft'] || keys['KeyA']) {
+          this.x -= this.speed;
+        }
+        if (keys['ArrowRight'] || keys['KeyD']) {
+          this.x += this.speed;
+        }
+
+        // Movimentação vertical moderada
+        if (keys['ArrowUp'] || keys['KeyW']) {
+          this.y -= this.speed * 0.8;
+        }
+        if (keys['ArrowDown'] || keys['KeyS']) {
+          this.y += this.speed * 0.8;
+        }
+
+        // Limites da tela
+        const halfW = this.width / 2;
+        this.x = Math.max(halfW + 8, Math.min(canvasWidth - halfW - 8, this.x));
+        this.y = Math.max(100, Math.min(canvasHeight - this.height - 15, this.y));
+
+        // Partículas do propulsor temáticas da nave escolhida
+        if (Math.random() < 0.8) {
+          const colors = this.ship.engineColors || ['#38bdf8', '#0284c7'];
+          this.engineParticles.push({
+            x: this.x + (Math.random() * 8 - 4),
+            y: this.y + 22,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: Math.random() * 3 + 3,
+            size: Math.random() * 3 + 2,
+            life: 1.0,
+            color: Math.random() > 0.4 ? colors[0] : colors[1]
+          });
+        }
+
+        // Atualizar partículas de propulsão
+        for (let i = this.engineParticles.length - 1; i >= 0; i--) {
+          const p = this.engineParticles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life -= 0.06;
+          if (p.life <= 0) {
+            this.engineParticles.splice(i, 1);
+          }
+        }
+
+        if (this.shootCooldown > 0) this.shootCooldown--;
+        if (this.invulnerableTimer > 0) this.invulnerableTimer--;
+      }
+
+      shoot(soundEngine) {
+        if (this.shootCooldown <= 0) {
+          this.shootCooldown = this.maxCooldown;
+          soundEngine.playLaser();
+          // Disparo duplo com cor correspondente à nave
+          return [
+            new Laser(this.x - 14, this.y - 10, 12, this.ship.laserColor),
+            new Laser(this.x + 14, this.y - 10, 12, this.ship.laserColor)
+          ];
+        }
+        return [];
+      }
+
+      hit() {
+        this.invulnerableTimer = 90; // ~1.5 segundos a 60fps
+      }
+
+      draw(ctx) {
+        // Desenhar rastro de propulsão
+        this.engineParticles.forEach(p => {
+          ctx.save();
+          ctx.globalAlpha = p.life * 0.8;
+          ctx.fillStyle = p.color;
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        });
+
+        // Piscar se invulnerável
+        if (this.invulnerableTimer > 0 && Math.floor(this.invulnerableTimer / 6) % 2 === 0) {
+          return;
+        }
+
+        // Desenhar nave personalizada
+        drawShipShape(ctx, this.ship, this.x, this.y, 1.0);
+      }
+    }
+
+    /* =========================================================================
+       CLASSES DOS INIMIGOS (Variações e Comportamentos)
+       ========================================================================= */
+    class Enemy {
+      constructor(canvasWidth, type = 'drone') {
+        this.type = type;
+        this.canvasWidth = canvasWidth;
+        this.active = true;
+        this.time = Math.random() * 100;
+
+        if (type === 'drone') {
+          this.width = 30;
+          this.height = 30;
+          this.speed = Math.random() * 1.5 + 2.8;
+          this.hp = 1;
+          this.maxHp = 1;
+          this.points = 100;
+          this.color = '#f43f5e';
+          this.x = Math.random() * (canvasWidth - 60) + 30;
+          this.y = -40;
+        } else if (type === 'fighter') {
+          this.width = 38;
+          this.height = 38;
+          this.speed = Math.random() * 1.0 + 2.0;
+          this.hp = 2;
+          this.maxHp = 2;
+          this.points = 250;
+          this.color = '#c084fc';
+          this.baseX = Math.random() * (canvasWidth - 100) + 50;
+          this.x = this.baseX;
+          this.y = -50;
+          this.amplitude = Math.random() * 40 + 30;
+          this.frequency = Math.random() * 0.04 + 0.02;
+        } else if (type === 'cruiser') {
+          this.width = 54;
+          this.height = 54;
+          this.speed = Math.random() * 0.5 + 1.2;
+          this.hp = 5;
+          this.maxHp = 5;
+          this.points = 500;
+          this.color = '#f59e0b';
+          this.x = Math.random() * (canvasWidth - 100) + 50;
+          this.y = -65;
+        }
+      }
+
+      update(canvasHeight) {
+        this.time++;
+        this.y += this.speed;
+
+        if (this.type === 'fighter') {
+          this.x = this.baseX + Math.sin(this.time * this.frequency) * this.amplitude;
+          // Prevenir sair da tela
+          this.x = Math.max(25, Math.min(this.canvasWidth - 25, this.x));
+        }
+
+        if (this.y - this.height > canvasHeight) {
+          this.active = false;
+        }
+      }
+
+      hit() {
+        this.hp--;
+        return this.hp <= 0;
+      }
+
+      draw(ctx) {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = this.color;
+
+        if (this.type === 'drone') {
+          // Drone angular ágil
+          ctx.beginPath();
+          ctx.moveTo(0, 16);
+          ctx.lineTo(14, -14);
+          ctx.lineTo(0, -6);
+          ctx.lineTo(-14, -14);
+          ctx.closePath();
+
+          ctx.fillStyle = this.color;
+          ctx.fill();
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          // Núcleo energético central
+          ctx.beginPath();
+          ctx.arc(0, -2, 4, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffe4e6';
+          ctx.fill();
+
+        } else if (this.type === 'fighter') {
+          // Caça estelar com asas duplas
+          ctx.beginPath();
+          ctx.moveTo(0, 20);
+          ctx.lineTo(18, -10);
+          ctx.lineTo(12, -18);
+          ctx.lineTo(0, -10);
+          ctx.lineTo(-12, -18);
+          ctx.lineTo(-18, -10);
+          ctx.closePath();
+
+          const grad = ctx.createLinearGradient(0, -18, 0, 20);
+          grad.addColorStop(0, '#a855f7');
+          grad.addColorStop(1, '#581c87');
+          ctx.fillStyle = grad;
+          ctx.fill();
+
+          ctx.strokeStyle = '#e9d5ff';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          // Marcadores de asa
+          ctx.fillStyle = '#f43f5e';
+          ctx.fillRect(-16, -10, 4, 8);
+          ctx.fillRect(12, -10, 4, 8);
+
+        } else if (this.type === 'cruiser') {
+          // Cruzador blindado pesado
+          ctx.beginPath();
+          ctx.moveTo(0, 26);
+          ctx.lineTo(24, 8);
+          ctx.lineTo(20, -22);
+          ctx.lineTo(0, -14);
+          ctx.lineTo(-20, -22);
+          ctx.lineTo(-24, 8);
+          ctx.closePath();
+
+          const grad = ctx.createLinearGradient(0, -22, 0, 26);
+          grad.addColorStop(0, '#f59e0b');
+          grad.addColorStop(1, '#78350f');
+          ctx.fillStyle = grad;
+          ctx.fill();
+
+          ctx.strokeStyle = '#fef08a';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          // Mini barra de vida para naves que aguentam múltiplos tiros
+          if (this.hp < this.maxHp) {
+            const barW = 36;
+            const barH = 4;
+            const healthRatio = this.hp / this.maxHp;
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+            ctx.fillRect(-barW / 2, -30, barW, barH);
+            ctx.fillStyle = '#22c55e';
+            ctx.fillRect(-barW / 2, -30, barW * healthRatio, barH);
+          }
+        }
+
+        ctx.restore();
+      }
+    }
+
+    /* =========================================================================
+       CONTROLADOR PRINCIPAL DO JOGO (GAME ENGINE)
+       ========================================================================= */
+    class Game {
+      constructor() {
+        this.canvas = document.getElementById('gameCanvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.sound = new SoundEngine();
+
+        this.width = this.canvas.width;
+        this.height = this.canvas.height;
+
+        this.starfield = new Starfield(this.width, this.height);
+
+        // Estado de controles
+        this.keys = {};
+        this.spacePressed = false;
+
+        // Entidades
+        this.player = new Player(this.width / 2, this.height - 90);
+        this.lasers = [];
+        this.enemies = [];
+        this.particles = [];
+        this.floatingTexts = [];
+
+        // Estado do jogo
+        this.state = 'START'; // 'START', 'PLAYING', 'GAMEOVER'
+        this.score = 0;
+        this.kills = 0;
+        this.lives = 3;
+        this.highScore = parseInt(localStorage.getItem('cosmic_striker_hs') || '0', 10);
+
+        // Progressão de dificuldade e spawn
+        this.spawnTimer = 0;
+        this.spawnInterval = 75; // frames entre spawns
+        this.difficultyLevel = 1;
+
+        // Efeito de Screen Shake
+        this.shakeTime = 0;
+        this.shakeMagnitude = 0;
+
+        // Dados do Piloto e Nave Personalizada
+        this.pilotName = (localStorage.getItem('cosmic_striker_pilot') || 'ARTHUR').toUpperCase();
+        this.selectedShipId = localStorage.getItem('cosmic_striker_ship') || 'arthur_blue';
+        this.currentShip = SHIPS_DATA.find(s => s.id === this.selectedShipId) || SHIPS_DATA[0];
+
+        // Elementos DOM Principais
+        this.hudScore = document.getElementById('hud-score');
+        this.hudHighScore = document.getElementById('hud-highscore');
+        this.hudLives = document.getElementById('hud-lives');
+        this.hudPilot = document.getElementById('hud-pilot');
+        this.startScreen = document.getElementById('start-screen');
+        this.gameOverScreen = document.getElementById('gameover-screen');
+        this.finalScore = document.getElementById('final-score');
+        this.finalKills = document.getElementById('final-kills');
+        this.finalHighScore = document.getElementById('final-highscore');
+        this.finalPilot = document.getElementById('final-pilot');
+        this.newRecordBadge = document.getElementById('new-record-badge');
+        this.audioBtn = document.getElementById('audio-toggle');
+
+        // Elementos do Modal de Personalização
+        this.customModal = document.getElementById('customization-modal');
+        this.modalHeaderPilot = document.getElementById('modal-header-pilot');
+        this.modalDisplayName = document.getElementById('modal-display-name');
+        this.selectedShipCanvas = document.getElementById('selected-ship-canvas');
+        this.selectedShipLabel = document.getElementById('selected-ship-label');
+        this.shipsGrid = document.getElementById('ships-grid');
+        this.pilotNameInput = document.getElementById('pilot-name-input');
+
+        this.setupEvents();
+        this.updateCustomModalUI();
+        this.updateHUD();
+        this.loop = this.loop.bind(this);
+        requestAnimationFrame(this.loop);
+      }
+
+      setupEvents() {
+        // Eventos de teclado
+        window.addEventListener('keydown', (e) => {
+          this.keys[e.code] = true;
+
+          // Iniciar áudio no primeiro clique/tecla
+          this.sound.init();
+
+          // Tecla Escape para fechar modal
+          if (e.code === 'Escape') {
+            if (this.customModal && this.customModal.classList.contains('active')) {
+              this.closeCustomizationModal();
+              return;
+            }
+          }
+
+          if (e.code === 'Space') {
+            // Se estiver na modal de personalização, ignorar espaço de início
+            if (this.customModal && this.customModal.classList.contains('active')) {
+              return;
+            }
+
+            e.preventDefault();
+            if (this.state === 'START') {
+              this.startGame();
+            } else if (this.state === 'GAMEOVER') {
+              this.startGame();
+            } else if (this.state === 'PLAYING') {
+              const newLasers = this.player.shoot(this.sound);
+              if (newLasers.length) this.lasers.push(...newLasers);
+            }
+          }
+
+          if (e.code === 'KeyM') {
+            this.toggleAudio();
+          }
+        });
+
+        window.addEventListener('keyup', (e) => {
+          this.keys[e.code] = false;
+        });
+
+        // Botões de UI Principais
+        document.getElementById('start-btn').addEventListener('click', () => {
+          this.sound.init();
+          this.startGame();
+        });
+
+        document.getElementById('restart-btn').addEventListener('click', () => {
+          this.sound.init();
+          this.startGame();
+        });
+
+        this.audioBtn.addEventListener('click', () => {
+          this.sound.init();
+          this.toggleAudio();
+        });
+
+        // Botões para Abrir Modal de Personalização
+        const openCustomBtn = document.getElementById('open-custom-btn');
+        if (openCustomBtn) {
+          openCustomBtn.addEventListener('click', () => {
+            this.openCustomizationModal();
+          });
+        }
+
+        const gameoverCustomBtn = document.getElementById('gameover-custom-btn');
+        if (gameoverCustomBtn) {
+          gameoverCustomBtn.addEventListener('click', () => {
+            this.openCustomizationModal();
+          });
+        }
+
+        // Botões de Ação do Modal
+        document.getElementById('modal-close-btn').addEventListener('click', () => {
+          this.closeCustomizationModal();
+        });
+
+        document.getElementById('btn-back-custom').addEventListener('click', () => {
+          this.closeCustomizationModal();
+        });
+
+        document.getElementById('btn-save-custom').addEventListener('click', () => {
+          this.saveCustomization();
+          const btn = document.getElementById('btn-save-custom');
+          const oldText = btn.textContent;
+          btn.textContent = 'SALVO! ✔';
+          btn.style.background = '#10b981';
+          setTimeout(() => {
+            btn.textContent = oldText;
+            btn.style.background = '';
+            this.closeCustomizationModal();
+          }, 500);
+        });
+
+        document.getElementById('btn-play-custom').addEventListener('click', () => {
+          this.saveCustomization();
+          this.closeCustomizationModal();
+          this.startGame();
+        });
+
+        // Input de edição de nome em tempo real
+        this.pilotNameInput.addEventListener('input', () => {
+          this.onPilotNameChange();
+        });
+      }
+
+      openCustomizationModal() {
+        this.sound.init();
+        this.pilotNameInput.value = this.pilotName;
+        this.updateCustomModalUI();
+        this.customModal.classList.add('active');
+        setTimeout(() => this.pilotNameInput.focus(), 100);
+      }
+
+      closeCustomizationModal() {
+        this.customModal.classList.remove('active');
+      }
+
+      onPilotNameChange() {
+        const raw = this.pilotNameInput.value;
+        const clean = raw.trim().toUpperCase() || 'ARTHUR';
+        this.modalHeaderPilot.textContent = `PILOT: ${clean}`;
+        this.modalDisplayName.textContent = clean;
+        this.updateSelectedShipLabel(clean);
+      }
+
+      updateSelectedShipLabel(name) {
+        if (this.currentShip.id === 'arthur_blue') {
+          const formatted = name.charAt(0) + name.slice(1).toLowerCase();
+          this.selectedShipLabel.textContent = `Nave do ${formatted}`;
+        } else {
+          this.selectedShipLabel.textContent = this.currentShip.name;
+        }
+      }
+
+      selectShip(shipId) {
+        this.selectedShipId = shipId;
+        this.currentShip = SHIPS_DATA.find(s => s.id === shipId) || SHIPS_DATA[0];
+        this.sound.playLaser();
+        this.updateCustomModalUI();
+      }
+
+      saveCustomization() {
+        const raw = this.pilotNameInput.value.trim().toUpperCase();
+        this.pilotName = raw || 'ARTHUR';
+        localStorage.setItem('cosmic_striker_pilot', this.pilotName);
+        localStorage.setItem('cosmic_striker_ship', this.selectedShipId);
+        this.updateHUD();
+        if (this.finalPilot) this.finalPilot.textContent = this.pilotName;
+      }
+
+      updateCustomModalUI() {
+        const currentName = (this.pilotNameInput.value.trim() || this.pilotName).toUpperCase();
+        this.modalHeaderPilot.textContent = `PILOT: ${currentName}`;
+        this.modalDisplayName.textContent = currentName;
+        this.updateSelectedShipLabel(currentName);
+
+        // Renderizar o preview grande em destaque
+        const pCtx = this.selectedShipCanvas.getContext('2d');
+        pCtx.clearRect(0, 0, this.selectedShipCanvas.width, this.selectedShipCanvas.height);
+        drawShipShape(pCtx, this.currentShip, this.selectedShipCanvas.width / 2, this.selectedShipCanvas.height / 2 + 2, 1.55);
+
+        // Renderizar o grid de 6 naves
+        this.shipsGrid.innerHTML = '';
+        SHIPS_DATA.forEach(ship => {
+          const tile = document.createElement('div');
+          tile.className = `ship-tile ${ship.id === this.selectedShipId ? 'active' : ''}`;
+          tile.title = `${ship.name} (${ship.modelName})`;
+
+          const cv = document.createElement('canvas');
+          cv.width = 68;
+          cv.height = 54;
+          const cCtx = cv.getContext('2d');
+          drawShipShape(cCtx, ship, cv.width / 2, cv.height / 2 + 2, 0.78);
+
+          tile.appendChild(cv);
+          tile.addEventListener('click', () => {
+            this.selectShip(ship.id);
+          });
+          this.shipsGrid.appendChild(tile);
+        });
+      }
+
+      toggleAudio() {
+        const isMuted = this.sound.toggleMute();
+        this.audioBtn.textContent = isMuted ? '🔇' : '🔊';
+      }
+
+      triggerShake(time = 12, magnitude = 6) {
+        this.shakeTime = time;
+        this.shakeMagnitude = magnitude;
+      }
+
+      startGame() {
+        this.state = 'PLAYING';
+        this.score = 0;
+        this.kills = 0;
+        this.lives = 3;
+        this.spawnInterval = 75;
+        this.difficultyLevel = 1;
+
+        this.lasers = [];
+        this.enemies = [];
+        this.particles = [];
+        this.floatingTexts = [];
+
+        // Inicializar jogador com a nave selecionada
+        this.player = new Player(this.width / 2, this.height - 90, this.currentShip);
+
+        this.startScreen.classList.remove('active');
+        this.gameOverScreen.classList.remove('active');
+        this.closeCustomizationModal();
+
+        this.updateHUD();
+      }
+
+      gameOver() {
+        this.state = 'GAMEOVER';
+        this.sound.playGameOver();
+
+        const isNewRecord = this.score > this.highScore;
+        if (isNewRecord) {
+          this.highScore = this.score;
+          localStorage.setItem('cosmic_striker_hs', this.highScore.toString());
+        }
+
+        this.finalScore.textContent = this.score.toLocaleString();
+        this.finalKills.textContent = this.kills.toString();
+        this.finalHighScore.textContent = this.highScore.toLocaleString();
+        if (this.finalPilot) this.finalPilot.textContent = this.pilotName;
+        this.newRecordBadge.style.display = isNewRecord ? 'block' : 'none';
+
+        this.gameOverScreen.classList.add('active');
+        this.updateHUD();
+      }
+
+      spawnEnemies() {
+        this.spawnTimer++;
+        if (this.spawnTimer >= this.spawnInterval) {
+          this.spawnTimer = 0;
+
+          // Escolha ponderada de tipo de inimigo de acordo com score
+          const roll = Math.random();
+          let type = 'drone';
+
+          if (this.score > 2500 && roll > 0.75) {
+            type = 'cruiser';
+          } else if (this.score > 800 && roll > 0.45) {
+            type = 'fighter';
+          }
+
+          this.enemies.push(new Enemy(this.width, type));
+
+          // Acelerar spawn gradualmente conforme o jogador pontua
+          this.spawnInterval = Math.max(30, 75 - Math.floor(this.score / 600));
+        }
+      }
+
+      createExplosion(x, y, color, count = 25, speedScale = 1) {
+        for (let i = 0; i < count; i++) {
+          this.particles.push(new Particle(x, y, color, speedScale));
+        }
+      }
+
+      checkCollisions() {
+        // 1. Colisão: Tiros (Laser) vs Inimigos
+        for (let l = this.lasers.length - 1; l >= 0; l--) {
+          const laser = this.lasers[l];
+
+          for (let e = this.enemies.length - 1; e >= 0; e--) {
+            const enemy = this.enemies[e];
+
+            // Detecção retangular precisa
+            if (
+              laser.x >= enemy.x - enemy.width / 2 &&
+              laser.x <= enemy.x + enemy.width / 2 &&
+              laser.y >= enemy.y - enemy.height / 2 &&
+              laser.y <= enemy.y + enemy.height / 2
+            ) {
+              laser.active = false;
+              const destroyed = enemy.hit();
+
+              if (destroyed) {
+                this.sound.playExplosion(enemy.type === 'cruiser' ? 'large' : 'medium');
+                this.triggerShake(enemy.type === 'cruiser' ? 14 : 7, enemy.type === 'cruiser' ? 7 : 3);
+                this.createExplosion(
+                  enemy.x, 
+                  enemy.y, 
+                  enemy.color, 
+                  enemy.type === 'cruiser' ? 40 : 22,
+                  enemy.type === 'cruiser' ? 1.4 : 1.0
+                );
+
+                this.score += enemy.points;
+                this.kills++;
+                this.floatingTexts.push(new FloatingText(`+${enemy.points}`, enemy.x, enemy.y, enemy.color));
+                this.enemies.splice(e, 1);
+                this.updateHUD();
+              } else {
+                this.sound.playHit();
+                this.createExplosion(laser.x, laser.y, '#ffffff', 5, 0.6);
+              }
+              break;
+            }
+          }
+        }
+
+        // 2. Colisão: Inimigo vs Jogador
+        if (this.player.invulnerableTimer <= 0) {
+          const pRadius = 18;
+          for (let e = this.enemies.length - 1; e >= 0; e--) {
+            const enemy = this.enemies[e];
+            const dist = Math.hypot(this.player.x - enemy.x, this.player.y - enemy.y);
+
+            if (dist < pRadius + enemy.width / 2) {
+              // Impacto sofrido pelo jogador
+              this.sound.playPlayerDamage();
+              this.triggerShake(20, 9);
+              this.createExplosion(this.player.x, this.player.y, '#ef4444', 35, 1.3);
+              this.createExplosion(enemy.x, enemy.y, enemy.color, 25, 1.0);
+
+              this.enemies.splice(e, 1);
+              this.player.hit();
+              this.lives--;
+              this.floatingTexts.push(new FloatingText('-1 ❤️', this.player.x, this.player.y - 25, '#ff2a6d'));
+              this.updateHUD();
+
+              if (this.lives <= 0) {
+                this.gameOver();
+              }
+              break;
+            }
+          }
+        }
+      }
+
+      updateHUD() {
+        // Formatar Score com zeros à esquerda
+        this.hudScore.textContent = this.score.toString().padStart(6, '0');
+        this.hudHighScore.textContent = this.highScore.toString().padStart(6, '0');
+        if (this.hudPilot) this.hudPilot.textContent = this.pilotName;
+
+        // Atualizar ícones de vidas (3 corações)
+        this.hudLives.innerHTML = '';
+        for (let i = 0; i < 3; i++) {
+          const icon = document.createElement('div');
+          const isLost = i >= this.lives;
+          const isDanger = this.lives === 1 && !isLost;
+          icon.className = `life-icon ${isLost ? 'lost' : ''} ${isDanger ? 'danger' : ''}`;
+          icon.title = isLost ? 'Vida perdida' : 'Vida ativa';
+          icon.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="${isLost ? '#334155' : '#ff2a6d'}">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          `;
+          this.hudLives.appendChild(icon);
+        }
+      }
+
+      update() {
+        this.starfield.update();
+
+        if (this.state === 'PLAYING') {
+          // Disparo contínuo se segurar espaço
+          if (this.keys['Space']) {
+            const newLasers = this.player.shoot(this.sound);
+            if (newLasers.length) this.lasers.push(...newLasers);
+          }
+
+          this.player.update(this.keys, this.width, this.height);
+          this.spawnEnemies();
+
+          // Atualizar Lasers
+          for (let i = this.lasers.length - 1; i >= 0; i--) {
+            this.lasers[i].update();
+            if (!this.lasers[i].active) {
+              this.lasers.splice(i, 1);
+            }
+          }
+
+          // Atualizar Inimigos
+          for (let i = this.enemies.length - 1; i >= 0; i--) {
+            this.enemies[i].update(this.height);
+            if (!this.enemies[i].active) {
+              this.enemies.splice(i, 1);
+            }
+          }
+
+          this.checkCollisions();
+        }
+
+        // Atualizar Partículas (sempre ativas, inclusive no Game Over para fade out suave)
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+          this.particles[i].update();
+          if (this.particles[i].life <= 0) {
+            this.particles.splice(i, 1);
+          }
+        }
+
+        // Atualizar Textos Flutuantes
+        for (let i = this.floatingTexts.length - 1; i >= 0; i--) {
+          this.floatingTexts[i].update();
+          if (this.floatingTexts[i].life <= 0) {
+            this.floatingTexts.splice(i, 1);
+          }
+        }
+      }
+
+      render() {
+        this.ctx.save();
+
+        // Aplicar vibração de tela (Screen Shake)
+        if (this.shakeTime > 0) {
+          const offsetX = (Math.random() - 0.5) * this.shakeMagnitude;
+          const offsetY = (Math.random() - 0.5) * this.shakeMagnitude;
+          this.ctx.translate(offsetX, offsetY);
+          this.shakeTime--;
+        }
+
+        // Limpar tela com leve rastro para sensação de movimento interestelar
+        this.ctx.fillStyle = 'rgba(2, 4, 10, 0.4)';
+        this.ctx.fillRect(0, 0, this.width, this.height);
+
+        // Desenhar Fundo de Estrelas
+        this.starfield.draw(this.ctx);
+
+        // Desenhar Entidades de Jogo
+        if (this.state === 'PLAYING' || this.state === 'GAMEOVER') {
+          // Lasers
+          this.lasers.forEach(laser => laser.draw(this.ctx));
+
+          // Inimigos
+          this.enemies.forEach(enemy => enemy.draw(this.ctx));
+
+          // Jogador (se ainda tiver vidas)
+          if (this.lives > 0) {
+            this.player.draw(this.ctx);
+          }
+        }
+
+        // Partículas
+        this.particles.forEach(p => p.draw(this.ctx));
+
+        // Textos Flutuantes
+        this.floatingTexts.forEach(ft => ft.draw(this.ctx));
+
+        this.ctx.restore();
+      }
+
+      loop() {
+        this.update();
+        this.render();
+        requestAnimationFrame(this.loop);
+      }
+    }
+
+    // Inicialização ao carregar a página
+    window.addEventListener('DOMContentLoaded', () => {
+      new Game();
+    });
   </script>
 </body>
 </html>

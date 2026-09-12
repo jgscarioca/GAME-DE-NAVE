@@ -1127,6 +1127,22 @@
     }
 
     /* ==========================================================
+       SPRITE IMAGE LOADER (CRAIG REAL SPRITE)
+       ========================================================== */
+    const craigImg = new Image();
+    let craigImgLoaded = false;
+    craigImg.onload = () => {
+      craigImgLoaded = true;
+    };
+    // Prioritiza PNG com transparência, com fallback para JPG
+    craigImg.src = 'craig_sprite.png';
+    craigImg.onerror = () => {
+      if (!craigImg.src.includes('craig_sprite.jpg')) {
+        craigImg.src = 'craig_sprite.jpg';
+      }
+    };
+
+    /* ==========================================================
        PLAYER (CRAIG) CONTROLLER & SPRITE ANIMATION STATE
        ========================================================== */
     const player = {
@@ -1134,8 +1150,8 @@
       y: 350,
       vx: 0,
       vy: 0,
-      width: 28,
-      height: 50,
+      width: 36,
+      height: 54,
       facing: 1,
       isGrounded: false,
       speed: 3.8,
@@ -2739,315 +2755,89 @@
     function drawCraigBody(px, py, dir, alpha, isGhost) {
       ctx.save();
       ctx.globalAlpha = alpha;
-      ctx.translate(Math.floor(px), Math.floor(py));
+
+      // Bobbing / Walk animation
+      let bobY = 0;
+      let tiltAngle = 0;
+      if (Math.abs(player.vx) > 0.2 && player.isGrounded) {
+        bobY = Math.sin(Date.now() * 0.018) * 3;
+        tiltAngle = dir * 0.04;
+      } else if (!player.isGrounded) {
+        bobY = -3;
+        tiltAngle = dir * -0.03;
+      }
+      if (player.recoilTimer > 0) bobY += 3;
+
+      // Pivot centralizado
+      ctx.translate(Math.floor(px + player.width / 2), Math.floor(py + player.height / 2 + bobY));
+      ctx.rotate(tiltAngle);
 
       if (dir === -1) {
-        ctx.translate(player.width, 0);
         ctx.scale(-1, 1);
       }
 
-      // Mana Shield Active (Rotating Crystalline Ring)
+      // 1. MANA SHIELD (Domo cristalino protetor)
       if (player.shieldActive && !isGhost) {
         ctx.save();
         const rot = Date.now() * 0.007;
         ctx.strokeStyle = '#38bdf8';
         ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(player.width / 2, player.height / 2, 30, 0, Math.PI * 2);
+        ctx.arc(0, 0, 36, 0, Math.PI * 2);
         ctx.stroke();
 
         for (let i = 0; i < 3; i++) {
           const a = rot + (i / 3) * Math.PI * 2;
-          const sx = player.width / 2 + Math.cos(a) * 30;
-          const sy = player.height / 2 + Math.sin(a) * 30;
+          const sx = Math.cos(a) * 36;
+          const sy = Math.sin(a) * 36;
           ctx.fillStyle = '#ffffff';
           ctx.fillRect(sx - 3, sy - 3, 6, 6);
         }
         ctx.restore();
       }
 
-      // Walk cycle offsets
-      let bobY = 0;
-      let leftLegOff = 0;
-      let rightLegOff = 0;
+      // Renderização do Sprite Real com ctx.drawImage proporcional
+      // Imagem original: 336x492 (aspect ratio: 336/492 = 0.683)
+      const renderHeight = player.height + 8; // 62px
+      const renderWidth = renderHeight * (336 / 492); // ~42px
 
-      if (Math.abs(player.vx) > 0.2 && player.isGrounded) {
-        const f = player.runFrame;
-        // 4-frame run cycle
-        if (f === 0) { bobY = 0; leftLegOff = -4; rightLegOff = 4; }
-        else if (f === 1) { bobY = -2; leftLegOff = 0; rightLegOff = 0; }
-        else if (f === 2) { bobY = 0; leftLegOff = 4; rightLegOff = -4; }
-        else if (f === 3) { bobY = -1; leftLegOff = 2; rightLegOff = -2; }
-      } else if (!player.isGrounded) {
-        bobY = -3;
-        leftLegOff = 3;
-        rightLegOff = -2;
-      }
+      if (craigImgLoaded) {
+        // Renderiza a imagem real do Craig com o Cajado do Infinito!
+        ctx.drawImage(craigImg, -renderWidth / 2, -renderHeight / 2, renderWidth, renderHeight);
 
-      // Recoil
-      if (player.recoilTimer > 0) bobY += 2;
+        // Brilho mágico e partículas sobre o cristal do cajado
+        const staffX = renderWidth * 0.36;
+        const staffY = -renderHeight * 0.38;
 
-      // Craig's Palette
-      const C_SKIN_HIGHLIGHT = '#8c5236';
-      const C_SKIN_BASE = '#6b3b24';
-      const C_SKIN_SHADOW = '#4a2512';
-      const C_HAIR = '#160f0c';
-      const C_HAIR_HIGHLIGHT = '#2d1f19';
-      const C_HOODIE_BASE = '#cbd5e1';
-      const C_HOODIE_SHADOW = '#94a3b8';
-      const C_SLEEVE_BASE = '#fbbf24';
-      const C_SLEEVE_SHADOW = '#d97706';
-      const C_JEANS_BASE = '#2563eb';
-      const C_JEANS_SHADOW = '#1d4ed8';
-      const C_SNEAKER = '#f8fafc';
-      const C_SNEAKER_SOLE = '#94a3b8';
-      const C_SATCHEL_BASE = '#14b8a6';
-      const C_SATCHEL_SHADOW = '#0f766e';
-      const C_WOOD_BASE = '#78350f';
-      const C_WOOD_DARK = '#451a03';
-      const C_CRYSTAL = '#38bdf8';
+        const chargeRatio = player.chargeTimer / player.chargeMax;
+        const crystalPulse = Math.sin(Date.now() * 0.008) * 3;
+        const glowR = 12 + (player.isCharging ? chargeRatio * 18 : crystalPulse);
 
-      // --- 1. LEGS & SNEAKERS ---
-      // Left leg (back)
-      ctx.fillStyle = C_JEANS_SHADOW;
-      ctx.fillRect(7 + leftLegOff, 33 + bobY, 6, 12);
-      ctx.fillStyle = C_SNEAKER;
-      ctx.fillRect(5 + leftLegOff, 44 + bobY, 9, 6);
-      ctx.fillStyle = C_SNEAKER_SOLE;
-      ctx.fillRect(5 + leftLegOff, 48 + bobY, 9, 2);
-
-      // Right leg (front)
-      ctx.fillStyle = C_JEANS_BASE;
-      ctx.fillRect(15 + rightLegOff, 33 + bobY, 6, 12);
-      ctx.fillStyle = C_JEANS_SHADOW;
-      ctx.fillRect(19 + rightLegOff, 33 + bobY, 2, 12); // seam
-      ctx.fillStyle = C_SNEAKER;
-      ctx.fillRect(14 + rightLegOff, 44 + bobY, 9, 6);
-      ctx.fillStyle = C_SNEAKER_SOLE;
-      ctx.fillRect(14 + rightLegOff, 48 + bobY, 9, 2);
-
-      // --- 2. TORSO & CLOTHES ---
-      // Yellow under-sleeves
-      ctx.fillStyle = C_SLEEVE_BASE;
-      ctx.fillRect(4, 21 + bobY, 20, 12);
-      ctx.fillStyle = C_SLEEVE_SHADOW;
-      ctx.fillRect(4, 29 + bobY, 20, 4);
-
-      // Grey Hoodie vest
-      ctx.fillStyle = C_HOODIE_BASE;
-      ctx.fillRect(7, 20 + bobY, 14, 14);
-      ctx.fillStyle = C_HOODIE_SHADOW;
-      ctx.fillRect(18, 20 + bobY, 3, 14);
-
-      // Hood around the neck
-      ctx.fillStyle = '#e2e8f0';
-      ctx.fillRect(6, 19 + bobY, 16, 3);
-
-      // --- 3. SATCHEL / MOCHILA TIRATRANÇA (Turquoise) ---
-      // Crossbody strap
-      ctx.strokeStyle = '#0d9488';
-      ctx.lineWidth = 3.5;
-      ctx.beginPath();
-      ctx.moveTo(8, 19 + bobY);
-      ctx.lineTo(17, 32 + bobY);
-      ctx.stroke();
-
-      // Satchel pouch on hip with secondary spring tilt
-      ctx.save();
-      ctx.translate(14, 28 + bobY);
-      ctx.rotate(player.satchelAngle);
-      ctx.fillStyle = C_SATCHEL_BASE;
-      ctx.fillRect(-2, -2, 11, 10);
-      ctx.fillStyle = C_SATCHEL_SHADOW;
-      ctx.fillRect(-2, 6, 11, 2);
-      // Buckle
-      ctx.fillStyle = '#fbbf24';
-      ctx.fillRect(2, 2, 4, 3);
-      ctx.restore();
-
-      // --- 4. HEAD & FACE ---
-      // Afro curly hair puffs (Three characteristic puffs from reference)
-      ctx.fillStyle = C_HAIR;
-      ctx.beginPath();
-      ctx.arc(13, 11 + bobY, 15, 0, Math.PI * 2);
-      ctx.arc(6, 7 + bobY, 8, 0, Math.PI * 2);
-      ctx.arc(19, 5 + bobY, 8.5, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Hair highlights
-      ctx.fillStyle = C_HAIR_HIGHLIGHT;
-      ctx.beginPath();
-      ctx.arc(15, 7 + bobY, 5, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Craig's round face
-      ctx.fillStyle = C_SKIN_BASE;
-      ctx.beginPath();
-      ctx.arc(14, 14 + bobY, 11, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Chin shadow
-      ctx.fillStyle = C_SKIN_SHADOW;
-      ctx.beginPath();
-      ctx.arc(14, 18 + bobY, 6, 0, Math.PI * 0.9);
-      ctx.fill();
-
-      // Ear
-      ctx.fillStyle = C_SKIN_BASE;
-      ctx.beginPath();
-      ctx.arc(4, 14 + bobY, 4, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = C_SKIN_SHADOW;
-      ctx.beginPath();
-      ctx.arc(4, 14 + bobY, 2, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Big expressive cartoon eyes
-      if (player.isBlinking) {
-        // Blinking closed eye slits
-        ctx.strokeStyle = '#1e1b4b';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(10, 13 + bobY);
-        ctx.lineTo(15, 13 + bobY);
-        ctx.moveTo(17, 13 + bobY);
-        ctx.lineTo(22, 13 + bobY);
-        ctx.stroke();
-      } else {
-        // Big white sclera
-        ctx.fillStyle = '#ffffff';
-        ctx.beginPath();
-        ctx.arc(12, 12 + bobY, 4.5, 0, Math.PI * 2);
-        ctx.arc(19, 12 + bobY, 4.5, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Pupils looking ahead
-        ctx.fillStyle = '#0f172a';
-        ctx.beginPath();
-        ctx.arc(13.5, 12 + bobY, 2.2, 0, Math.PI * 2);
-        ctx.arc(20.5, 12 + bobY, 2.2, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Specular eye catchlights (cute sparkle in eyes!)
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(14, 10.5 + bobY, 1.5, 1.5);
-        ctx.fillRect(21, 10.5 + bobY, 1.5, 1.5);
-      }
-
-      // Eyebrows
-      ctx.strokeStyle = '#1e1b4b';
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
-      ctx.arc(12, 7 + bobY, 3.5, Math.PI * 0.2, Math.PI * 0.9);
-      ctx.arc(19, 7 + bobY, 3.5, Math.PI * 0.1, Math.PI * 0.8);
-      ctx.stroke();
-
-      // Big warm smile with tongue & teeth
-      ctx.fillStyle = '#831843';
-      ctx.beginPath();
-      ctx.arc(16, 17 + bobY, 5, 0, Math.PI);
-      ctx.fill();
-      // White teeth
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(13, 17 + bobY, 6, 2);
-      // Pink tongue
-      ctx.fillStyle = '#f43f5e';
-      ctx.beginPath();
-      ctx.arc(16, 20 + bobY, 3, Math.PI, 0);
-      ctx.fill();
-
-      // Cute Rosy cheeks
-      ctx.fillStyle = 'rgba(244, 63, 94, 0.35)';
-      ctx.beginPath();
-      ctx.arc(8, 16 + bobY, 3, 0, Math.PI * 2);
-      ctx.arc(22, 16 + bobY, 3, 0, Math.PI * 2);
-      ctx.fill();
-
-      // --- 5. O CAJADO DO INFINITO (Staff of the Infinite) ---
-      const staffHandX = 20;
-      const staffHandY = 26 + bobY;
-      const staffTopX = staffHandX + 5;
-      const staffTopY = 3 + bobY;
-
-      // Wooden Shaft with grain
-      ctx.strokeStyle = C_WOOD_BASE;
-      ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.moveTo(staffTopX, staffTopY + 9);
-      ctx.lineTo(staffHandX + 3, 47 + bobY);
-      ctx.stroke();
-
-      // Dark wood knot
-      ctx.fillStyle = C_WOOD_DARK;
-      ctx.fillRect(staffTopX - 1, staffTopY + 18, 3, 4);
-
-      // Craig's hand gripping staff
-      ctx.fillStyle = C_SKIN_BASE;
-      ctx.beginPath();
-      ctx.arc(staffHandX + 2, staffHandY, 4, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Bronze / Golden mounting bracket
-      ctx.fillStyle = '#d97706';
-      ctx.fillRect(staffTopX - 5, staffTopY + 6, 10, 7);
-      ctx.fillStyle = '#facc15';
-      ctx.fillRect(staffTopX - 4, staffTopY + 8, 8, 2);
-
-      // --- THE CROWN GEM: GLOWING FACETED DIAMOND CRYSTAL ---
-      const chargeRatio = player.chargeTimer / player.chargeMax;
-      const crystalPulse = Math.sin(Date.now() * 0.008) * 3;
-      const glowR = 10 + (player.isCharging ? chargeRatio * 16 : crystalPulse);
-
-      // Outer Corona Glow
-      const gemGlow = ctx.createRadialGradient(staffTopX, staffTopY - 1, 2, staffTopX, staffTopY - 1, glowR);
-      gemGlow.addColorStop(0, chargeRatio >= 1 ? 'rgba(255, 255, 255, 0.9)' : 'rgba(125, 211, 252, 0.8)');
-      gemGlow.addColorStop(0.5, 'rgba(56, 189, 248, 0.4)');
-      gemGlow.addColorStop(1, 'rgba(56, 189, 248, 0)');
-      ctx.fillStyle = gemGlow;
-      ctx.beginPath();
-      ctx.arc(staffTopX, staffTopY - 1, glowR, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Faceted Diamond Gemstone
-      // Top pyramid
-      ctx.fillStyle = chargeRatio >= 1 ? '#ffffff' : '#7dd3fc';
-      ctx.beginPath();
-      ctx.moveTo(staffTopX, staffTopY - 10);
-      ctx.lineTo(staffTopX + 8, staffTopY - 3);
-      ctx.lineTo(staffTopX, staffTopY + 6);
-      ctx.lineTo(staffTopX - 8, staffTopY - 3);
-      ctx.closePath();
-      ctx.fill();
-
-      // Internal facets
-      ctx.fillStyle = chargeRatio >= 1 ? '#e0f2fe' : '#38bdf8';
-      ctx.beginPath();
-      ctx.moveTo(staffTopX, staffTopY - 10);
-      ctx.lineTo(staffTopX + 3, staffTopY - 3);
-      ctx.lineTo(staffTopX, staffTopY + 6);
-      ctx.lineTo(staffTopX - 3, staffTopY - 3);
-      ctx.closePath();
-      ctx.fill();
-
-      // Specular bright gleam
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.moveTo(staffTopX, staffTopY - 9);
-      ctx.lineTo(staffTopX + 4, staffTopY - 3);
-      ctx.lineTo(staffTopX, staffTopY - 1);
-      ctx.closePath();
-      ctx.fill();
-
-      // Orbiting stardust motes around crystal
-      if (!isGhost) {
-        const orbitT = Date.now() * 0.005;
-        for (let i = 0; i < 3; i++) {
-          const oa = orbitT + (i / 3) * Math.PI * 2;
-          const ox = staffTopX + Math.cos(oa) * 12;
-          const oy = staffTopY - 1 + Math.sin(oa) * 6;
-          ctx.fillStyle = '#ffffff';
-          ctx.fillRect(ox - 1, oy - 1, 2.5, 2.5);
+        if (player.isCharging || chargeRatio >= 1) {
+          const gemGlow = ctx.createRadialGradient(staffX, staffY, 2, staffX, staffY, glowR);
+          gemGlow.addColorStop(0, chargeRatio >= 1 ? 'rgba(255, 255, 255, 0.95)' : 'rgba(125, 211, 252, 0.85)');
+          gemGlow.addColorStop(0.5, 'rgba(56, 189, 248, 0.5)');
+          gemGlow.addColorStop(1, 'rgba(56, 189, 248, 0)');
+          ctx.fillStyle = gemGlow;
+          ctx.beginPath();
+          ctx.arc(staffX, staffY, glowR, 0, Math.PI * 2);
+          ctx.fill();
         }
+
+        // Poeira estelar orbital
+        if (!isGhost) {
+          const orbitT = Date.now() * 0.005;
+          for (let i = 0; i < 3; i++) {
+            const oa = orbitT + (i / 3) * Math.PI * 2;
+            const ox = staffX + Math.cos(oa) * 12;
+            const oy = staffY + Math.sin(oa) * 6;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(ox - 1, oy - 1, 2.5, 2.5);
+          }
+        }
+      } else {
+        ctx.fillStyle = '#6b3b24';
+        ctx.fillRect(-player.width / 2, -player.height / 2, player.width, player.height);
       }
 
       ctx.restore();
@@ -3076,66 +2866,13 @@
     function renderPortraitAvatar() {
       pctx.clearRect(0, 0, 44, 44);
 
-      // Warm background
-      pctx.fillStyle = '#6b3b24';
-      pctx.fillRect(0, 0, 44, 44);
-
-      // Afro hair
-      pctx.fillStyle = '#160f0c';
-      pctx.beginPath();
-      pctx.arc(22, 17, 18, 0, Math.PI * 2);
-      pctx.arc(10, 12, 10, 0, Math.PI * 2);
-      pctx.arc(34, 11, 10, 0, Math.PI * 2);
-      pctx.fill();
-
-      // Face
-      pctx.fillStyle = '#7d4428';
-      pctx.beginPath();
-      pctx.arc(22, 23, 14, 0, Math.PI * 2);
-      pctx.fill();
-
-      // Eyes
-      if (player.isBlinking) {
-        pctx.strokeStyle = '#0f172a';
-        pctx.lineWidth = 2;
-        pctx.beginPath();
-        pctx.moveTo(15, 20);
-        pctx.lineTo(20, 20);
-        pctx.moveTo(24, 20);
-        pctx.lineTo(29, 20);
-        pctx.stroke();
+      if (craigImgLoaded) {
+        // Renderiza o rosto do Craig da imagem do sprite
+        pctx.drawImage(craigImg, 10, 15, 250, 250, 0, 0, 44, 44);
       } else {
-        pctx.fillStyle = '#ffffff';
-        pctx.beginPath();
-        pctx.arc(17, 20, 5, 0, Math.PI * 2);
-        pctx.arc(27, 20, 5, 0, Math.PI * 2);
-        pctx.fill();
-
-        pctx.fillStyle = '#0f172a';
-        pctx.beginPath();
-        pctx.arc(18, 20, 2.5, 0, Math.PI * 2);
-        pctx.arc(28, 20, 2.5, 0, Math.PI * 2);
-        pctx.fill();
-
-        pctx.fillStyle = '#ffffff';
-        pctx.fillRect(19, 18.5, 1.5, 1.5);
-        pctx.fillRect(29, 18.5, 1.5, 1.5);
+        pctx.fillStyle = '#6b3b24';
+        pctx.fillRect(0, 0, 44, 44);
       }
-
-      // Smile
-      pctx.fillStyle = '#f43f5e';
-      pctx.beginPath();
-      pctx.arc(22, 27, 5, 0, Math.PI);
-      pctx.fill();
-      pctx.fillStyle = '#ffffff';
-      pctx.fillRect(19, 27, 6, 2);
-
-      // Cheeks
-      pctx.fillStyle = 'rgba(244, 63, 94, 0.4)';
-      pctx.beginPath();
-      pctx.arc(12, 24, 3, 0, Math.PI * 2);
-      pctx.arc(32, 24, 3, 0, Math.PI * 2);
-      pctx.fill();
     }
 
     /* ==========================================================

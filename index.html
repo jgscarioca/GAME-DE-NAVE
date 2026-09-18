@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>CYBER CORE: MECHA TOWER DEFENSE (CARTOON EDITION)</title>
-  <meta name="description" content="Jogo de Tower Defense cartoonesco com robôs animados, upgrades ramificados, onomatopeias e física elástica squash & stretch." />
+  <title>CYBER CORE: MECHA TOWER DEFENSE (LUNAR BASE)</title>
+  <meta name="description" content="Defenda a base lunar contra levas de robôs invasores no mapa conceitual oficial. Use torres mecha, gerencie Energia e Mana, e dispare ataques orbitais!" />
   
-  <!-- Google Fonts: Fredoka (Cartoon UI) & Luckiest Guy (Comic Headings) -->
+  <!-- Google Fonts: Fredoka & Luckiest Guy -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700;800&family=Luckiest+Guy&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --bg-dark: #0b1021;
-      --bg-panel: rgba(20, 28, 54, 0.94);
-      --bg-card: rgba(28, 40, 76, 0.9);
+      --bg-dark: #070a14;
+      --bg-panel: rgba(18, 26, 48, 0.94);
+      --bg-card: rgba(26, 38, 70, 0.9);
       --comic-border: #000000;
       --cyan-cartoon: #00e5ff;
       --yellow-cartoon: #ffd000;
@@ -23,8 +23,9 @@
       --green-cartoon: #00e676;
       --purple-cartoon: #a855f7;
       --orange-cartoon: #ff7700;
+      --mana-blue: #38bdf8;
       --text-main: #ffffff;
-      --text-muted: #a0aec0;
+      --text-muted: #94a3b8;
     }
 
     * {
@@ -36,7 +37,7 @@
     }
 
     body {
-      background: radial-gradient(circle at 50% 15%, #182245 0%, var(--bg-dark) 85%);
+      background: radial-gradient(circle at 50% 15%, #16203a 0%, var(--bg-dark) 85%);
       color: var(--text-main);
       font-family: 'Fredoka', sans-serif;
       min-height: 100vh;
@@ -50,19 +51,19 @@
     /* Top HUD Header */
     #header-hud {
       width: 100%;
-      max-width: 1160px;
-      padding: 10px 18px;
-      margin-top: 8px;
+      max-width: 1080px;
+      padding: 8px 16px;
+      margin-top: 6px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       background: var(--bg-panel);
       backdrop-filter: blur(12px);
       border: 3px solid var(--comic-border);
       border-radius: 16px;
-      box-shadow: 0 6px 0 var(--comic-border), 0 0 20px rgba(0, 229, 255, 0.25);
+      box-shadow: 0 5px 0 var(--comic-border), 0 0 20px rgba(0, 229, 255, 0.2);
       z-index: 10;
     }
 
@@ -73,8 +74,8 @@
     }
 
     .core-logo {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       background: var(--yellow-cartoon);
       border: 3px solid var(--comic-border);
       border-radius: 10px;
@@ -82,59 +83,62 @@
       align-items: center;
       justify-content: center;
       font-size: 1.3rem;
-      box-shadow: 0 4px 0 var(--comic-border);
+      box-shadow: 0 3px 0 var(--comic-border);
       animation: bounceLogo 1.6s infinite ease-in-out;
     }
 
     @keyframes bounceLogo {
       0%, 100% { transform: scale(1) translateY(0); }
-      50% { transform: scale(1.1) translateY(-3px); }
+      50% { transform: scale(1.08) translateY(-2px); }
     }
 
     .title-box h1 {
       font-family: 'Luckiest Guy', cursive;
-      font-size: 1.4rem;
-      letter-spacing: 1.5px;
+      font-size: 1.3rem;
+      letter-spacing: 1.2px;
       color: var(--yellow-cartoon);
-      -webkit-text-stroke: 1.5px var(--comic-border);
+      -webkit-text-stroke: 1.2px var(--comic-border);
       text-shadow: 2px 2px 0 var(--comic-border);
     }
 
     .status-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
     .stat-badge {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       background: var(--bg-card);
-      padding: 6px 14px;
-      border-radius: 20px;
+      padding: 5px 12px;
+      border-radius: 18px;
       border: 2.5px solid var(--comic-border);
       box-shadow: 0 3px 0 var(--comic-border);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 800;
     }
 
-    .stat-badge .icon { font-size: 1.2rem; }
+    .stat-badge .icon { font-size: 1.15rem; }
     .stat-badge.credits .val { color: var(--yellow-cartoon); }
-    .stat-badge.nanites .val { color: var(--cyan-cartoon); }
+    .stat-badge.mana { min-width: 140px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 4px 10px; }
+    .stat-badge.mana .mana-text { display: flex; justify-content: space-between; width: 100%; font-size: 0.78rem; color: var(--mana-blue); }
+    .mana-bar-track { width: 100%; height: 6px; background: #0c182c; border-radius: 4px; overflow: hidden; border: 1.5px solid #000; }
+    .mana-bar-fill { height: 100%; width: 60%; background: linear-gradient(90deg, #0284c7, #38bdf8); transition: width 0.15s ease; }
     .stat-badge.wave .val { color: var(--green-cartoon); }
 
     /* Core Health Bar */
     .core-health-container {
       display: flex;
       flex-direction: column;
-      gap: 3px;
-      min-width: 170px;
+      gap: 2px;
+      min-width: 150px;
     }
 
     .core-health-label {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 800;
       display: flex;
       justify-content: space-between;
@@ -143,13 +147,12 @@
 
     .health-bar-track {
       width: 100%;
-      height: 14px;
+      height: 12px;
       background: #0f172a;
-      border-radius: 8px;
+      border-radius: 6px;
       overflow: hidden;
-      border: 2.5px solid var(--comic-border);
+      border: 2px solid var(--comic-border);
       box-shadow: 0 2px 0 var(--comic-border);
-      position: relative;
     }
 
     .health-bar-fill {
@@ -167,34 +170,34 @@
     .controls-group {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .btn-hud {
       background: var(--cyan-cartoon);
       color: #000;
       border: 2.5px solid var(--comic-border);
-      padding: 7px 14px;
+      padding: 6px 12px;
       border-radius: 12px;
       cursor: pointer;
       font-family: 'Fredoka', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 800;
-      box-shadow: 0 4px 0 var(--comic-border);
+      box-shadow: 0 3px 0 var(--comic-border);
       transition: all 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .btn-hud:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 0 var(--comic-border);
+      box-shadow: 0 5px 0 var(--comic-border);
       filter: brightness(1.1);
     }
 
     .btn-hud:active {
-      transform: translateY(3px);
+      transform: translateY(2px);
       box-shadow: 0 1px 0 var(--comic-border);
     }
 
@@ -207,45 +210,46 @@
     /* Main Stage */
     #main-container {
       width: 100%;
-      max-width: 1160px;
+      max-width: 1080px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin: 8px 0;
+      gap: 8px;
+      margin: 6px 0;
       position: relative;
     }
 
-    /* Canvas Wrapper */
+    /* Canvas Wrapper (Widescreen 16:9 ratio matches map image) */
     #canvas-wrapper {
       position: relative;
       width: 100%;
-      background: #0f162b;
+      background: #0b0f19;
       border: 3.5px solid var(--comic-border);
-      border-radius: 18px;
-      box-shadow: 0 10px 0 var(--comic-border), 0 0 30px rgba(0, 0, 0, 0.7);
+      border-radius: 16px;
+      box-shadow: 0 8px 0 var(--comic-border), 0 0 25px rgba(0, 0, 0, 0.7);
       overflow: hidden;
+      aspect-ratio: 1024 / 576;
     }
 
     canvas {
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
       image-rendering: auto;
     }
 
     /* Active Abilities Floating HUD */
     #commander-skills {
       position: absolute;
-      top: 14px;
-      left: 16px;
+      top: 12px;
+      left: 14px;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       z-index: 5;
     }
 
     .skill-btn {
-      width: 60px;
-      height: 60px;
+      width: 58px;
+      height: 58px;
       background: var(--bg-panel);
       border: 3px solid var(--comic-border);
       border-radius: 14px;
@@ -260,25 +264,34 @@
       transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .skill-btn:hover:not(.cooldown) {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 7px 0 var(--comic-border);
+    .skill-btn:hover:not(.cooldown):not(.no-mana) {
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 6px 0 var(--comic-border);
     }
 
-    .skill-btn:active:not(.cooldown) {
-      transform: translateY(3px);
+    .skill-btn:active:not(.cooldown):not(.no-mana) {
+      transform: translateY(2px);
       box-shadow: 0 1px 0 var(--comic-border);
     }
 
-    .skill-btn .skill-icon { font-size: 1.5rem; }
+    .skill-btn .skill-icon { font-size: 1.4rem; }
+    .skill-btn .skill-mana-cost {
+      position: absolute;
+      top: 2px;
+      left: 4px;
+      font-size: 0.68rem;
+      font-family: 'Luckiest Guy', cursive;
+      color: var(--mana-blue);
+      -webkit-text-stroke: 0.8px var(--comic-border);
+    }
     .skill-btn .skill-key {
       position: absolute;
       bottom: 2px;
       right: 4px;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-family: 'Luckiest Guy', cursive;
       color: var(--yellow-cartoon);
-      -webkit-text-stroke: 1px var(--comic-border);
+      -webkit-text-stroke: 0.8px var(--comic-border);
     }
 
     .skill-btn .cooldown-overlay {
@@ -302,6 +315,7 @@
 
     .skill-btn.cooldown .cooldown-text { display: block; }
     .skill-btn.cooldown { filter: grayscale(0.85); cursor: not-allowed; }
+    .skill-btn.no-mana { border-color: #ef4444; opacity: 0.6; }
 
     /* Wave Announcement & Boss Banner */
     #wave-banner {
@@ -335,14 +349,14 @@
     /* Boss HP Overlay */
     #boss-hud {
       position: absolute;
-      top: 14px;
-      right: 16px;
-      width: 300px;
+      top: 12px;
+      right: 14px;
+      width: 280px;
       background: var(--bg-panel);
       border: 3px solid var(--comic-border);
       border-radius: 14px;
-      padding: 10px 14px;
-      box-shadow: 0 5px 0 var(--comic-border);
+      padding: 8px 12px;
+      box-shadow: 0 4px 0 var(--comic-border);
       display: none;
       z-index: 5;
     }
@@ -351,10 +365,10 @@
 
     .boss-name {
       font-family: 'Luckiest Guy', cursive;
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--pink-cartoon);
       letter-spacing: 1px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       display: flex;
       justify-content: space-between;
       -webkit-text-stroke: 1px var(--comic-border);
@@ -362,9 +376,9 @@
 
     .boss-bar-track {
       width: 100%;
-      height: 12px;
+      height: 10px;
       background: #200d18;
-      border-radius: 6px;
+      border-radius: 5px;
       overflow: hidden;
       border: 2px solid var(--comic-border);
     }
@@ -379,8 +393,8 @@
     /* Bottom Control & Deck Interface */
     #bottom-deck {
       display: grid;
-      grid-template-columns: 1fr 350px;
-      gap: 12px;
+      grid-template-columns: 1fr 340px;
+      gap: 10px;
       width: 100%;
     }
 
@@ -395,16 +409,16 @@
       background: var(--bg-panel);
       border: 3px solid var(--comic-border);
       border-radius: 16px;
-      padding: 12px 16px;
+      padding: 10px 14px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      box-shadow: 0 6px 0 var(--comic-border);
+      gap: 8px;
+      box-shadow: 0 5px 0 var(--comic-border);
     }
 
     .deck-title {
       font-family: 'Luckiest Guy', cursive;
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--yellow-cartoon);
       letter-spacing: 1px;
       display: flex;
@@ -415,35 +429,35 @@
 
     .turret-cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 8px;
     }
 
     .turret-card {
       background: var(--bg-card);
       border: 3px solid var(--comic-border);
-      border-radius: 14px;
-      padding: 10px 8px;
+      border-radius: 12px;
+      padding: 8px 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       cursor: pointer;
       transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 4px 0 var(--comic-border);
+      box-shadow: 0 3px 0 var(--comic-border);
       position: relative;
     }
 
     .turret-card:hover {
       transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 7px 0 var(--comic-border);
+      box-shadow: 0 6px 0 var(--comic-border);
       background: rgba(0, 229, 255, 0.15);
     }
 
     .turret-card.selected {
       border-color: var(--yellow-cartoon);
       background: rgba(255, 208, 0, 0.25);
-      box-shadow: 0 4px 0 var(--comic-border), 0 0 16px rgba(255, 208, 0, 0.5);
+      box-shadow: 0 3px 0 var(--comic-border), 0 0 16px rgba(255, 208, 0, 0.5);
       transform: translateY(-2px);
     }
 
@@ -457,32 +471,32 @@
       top: 4px;
       left: 6px;
       font-family: 'Luckiest Guy', cursive;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--yellow-cartoon);
       -webkit-text-stroke: 1px var(--comic-border);
     }
 
     .turret-card-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       background: rgba(0, 0, 0, 0.25);
       border: 2px solid var(--comic-border);
     }
 
     .turret-card-name {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 800;
       text-align: center;
     }
 
     .turret-card-cost {
       font-family: 'Luckiest Guy', cursive;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: var(--yellow-cartoon);
       -webkit-text-stroke: 1px var(--comic-border);
     }
@@ -492,18 +506,18 @@
       background: var(--bg-panel);
       border: 3px solid var(--comic-border);
       border-radius: 16px;
-      padding: 12px 16px;
+      padding: 10px 14px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      min-height: 150px;
-      box-shadow: 0 6px 0 var(--comic-border);
+      gap: 8px;
+      min-height: 145px;
+      box-shadow: 0 5px 0 var(--comic-border);
     }
 
     .inspector-content {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       height: 100%;
     }
 
@@ -515,27 +529,27 @@
 
     .tower-title {
       font-family: 'Luckiest Guy', cursive;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       color: var(--cyan-cartoon);
       -webkit-text-stroke: 1px var(--comic-border);
     }
 
     .tower-level-badge {
       font-family: 'Luckiest Guy', cursive;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       background: var(--yellow-cartoon);
       color: #000;
       border: 2px solid var(--comic-border);
-      padding: 2px 10px;
-      border-radius: 12px;
+      padding: 2px 8px;
+      border-radius: 10px;
       box-shadow: 0 2px 0 var(--comic-border);
     }
 
     .stats-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      font-size: 0.82rem;
+      gap: 4px;
+      font-size: 0.8rem;
       font-weight: 700;
       color: var(--text-muted);
     }
@@ -546,7 +560,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 800;
       margin-top: 2px;
     }
@@ -555,7 +569,7 @@
       background: var(--bg-card);
       color: var(--text-main);
       border: 2px solid var(--comic-border);
-      padding: 4px 8px;
+      padding: 3px 6px;
       border-radius: 8px;
       font-family: 'Fredoka', sans-serif;
       font-weight: 700;
@@ -563,7 +577,7 @@
 
     .inspector-actions {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       margin-top: auto;
     }
 
@@ -574,8 +588,8 @@
       color: #000;
       font-family: 'Fredoka', sans-serif;
       font-weight: 800;
-      font-size: 0.85rem;
-      padding: 8px 10px;
+      font-size: 0.82rem;
+      padding: 7px 8px;
       border-radius: 10px;
       cursor: pointer;
       box-shadow: 0 3px 0 var(--comic-border);
@@ -601,8 +615,8 @@
       color: #fff;
       font-family: 'Fredoka', sans-serif;
       font-weight: 800;
-      font-size: 0.82rem;
-      padding: 8px;
+      font-size: 0.8rem;
+      padding: 7px;
       border-radius: 10px;
       cursor: pointer;
       box-shadow: 0 3px 0 var(--comic-border);
@@ -638,18 +652,18 @@
       border: 4px solid var(--comic-border);
       box-shadow: 0 10px 0 var(--comic-border), 0 0 30px rgba(0, 229, 255, 0.4);
       border-radius: 20px;
-      padding: 26px;
-      max-width: 580px;
+      padding: 24px;
+      max-width: 560px;
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       text-align: center;
     }
 
     .branch-title {
       font-family: 'Luckiest Guy', cursive;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       color: var(--yellow-cartoon);
       -webkit-text-stroke: 1.5px var(--comic-border);
     }
@@ -657,8 +671,8 @@
     .branch-options-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 10px;
+      gap: 14px;
+      margin-top: 8px;
     }
 
     @media (max-width: 500px) {
@@ -668,38 +682,38 @@
     .branch-card {
       background: var(--bg-card);
       border: 3px solid var(--comic-border);
-      border-radius: 16px;
-      padding: 16px;
+      border-radius: 14px;
+      padding: 14px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       box-shadow: 0 4px 0 var(--comic-border);
       transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .branch-card:hover {
       border-color: var(--green-cartoon);
-      transform: translateY(-4px) scale(1.03);
-      box-shadow: 0 8px 0 var(--comic-border);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 7px 0 var(--comic-border);
     }
 
     .branch-name {
       font-family: 'Luckiest Guy', cursive;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       color: var(--green-cartoon);
       -webkit-text-stroke: 1px var(--comic-border);
     }
 
     .branch-desc {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
-      line-height: 1.35;
+      line-height: 1.3;
     }
 
     .branch-cost {
       font-family: 'Luckiest Guy', cursive;
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: var(--yellow-cartoon);
       -webkit-text-stroke: 1px var(--comic-border);
       margin-top: auto;
@@ -728,34 +742,34 @@
       border: 4px solid var(--comic-border);
       box-shadow: 0 10px 0 var(--comic-border), 0 0 30px rgba(168, 85, 247, 0.4);
       border-radius: 20px;
-      padding: 26px;
-      max-width: 620px;
+      padding: 24px;
+      max-width: 600px;
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     .tech-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
     .tech-item {
       background: var(--bg-card);
       border: 2.5px solid var(--comic-border);
-      border-radius: 14px;
-      padding: 12px;
+      border-radius: 12px;
+      padding: 10px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
       box-shadow: 0 3px 0 var(--comic-border);
     }
 
     .tech-item-name {
       font-family: 'Luckiest Guy', cursive;
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--purple-cartoon);
       display: flex;
       justify-content: space-between;
@@ -763,19 +777,19 @@
     }
 
     .tech-item-desc {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
     }
 
     .btn-research {
-      margin-top: 6px;
+      margin-top: 4px;
       background: var(--purple-cartoon);
       border: 2px solid var(--comic-border);
       color: #fff;
       font-family: 'Fredoka', sans-serif;
       font-weight: 800;
-      font-size: 0.8rem;
-      padding: 6px;
+      font-size: 0.78rem;
+      padding: 5px;
       border-radius: 8px;
       cursor: pointer;
       box-shadow: 0 2px 0 var(--comic-border);
@@ -815,34 +829,29 @@
       background: var(--bg-panel);
       border: 4px solid var(--comic-border);
       box-shadow: 0 10px 0 var(--comic-border);
-      border-radius: 22px;
-      padding: 32px;
-      max-width: 480px;
+      border-radius: 20px;
+      padding: 28px;
+      max-width: 460px;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
       text-align: center;
     }
 
     .endgame-title {
       font-family: 'Luckiest Guy', cursive;
-      font-size: 2.2rem;
+      font-size: 2rem;
       letter-spacing: 2px;
       -webkit-text-stroke: 2px var(--comic-border);
     }
 
-    .endgame-title.defeat {
-      color: #ff0055;
-    }
-
-    .endgame-title.victory {
-      color: var(--yellow-cartoon);
-    }
+    .endgame-title.defeat { color: #ff0055; }
+    .endgame-title.victory { color: var(--yellow-cartoon); }
 
     .endgame-stats {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
       color: var(--text-muted);
       display: flex;
@@ -850,8 +859,8 @@
       gap: 6px;
       width: 100%;
       background: rgba(0, 0, 0, 0.3);
-      padding: 14px;
-      border-radius: 12px;
+      padding: 12px;
+      border-radius: 10px;
       border: 2px solid var(--comic-border);
     }
 
@@ -859,19 +868,19 @@
       background: var(--yellow-cartoon);
       color: #000;
       font-family: 'Luckiest Guy', cursive;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       letter-spacing: 1px;
-      padding: 12px 32px;
-      border-radius: 14px;
+      padding: 10px 28px;
+      border-radius: 12px;
       border: 3px solid var(--comic-border);
       cursor: pointer;
-      box-shadow: 0 6px 0 var(--comic-border);
+      box-shadow: 0 5px 0 var(--comic-border);
       transition: all 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .btn-restart:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 9px 0 var(--comic-border);
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 8px 0 var(--comic-border);
     }
 
     .modal-close-btn {
@@ -879,7 +888,7 @@
       background: transparent;
       border: none;
       color: var(--text-muted);
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: bold;
       cursor: pointer;
     }
@@ -892,24 +901,31 @@
   <!-- Top Header HUD -->
   <header id="header-hud">
     <div class="title-box">
-      <div class="core-logo">🤖</div>
-      <h1>CYBER CORE: MECHA TD</h1>
+      <div class="core-logo">🌕</div>
+      <h1>LUNAR MECHA TD</h1>
     </div>
 
     <!-- Stats Badges -->
     <div class="status-group">
-      <div class="stat-badge credits" title="Energia para construir e evoluir torres">
+      <!-- Energy (For Towers & Upgrades) -->
+      <div class="stat-badge credits" title="Energia para construir e evoluir torres robóticas">
         <span class="icon">⚡</span>
         <span>ENERGIA:</span>
-        <span class="val" id="hud-credits">300</span>
+        <span class="val" id="hud-credits">280</span>
       </div>
 
-      <div class="stat-badge nanites" title="Nanitas obtidas ao derrotar inimigos para upgrades do Núcleo">
-        <span class="icon">💠</span>
-        <span>NANITAS:</span>
-        <span class="val" id="hud-nanites">0</span>
+      <!-- Mana (For Commander Abilities & Research) -->
+      <div class="stat-badge mana" title="Mana quântica para disparar habilidades orbitais e pesquisas">
+        <div class="mana-text">
+          <span>💠 MANA:</span>
+          <span id="hud-mana-text">60 / 100</span>
+        </div>
+        <div class="mana-bar-track">
+          <div class="mana-bar-fill" id="hud-mana-bar"></div>
+        </div>
       </div>
 
+      <!-- Wave Indicator -->
       <div class="stat-badge wave">
         <span class="icon">🛡️</span>
         <span>ONDA:</span>
@@ -917,9 +933,9 @@
       </div>
 
       <!-- Core Integrity (Health) -->
-      <div class="core-health-container" title="Integridade do Núcleo Quântico Central">
+      <div class="core-health-container" title="Integridade do Airlock e Núcleo Lunar">
         <div class="core-health-label">
-          <span>NÚCLEO</span>
+          <span>BASE LUNAR</span>
           <span id="hud-hp-text">100%</span>
         </div>
         <div class="health-bar-track">
@@ -935,7 +951,7 @@
       </button>
       <button class="btn-hud" id="btn-speed-1x">1x</button>
       <button class="btn-hud" id="btn-speed-2x">2x</button>
-      <button class="btn-hud" id="btn-tech-tree" title="Árvore de Pesquisa Tecnológica do Núcleo">
+      <button class="btn-hud" id="btn-tech-tree" title="Laboratório de Pesquisa do Núcleo">
         🔬 LAB
       </button>
       <button class="btn-hud" id="btn-audio" title="Ativar/Desativar Efeitos Sonoros">
@@ -947,29 +963,32 @@
   <!-- Main Game Stage -->
   <main id="main-container">
     <div id="canvas-wrapper">
-      <canvas id="gameCanvas" width="1050" height="630"></canvas>
+      <canvas id="gameCanvas" width="1024" height="576"></canvas>
 
       <!-- Commander Active Abilities Floating Bar -->
       <div id="commander-skills">
-        <div class="skill-btn" id="skill-emp" title="Pulso PEM Orbital (Tecla Q) - Paralisa e danifica todos os robôs na tela">
+        <div class="skill-btn" id="skill-emp" title="Pulso PEM Orbital (Tecla Q) - Custo: 30 Mana. Paralisa todos os robôs na tela por 4s">
           <div class="cooldown-overlay" id="cd-emp"></div>
+          <span class="skill-mana-cost">30💠</span>
           <span class="skill-icon">⚡</span>
           <span class="skill-key">Q</span>
-          <span class="cooldown-text" id="cdt-emp">15</span>
+          <span class="cooldown-text" id="cdt-emp">10</span>
         </div>
 
-        <div class="skill-btn" id="skill-overdrive" title="Sobrecarga dos Reatores (Tecla W) - Dobra a velocidade de disparo das torres por 6s">
+        <div class="skill-btn" id="skill-overdrive" title="Sobrecarga dos Reatores (Tecla W) - Custo: 45 Mana. Dobra o ataque das torres por 6s">
           <div class="cooldown-overlay" id="cd-overdrive"></div>
+          <span class="skill-mana-cost">45💠</span>
           <span class="skill-icon">🔥</span>
           <span class="skill-key">W</span>
-          <span class="cooldown-text" id="cdt-overdrive">25</span>
+          <span class="cooldown-text" id="cdt-overdrive">14</span>
         </div>
 
-        <div class="skill-btn" id="skill-airstrike" title="Bombardeio Tático Orbital (Tecla E) - Dispara salva de mísseis no ponto selecionado">
+        <div class="skill-btn" id="skill-airstrike" title="Bombardeio Tático Orbital (Tecla E) - Custo: 50 Mana. Dispara salva de mísseis no alvo">
           <div class="cooldown-overlay" id="cd-airstrike"></div>
+          <span class="skill-mana-cost">50💠</span>
           <span class="skill-icon">🚀</span>
           <span class="skill-key">E</span>
-          <span class="cooldown-text" id="cdt-airstrike">20</span>
+          <span class="cooldown-text" id="cdt-airstrike">12</span>
         </div>
       </div>
 
@@ -994,7 +1013,7 @@
       <div class="deck-panel">
         <div class="deck-title">
           <span>TORRES ROBÓTICAS [TECLAS 1-5]</span>
-          <span style="font-size: 0.8rem; color: var(--text-muted)">Clique e posicione nas bases hexagonais</span>
+          <span style="font-size: 0.78rem; color: var(--text-muted)">Clique e posicione nas bases hexagonais</span>
         </div>
         <div class="turret-cards-grid" id="turret-cards-container">
           <!-- Dynamically populated via JS -->
@@ -1005,7 +1024,7 @@
       <div class="inspector-panel" id="inspector-panel">
         <div class="deck-title">INSPEÇÃO DA TORRE</div>
         <div class="inspector-content" id="inspector-content">
-          <div style="margin: auto; color: var(--text-muted); font-size: 0.9rem; text-align: center;">
+          <div style="margin: auto; color: var(--text-muted); font-size: 0.88rem; text-align: center;">
             Selecione uma torre no mapa para inspecionar, evoluir ou escolher especializações!
           </div>
         </div>
@@ -1016,14 +1035,14 @@
   <!-- Level 4 Branch Specialization Modal -->
   <div id="branch-modal">
     <div class="branch-dialog">
-      <div class="branch-title">⚡ ESPECIALIZAÇÃO MÁXIMA (NÍVEL 4)</div>
-      <p style="font-size: 0.95rem; color: var(--text-muted)">
+      <div class="branch-title">⚡ PROTOCOLO SUPREMO (NÍVEL 4)</div>
+      <p style="font-size: 0.92rem; color: var(--text-muted)">
         Selecione uma das duas especializações tecnológicas exclusivas para esta unidade:
       </p>
       <div class="branch-options-grid" id="branch-options-grid">
         <!-- Branch cards inserted dynamically -->
       </div>
-      <button class="btn-hud modal-close-btn" id="btn-close-branch" style="align-self: center; margin-top: 10px;">
+      <button class="btn-hud modal-close-btn" id="btn-close-branch" style="align-self: center; margin-top: 8px;">
         Voltar
       </button>
     </div>
@@ -1033,13 +1052,13 @@
   <div id="tech-tree-modal">
     <div class="tech-tree-dialog">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h2 style="font-family: 'Luckiest Guy'; font-size: 1.5rem; color: var(--purple-cartoon); -webkit-text-stroke: 1.5px var(--comic-border);">
+        <h2 style="font-family: 'Luckiest Guy'; font-size: 1.4rem; color: var(--purple-cartoon); -webkit-text-stroke: 1.2px var(--comic-border);">
           🔬 LABORATÓRIO DO NÚCLEO
         </h2>
         <button class="modal-close-btn" id="btn-close-tech">✕</button>
       </div>
-      <p style="font-size: 0.9rem; color: var(--text-muted)">
-        Gaste Nanitas coletadas dos robôs para aplicar melhorias passivas a todas as defesas.
+      <p style="font-size: 0.88rem; color: var(--text-muted)">
+        Gaste Mana quântica para aplicar melhorias de longo prazo à Base Lunar e suas defesas.
       </p>
       <div class="tech-grid" id="tech-grid">
         <!-- Tech upgrades populated dynamically -->
@@ -1050,8 +1069,8 @@
   <!-- Game Over / Victory Modal -->
   <div id="endgame-modal">
     <div class="endgame-dialog">
-      <div class="endgame-title" id="endgame-title">VITÓRIA DO NÚCLEO!</div>
-      <p id="endgame-msg" style="color: var(--text-muted); font-size: 1rem;">
+      <div class="endgame-title" id="endgame-title">VITÓRIA DA BASE LUNAR!</div>
+      <p id="endgame-msg" style="color: var(--text-muted); font-size: 0.95rem;">
         Todas as 20 ondas de robôs invasores foram aniquiladas com sucesso!
       </p>
       <div class="endgame-stats">
@@ -1066,8 +1085,13 @@
   <!-- Sound & Game Logic Script -->
   <script>
     /* ==========================================================================
-       1. PROCEDURAL SOUND ENGINE (Web Audio API)
+       1. MAP BACKGROUND IMAGE & SOUND ENGINE
        ========================================================================== */
+    const mapBgImg = new Image();
+    mapBgImg.src = 'map_bg.jpg';
+    let mapLoaded = false;
+    mapBgImg.onload = () => { mapLoaded = true; };
+
     class SoundEngine {
       constructor() {
         this.ctx = null;
@@ -1194,7 +1218,7 @@
     const sound = new SoundEngine();
 
     /* ==========================================================================
-       2. GAME CONFIGURATION & DEFINITIONS
+       2. GAME CONFIGURATION & DEFINITIONS (BALANCED ECONOMY)
        ========================================================================== */
     const TURRET_TYPES = {
       gatling: {
@@ -1217,7 +1241,7 @@
         name: 'Laser Térmico',
         icon: '🔦',
         cost: 160,
-        range: 160,
+        range: 155,
         damage: 44,
         fireRate: 0.05,
         isBeam: true,
@@ -1233,7 +1257,7 @@
         name: 'Canhão Plasma',
         icon: '💣',
         cost: 210,
-        range: 195,
+        range: 190,
         damage: 80,
         fireRate: 1.6,
         splashRadius: 75,
@@ -1279,54 +1303,65 @@
       }
     };
 
+    // Tech Tree Research (Uses Mana)
     const TECH_UPGRADES = [
-      { id: 'reactor', name: 'Reator Auxiliar', desc: '+1 de Energia gerada automaticamente por segundo.', level: 0, maxLevel: 5, cost: 25, costScale: 1.6 },
-      { id: 'targeting', name: 'Matriz de Precisão', desc: '+5% de Chance Crítica para todas as torres.', level: 0, maxLevel: 5, cost: 30, costScale: 1.5 },
-      { id: 'repair', name: 'Nanoreparo de Emergência', desc: 'Núcleo recupera +4% de Integridade ao final de cada onda.', level: 0, maxLevel: 3, cost: 40, costScale: 2.0 },
-      { id: 'range', name: 'Antena de Reconhecimento', desc: '+8% de Alcance de mira para todas as torres.', level: 0, maxLevel: 4, cost: 35, costScale: 1.6 }
+      { id: 'reactor', name: 'Reator de Energia', desc: '+1 de Energia gerada automaticamente por segundo.', level: 0, maxLevel: 5, cost: 30, costScale: 1.5 },
+      { id: 'manaCap', name: 'Capacitor de Mana', desc: '+25 de Mana Máxima e +1.0 de Regeneração de Mana/s.', level: 0, maxLevel: 4, cost: 35, costScale: 1.6 },
+      { id: 'targeting', name: 'Matriz de Precisão', desc: '+5% de Chance Crítica para todas as torres.', level: 0, maxLevel: 5, cost: 35, costScale: 1.5 },
+      { id: 'repair', name: 'Nanoreparo da Base', desc: 'Base recupera +5% de Integridade ao final de cada onda.', level: 0, maxLevel: 3, cost: 40, costScale: 1.8 }
     ];
 
     /* ==========================================================================
-       3. MAP PATHS & DEFENSE SLOTS
+       3. EXACT LUNAR BASE MAP PATH & DEFENSE SLOTS (1024 x 576)
        ========================================================================== */
+    // Mapped precisely onto the track in map_bg.jpg
     const WAYPOINTS = [
-      { x: -30, y: 140 },
-      { x: 190, y: 140 },
-      { x: 190, y: 460 },
-      { x: 420, y: 460 },
-      { x: 420, y: 180 },
-      { x: 670, y: 180 },
-      { x: 670, y: 490 },
-      { x: 890, y: 490 },
-      { x: 890, y: 315 },
-      { x: 1000, y: 315 }
+      { x: -20, y: 175 },   // Start Zone left entrance
+      { x: 260, y: 175 },   // Top-left straight segment A
+      { x: 285, y: 205 },   // Curve down
+      { x: 285, y: 440 },   // Left vertical segment down
+      { x: 315, y: 485 },   // Bottom curve right
+      { x: 375, y: 504 },   // Bottom horizontal start
+      { x: 485, y: 504 },   // Bottom horizontal end
+      { x: 535, y: 470 },   // Curve up
+      { x: 540, y: 185 },   // Center vertical segment up
+      { x: 565, y: 125 },   // Top arch curve
+      { x: 660, y: 88 },    // Top arch apex
+      { x: 755, y: 125 },   // Top arch down curve
+      { x: 780, y: 185 },   // Right vertical segment start
+      { x: 780, y: 385 },   // Right vertical segment end
+      { x: 810, y: 428 },   // Curve right to End Gate
+      { x: 915, y: 432 },   // Airlock entrance
+      { x: 970, y: 432 }    // Core destruction point
     ];
 
+    // Build slots placed on pedestals and marked build zones
     const TURRET_SLOTS = [
-      { x: 100, y: 70 },
-      { x: 100, y: 220 },
-      { x: 100, y: 380 },
-      { x: 280, y: 220 },
-      { x: 280, y: 380 },
-      { x: 330, y: 80 },
-      { x: 520, y: 100 },
-      { x: 520, y: 280 },
-      { x: 520, y: 400 },
-      { x: 580, y: 550 },
-      { x: 770, y: 110 },
-      { x: 770, y: 280 },
-      { x: 770, y: 410 },
-      { x: 770, y: 560 },
-      { x: 940, y: 190 },
-      { x: 940, y: 440 }
+      { x: 200, y: 225 }, // 4-pillar pedestal beside Start Zone
+      { x: 195, y: 355 }, // Octagonal blue pad
+      { x: 250, y: 495 }, // Cylinder generator pad bottom-left
+      { x: 100, y: 420 }, // Hazard area bottom-left
+      { x: 360, y: 210 }, // Central Build Zone North
+      { x: 440, y: 175 }, // Central Build Zone North-East
+      { x: 380, y: 310 }, // Central Build Zone Mid
+      { x: 455, y: 350 }, // Central Build Zone South-East
+      { x: 380, y: 410 }, // Central Build Zone South
+      { x: 635, y: 220 }, // Inside Loop North-West
+      { x: 645, y: 340 }, // Inside Loop Mid
+      { x: 710, y: 380 }, // Inside Loop South (near barrels)
+      { x: 900, y: 290 }, // Large blue CRITICAL BUILD SLOT hexagon
+      { x: 955, y: 240 }, // Beside H2O/He3 extractor
+      { x: 860, y: 160 }  // Upper-right near solar panels
     ];
 
     /* ==========================================================================
-       4. GAME STATE
+       4. GAME STATE (BALANCED ENERGY & MANA)
        ========================================================================== */
     const state = {
-      credits: 300,
-      nanites: 20,
+      credits: 280,       // Energy (Build & Upgrade)
+      mana: 60,           // Mana (Commander Skills & Research)
+      maxMana: 100,
+      manaRegen: 2.5,     // Mana per second
       coreHp: 100,
       maxCoreHp: 100,
       currentWave: 0,
@@ -1354,9 +1389,8 @@
     };
 
     /* ==========================================================================
-       5. CLASSES: TURRETS (SQUASH & STRETCH), ENEMIES (LED EYES)
+       5. TURRET & ENEMY CLASSES
        ========================================================================== */
-
     class Turret {
       constructor(slot, typeConfig) {
         this.slot = slot;
@@ -1374,18 +1408,14 @@
         this.targetPriority = 'first';
         this.investedCost = typeConfig.cost;
 
-        // Cartoon Squash & Stretch Recoil
         this.recoilAnim = 0;
-        this.barrelRecoilOffset = 0;
-
         this.range = typeConfig.range;
         this.damage = typeConfig.damage;
         this.fireRate = typeConfig.fireRate;
       }
 
       getEffectiveRange() {
-        const rangeBonus = 1 + (TECH_UPGRADES.find(t => t.id === 'range').level * 0.08);
-        return this.range * rangeBonus;
+        return this.range;
       }
 
       getEffectiveFireRate() {
@@ -1441,8 +1471,6 @@
 
       update(dt) {
         this.fireTimer -= dt;
-
-        // Recoil decay (Squash & Stretch spring physics)
         if (this.recoilAnim > 0) {
           this.recoilAnim = Math.max(0, this.recoilAnim - dt * 6);
         }
@@ -1491,18 +1519,10 @@
         }
 
         switch (this.targetPriority) {
-          case 'first':
-            inRange.sort((a, b) => b.progress - a.progress);
-            break;
-          case 'strongest':
-            inRange.sort((a, b) => b.hp - a.hp);
-            break;
-          case 'weakest':
-            inRange.sort((a, b) => a.hp - b.hp);
-            break;
-          case 'closest':
-            inRange.sort((a, b) => Math.hypot(a.x - this.x, a.y - this.y) - Math.hypot(b.x - this.x, b.y - this.y));
-            break;
+          case 'first': inRange.sort((a, b) => b.progress - a.progress); break;
+          case 'strongest': inRange.sort((a, b) => b.hp - a.hp); break;
+          case 'weakest': inRange.sort((a, b) => a.hp - b.hp); break;
+          case 'closest': inRange.sort((a, b) => Math.hypot(a.x - this.x, a.y - this.y) - Math.hypot(b.x - this.x, b.y - this.y)); break;
         }
         this.target = inRange[0];
       }
@@ -1510,8 +1530,6 @@
       fire() {
         if (!this.target) return;
         sound.playShoot(this.typeId);
-
-        // Trigger Squash & Stretch Recoil
         this.recoilAnim = 1.0;
 
         let dmg = this.damage;
@@ -1547,14 +1565,13 @@
           ctx.strokeStyle = '#ffd000';
           ctx.lineWidth = 3.5;
           ctx.beginPath();
-          ctx.arc(0, 0, 26, 0, Math.PI * 2);
+          ctx.arc(0, 0, 24, 0, Math.PI * 2);
           ctx.stroke();
 
-          // Range circle cartoon dashed
           ctx.strokeStyle = 'rgba(0, 229, 255, 0.45)';
           ctx.lineWidth = 2.5;
           ctx.setLineDash([8, 6]);
-          ctx.fillStyle = 'rgba(0, 229, 255, 0.06)';
+          ctx.fillStyle = 'rgba(0, 229, 255, 0.08)';
           ctx.beginPath();
           ctx.arc(0, 0, effRange, 0, Math.PI * 2);
           ctx.fill();
@@ -1562,169 +1579,149 @@
           ctx.setLineDash([]);
         }
 
-        // Base plate (Chunky Cartoon Hexagon with 3D drop bevel)
+        // Platform base
         ctx.fillStyle = '#1e293b';
         ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 3.5;
+        ctx.lineWidth = 3;
         ctx.beginPath();
-        drawHexagon(ctx, 0, 3, 22);
+        drawHexagon(ctx, 0, 2, 20);
         ctx.fill();
         ctx.stroke();
 
         ctx.fillStyle = '#334155';
         ctx.beginPath();
-        drawHexagon(ctx, 0, 0, 22);
+        drawHexagon(ctx, 0, 0, 20);
         ctx.fill();
         ctx.stroke();
 
-        // Level Stars / Bolts
+        // Level Indicators
         for (let i = 0; i < this.level; i++) {
           ctx.fillStyle = this.level === 4 ? '#00e676' : '#ffd000';
           ctx.strokeStyle = '#000';
-          ctx.lineWidth = 1.5;
+          ctx.lineWidth = 1.2;
           ctx.beginPath();
-          ctx.arc(-11 + i * 7.5, 14, 3.5, 0, Math.PI * 2);
+          ctx.arc(-10 + i * 6.8, 12, 3, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
         }
 
-        // SQUASH & STRETCH TRANSFORM ON BARREL / TURRET HEAD
+        // SQUASH & STRETCH BARREL TRANSFORM
         ctx.rotate(this.angle);
-
-        // Elastic recoil formula
         const squash = Math.sin(this.recoilAnim * Math.PI);
-        const scaleX = 1 - squash * 0.28; // Recoils backward
-        const scaleY = 1 + squash * 0.22; // Bulges sideways
-        ctx.scale(scaleX, scaleY);
+        ctx.scale(1 - squash * 0.28, 1 + squash * 0.22);
 
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 2.5;
         ctx.strokeStyle = '#000000';
 
         if (this.typeId === 'gatling') {
-          // Double Chunky Barrels
           ctx.fillStyle = '#64748b';
-          ctx.fillRect(8, -8, 18, 6);
-          ctx.strokeRect(8, -8, 18, 6);
-          ctx.fillRect(8, 2, 18, 6);
-          ctx.strokeRect(8, 2, 18, 6);
+          ctx.fillRect(8, -7, 16, 5);
+          ctx.strokeRect(8, -7, 16, 5);
+          ctx.fillRect(8, 2, 16, 5);
+          ctx.strokeRect(8, 2, 16, 5);
 
-          // Turret Core Dome
           ctx.fillStyle = this.config.color;
           ctx.beginPath();
-          ctx.arc(0, 0, 13, 0, Math.PI * 2);
+          ctx.arc(0, 0, 12, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
 
-          // Cute Center Eye Visor
           ctx.fillStyle = '#fff';
           ctx.beginPath();
-          ctx.arc(4, 0, 4, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = '#000';
-          ctx.beginPath();
-          ctx.arc(5, 0, 2, 0, Math.PI * 2);
+          ctx.arc(3, 0, 3.5, 0, Math.PI * 2);
           ctx.fill();
 
-          // Muzzle Flash Cartoon Star
           if (this.recoilAnim > 0.6) {
-            drawCartoonStar(ctx, 28, -5, 8, 4, '#ffd000');
+            drawCartoonStar(ctx, 26, -4, 8, 7, '#ffd000');
           }
         } else if (this.typeId === 'laser') {
-          // Prism Head
           ctx.fillStyle = '#7c3aed';
-          ctx.fillRect(4, -6, 18, 12);
-          ctx.strokeRect(4, -6, 18, 12);
+          ctx.fillRect(4, -5, 16, 10);
+          ctx.strokeRect(4, -5, 16, 10);
 
           ctx.fillStyle = this.config.color;
           ctx.beginPath();
-          ctx.moveTo(22, -8);
-          ctx.lineTo(30, 0);
-          ctx.lineTo(22, 8);
+          ctx.moveTo(20, -7);
+          ctx.lineTo(28, 0);
+          ctx.lineTo(20, 7);
           ctx.closePath();
           ctx.fill();
           ctx.stroke();
 
-          // Eyeball
           ctx.fillStyle = '#fff';
           ctx.beginPath();
-          ctx.arc(0, 0, 13, 0, Math.PI * 2);
+          ctx.arc(0, 0, 12, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
 
           ctx.fillStyle = '#ff1475';
           ctx.beginPath();
-          ctx.arc(4, 0, 6, 0, Math.PI * 2);
+          ctx.arc(3, 0, 5, 0, Math.PI * 2);
           ctx.fill();
         } else if (this.typeId === 'mortar') {
-          // Chunky Fat Cannon Barrel
           ctx.fillStyle = '#d97706';
           ctx.beginPath();
-          ctx.moveTo(6, -11);
-          ctx.lineTo(24, -13);
-          ctx.lineTo(24, 13);
-          ctx.lineTo(6, 11);
+          ctx.moveTo(6, -10);
+          ctx.lineTo(22, -12);
+          ctx.lineTo(22, 12);
+          ctx.lineTo(6, 10);
           ctx.closePath();
           ctx.fill();
           ctx.stroke();
 
-          // Lip on muzzle
           ctx.fillStyle = '#ff7700';
-          ctx.fillRect(23, -15, 6, 30);
-          ctx.strokeRect(23, -15, 6, 30);
+          ctx.fillRect(21, -13, 5, 26);
+          ctx.strokeRect(21, -13, 5, 26);
 
           ctx.fillStyle = '#92400e';
           ctx.beginPath();
-          ctx.arc(0, 0, 14, 0, Math.PI * 2);
+          ctx.arc(0, 0, 13, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
         } else if (this.typeId === 'emp') {
-          // Bouncy Antenna Coil
           ctx.fillStyle = '#0284c7';
           ctx.beginPath();
-          ctx.arc(0, 0, 15, 0, Math.PI * 2);
+          ctx.arc(0, 0, 14, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
 
           ctx.fillStyle = '#38bdf8';
           ctx.beginPath();
-          ctx.arc(6, 0, 8, 0, Math.PI * 2);
+          ctx.arc(5, 0, 7, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
         } else if (this.typeId === 'tesla') {
-          // Coiled Spring Spire
           ctx.fillStyle = '#6b21a8';
-          ctx.fillRect(4, -5, 18, 10);
-          ctx.strokeRect(4, -5, 18, 10);
+          ctx.fillRect(4, -4, 16, 8);
+          ctx.strokeRect(4, -4, 16, 8);
 
           ctx.fillStyle = '#c084fc';
           ctx.beginPath();
-          ctx.arc(22, 0, 7, 0, Math.PI * 2);
+          ctx.arc(20, 0, 6, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
 
           ctx.fillStyle = '#4c1d95';
           ctx.beginPath();
-          ctx.arc(0, 0, 14, 0, Math.PI * 2);
+          ctx.arc(0, 0, 13, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
         }
 
         ctx.restore();
 
-        // Laser Beam (Chunky Cartoon Beam)
+        // Laser Beam
         if (this.config.isBeam && this.target && !this.target.dead) {
           ctx.save();
-          // Black border for beam
           ctx.strokeStyle = '#000000';
-          ctx.lineWidth = 9;
+          ctx.lineWidth = 8;
           ctx.beginPath();
           ctx.moveTo(this.x, this.y);
           ctx.lineTo(this.target.x, this.target.y);
           ctx.stroke();
 
-          // Vibrant neon inside
           ctx.strokeStyle = this.config.color;
-          ctx.lineWidth = 5;
+          ctx.lineWidth = 4.5;
           ctx.beginPath();
           ctx.moveTo(this.x, this.y);
           ctx.lineTo(this.target.x, this.target.y);
@@ -1754,18 +1751,16 @@
         this.progress = 0;
         this.slowTimer = 0;
         this.slowFactor = 1;
-
-        // Cartoon Bobbing Walk Cycle
         this.walkCycle = Math.random() * Math.PI;
 
         switch (type) {
           case 'scout':
             this.name = 'Drone Batedor';
-            this.baseSpeed = 110;
+            this.baseSpeed = 105;
             this.maxHp = 65 * waveMultiplier;
-            this.reward = 12;
-            this.nanites = 1;
-            this.size = 13;
+            this.reward = 10;
+            this.manaReward = 1;
+            this.size = 12;
             this.color = '#38bdf8';
             break;
           case 'spider':
@@ -1773,17 +1768,17 @@
             this.baseSpeed = 75;
             this.maxHp = 160 * waveMultiplier;
             this.reward = 18;
-            this.nanites = 2;
-            this.size = 16;
+            this.manaReward = 2;
+            this.size = 15;
             this.color = '#a855f7';
             break;
           case 'tank':
             this.name = 'Mecha Blindado';
             this.baseSpeed = 48;
             this.maxHp = 420 * waveMultiplier;
-            this.reward = 32;
-            this.nanites = 4;
-            this.size = 20;
+            this.reward = 35;
+            this.manaReward = 10;
+            this.size = 19;
             this.color = '#f59e0b';
             break;
           case 'stealth':
@@ -1791,17 +1786,17 @@
             this.baseSpeed = 85;
             this.maxHp = 220 * waveMultiplier;
             this.reward = 28;
-            this.nanites = 3;
-            this.size = 15;
+            this.manaReward = 4;
+            this.size = 14;
             this.color = '#00e676';
             break;
           case 'boss':
             this.name = 'TITÃ DESTRUIDOR V-' + state.currentWave;
-            this.baseSpeed = 38;
+            this.baseSpeed = 36;
             this.maxHp = 1800 * waveMultiplier;
-            this.reward = 160;
-            this.nanites = 25;
-            this.size = 32;
+            this.reward = 150;
+            this.manaReward = 50;
+            this.size = 30;
             this.color = '#ff1475';
             this.isBoss = true;
             break;
@@ -1816,12 +1811,12 @@
 
         if (amount > 30) {
           state.floatingTexts.push({
-            x: this.x + (Math.random() * 24 - 12),
-            y: this.y - 14,
+            x: this.x + (Math.random() * 20 - 10),
+            y: this.y - 12,
             text: Math.round(amount),
             color: source === 'crit' ? '#ffd000' : '#ffffff',
             alpha: 1,
-            vy: -32
+            vy: -30
           });
         }
 
@@ -1839,21 +1834,18 @@
       die() {
         this.dead = true;
         state.credits += this.reward;
-        state.nanites += this.nanites;
+        state.mana = Math.min(state.maxMana, state.mana + this.manaReward);
         state.totalEnemiesKilled++;
         sound.playExplosion();
 
-        // Onomatopeia on defeat
         const comicWords = ['BOOM!', 'POW!', 'KABOOM!', 'POP!', 'SMASH!'];
         const chosen = comicWords[Math.floor(Math.random() * comicWords.length)];
         createComicPopup(this.x, this.y - 10, chosen, this.color);
-
-        // Cartoon Puffy Smoke Cloud Explosion
-        createCartoonExplosion(this.x, this.y, this.color, this.isBoss ? 8 : 4);
+        createCartoonExplosion(this.x, this.y, this.color, this.isBoss ? 7 : 4);
 
         if (this.isBoss) {
           document.getElementById('boss-hud').classList.remove('active');
-          triggerScreenShake(12);
+          triggerScreenShake(10);
         }
         updateHud();
       }
@@ -1904,7 +1896,7 @@
         state.coreHp = Math.max(0, state.coreHp - damage);
         sound.playExplosion();
         triggerScreenShake(8);
-        createComicPopup(this.x, this.y, 'OUCH!', '#ff0055');
+        createComicPopup(this.x, this.y, 'AIRLOCK BREACH!', '#ff0055');
         updateHud();
 
         if (state.coreHp <= 0) {
@@ -1916,84 +1908,73 @@
         if (this.dead) return;
 
         ctx.save();
-        // Cartoon Bobbing Walk
         const bob = Math.sin(this.walkCycle) * 3;
         ctx.translate(this.x, this.y + bob);
 
-        // Health bar (Chunky Rounded)
-        const barW = this.size * 2.4;
-        const barH = 6;
+        // Health bar
+        const barW = this.size * 2.3;
+        const barH = 5;
         ctx.fillStyle = '#000000';
-        ctx.fillRect(-barW / 2 - 1, -this.size - 13, barW + 2, barH + 2);
+        ctx.fillRect(-barW / 2 - 1, -this.size - 12, barW + 2, barH + 2);
         const hpPct = Math.max(0, this.hp / this.maxHp);
         ctx.fillStyle = hpPct > 0.5 ? '#00e676' : (hpPct > 0.25 ? '#ffd000' : '#ff0055');
-        ctx.fillRect(-barW / 2, -this.size - 12, barW * hpPct, barH);
+        ctx.fillRect(-barW / 2, -this.size - 11, barW * hpPct, barH);
 
-        // Body Shape with Thick Black Outlines
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 2.5;
         ctx.strokeStyle = '#000000';
         ctx.fillStyle = this.color;
 
         if (this.type === 'scout') {
-          // Cute Bumblebee / Saucer Drone
           ctx.beginPath();
           ctx.ellipse(0, 0, this.size, this.size * 0.75, 0, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
 
-          // Spinning Propeller on top
-          const propX = Math.cos(Date.now() * 0.03) * 10;
+          const propX = Math.cos(Date.now() * 0.03) * 9;
           ctx.fillStyle = '#fff';
-          ctx.fillRect(-propX, -this.size - 2, propX * 2, 3);
-          ctx.strokeRect(-propX, -this.size - 2, propX * 2, 3);
+          ctx.fillRect(-propX, -this.size - 2, propX * 2, 2.5);
+          ctx.strokeRect(-propX, -this.size - 2, propX * 2, 2.5);
         } else if (this.type === 'spider') {
-          // Bouncy Spider Legs
-          ctx.lineWidth = 3;
           for (let side = -1; side <= 1; side += 2) {
-            const legWiggle = Math.sin(this.walkCycle) * 5;
+            const legWiggle = Math.sin(this.walkCycle) * 4;
             ctx.beginPath();
             ctx.moveTo(0, 0);
-            ctx.lineTo(side * (this.size + 8), -6 + legWiggle);
-            ctx.lineTo(side * (this.size + 12), 10);
+            ctx.lineTo(side * (this.size + 7), -5 + legWiggle);
+            ctx.lineTo(side * (this.size + 11), 8);
             ctx.stroke();
           }
 
-          // Body Dome
           ctx.beginPath();
           ctx.arc(0, 0, this.size, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
         } else if (this.type === 'tank') {
-          // Treads
           ctx.fillStyle = '#334155';
-          ctx.fillRect(-this.size - 2, -this.size - 1, (this.size + 2) * 2, this.size * 2 + 2);
-          ctx.strokeRect(-this.size - 2, -this.size - 1, (this.size + 2) * 2, this.size * 2 + 2);
+          ctx.fillRect(-this.size - 1, -this.size - 1, (this.size + 1) * 2, this.size * 2 + 2);
+          ctx.strokeRect(-this.size - 1, -this.size - 1, (this.size + 1) * 2, this.size * 2 + 2);
 
-          // Turret chassis
           ctx.fillStyle = this.color;
           ctx.fillRect(-this.size + 2, -this.size + 3, (this.size - 2) * 2, (this.size - 2) * 2);
           ctx.strokeRect(-this.size + 2, -this.size + 3, (this.size - 2) * 2, (this.size - 2) * 2);
         } else if (this.type === 'boss') {
-          // Colossal Titan Mecha
           ctx.beginPath();
           ctx.arc(0, 0, this.size, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
 
-          // Spikes/Horns
           ctx.fillStyle = '#ffd000';
           ctx.beginPath();
-          ctx.moveTo(-16, -this.size);
-          ctx.lineTo(-24, -this.size - 14);
-          ctx.lineTo(-8, -this.size);
+          ctx.moveTo(-14, -this.size);
+          ctx.lineTo(-22, -this.size - 12);
+          ctx.lineTo(-7, -this.size);
           ctx.closePath();
           ctx.fill();
           ctx.stroke();
 
           ctx.beginPath();
-          ctx.moveTo(16, -this.size);
-          ctx.lineTo(24, -this.size - 14);
-          ctx.lineTo(8, -this.size);
+          ctx.moveTo(14, -this.size);
+          ctx.lineTo(22, -this.size - 12);
+          ctx.lineTo(7, -this.size);
           ctx.closePath();
           ctx.fill();
           ctx.stroke();
@@ -2004,9 +1985,7 @@
           ctx.stroke();
         }
 
-        // DRAW CARTOON LED EYES
         drawCartoonEyes(ctx, this);
-
         ctx.restore();
       }
     }
@@ -2016,10 +1995,9 @@
       const isSlowed = enemy.slowTimer > 0;
       const isAngry = (enemy.hp / enemy.maxHp) < 0.4;
 
-      // Eye White Sockets
       ctx.fillStyle = '#ffffff';
       ctx.strokeStyle = '#000000';
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1.4;
 
       [-eyeR * 1.5, eyeR * 1.5].forEach(ox => {
         ctx.beginPath();
@@ -2028,18 +2006,15 @@
         ctx.stroke();
       });
 
-      // Pupils / Expressions
       if (isSlowed) {
-        // Spiral / Dizzy Eyes (@ @)
         ctx.strokeStyle = '#0284c7';
-        ctx.lineWidth = 1.8;
+        ctx.lineWidth = 1.6;
         [-eyeR * 1.5, eyeR * 1.5].forEach(ox => {
           ctx.beginPath();
           ctx.arc(ox, -2, eyeR * 0.6, 0, Math.PI * 1.6);
           ctx.stroke();
         });
       } else if (isAngry) {
-        // Angry Slanted Pupils (> <)
         ctx.fillStyle = '#ff0055';
         [-eyeR * 1.5, eyeR * 1.5].forEach(ox => {
           ctx.beginPath();
@@ -2047,14 +2022,12 @@
           ctx.fill();
         });
       } else {
-        // Happy / Alert Big Pupils looking in direction
         ctx.fillStyle = '#000000';
         [-eyeR * 1.5, eyeR * 1.5].forEach(ox => {
           ctx.beginPath();
           ctx.arc(ox + 1, -2, eyeR * 0.55, 0, Math.PI * 2);
           ctx.fill();
 
-          // Specular shine dot
           ctx.fillStyle = '#ffffff';
           ctx.beginPath();
           ctx.arc(ox, -3.5, eyeR * 0.2, 0, Math.PI * 2);
@@ -2104,9 +2077,9 @@
         ctx.save();
         ctx.fillStyle = this.color;
         ctx.strokeStyle = '#000';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1.8;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.isCrit ? 6 : 4, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, this.isCrit ? 5.5 : 3.8, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
         ctx.restore();
@@ -2125,7 +2098,7 @@
         this.sourceTurret = sourceTurret;
         this.progress = 0;
         this.duration = 0.85;
-        this.arcHeight = 90;
+        this.arcHeight = 85;
         this.dead = false;
       }
 
@@ -2178,19 +2151,17 @@
         const groundY = this.startY + (this.targetY - this.startY) * this.progress;
         const curY = groundY - Math.sin(this.progress * Math.PI) * this.arcHeight;
 
-        // Shadow
         ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
         ctx.beginPath();
         ctx.ellipse(curX, groundY, 7, 4, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Chunky Bomb
         ctx.save();
         ctx.fillStyle = '#ff7700';
         ctx.strokeStyle = '#000000';
         ctx.lineWidth = 2.5;
         ctx.beginPath();
-        ctx.arc(curX, curY, 8, 0, Math.PI * 2);
+        ctx.arc(curX, curY, 7.5, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
         ctx.restore();
@@ -2270,12 +2241,12 @@
     function createCartoonExplosion(x, y, color, puffCount = 5) {
       for (let i = 0; i < puffCount; i++) {
         const angle = (Math.PI * 2 / puffCount) * i + Math.random() * 0.4;
-        const dist = 12 + Math.random() * 20;
+        const dist = 12 + Math.random() * 18;
         state.particles.push({
           type: 'puff',
           x: x + Math.cos(angle) * dist,
           y: y + Math.sin(angle) * dist,
-          radius: 12 + Math.random() * 10,
+          radius: 10 + Math.random() * 9,
           color: Math.random() > 0.4 ? '#ffffff' : color,
           alpha: 1,
           decay: 2.2
@@ -2288,9 +2259,9 @@
         state.particles.push({
           type: 'spark',
           x, y,
-          vx: (Math.random() - 0.5) * 100,
-          vy: (Math.random() - 0.5) * 100,
-          radius: 2 + Math.random() * 3,
+          vx: (Math.random() - 0.5) * 90,
+          vy: (Math.random() - 0.5) * 90,
+          radius: 2 + Math.random() * 2.5,
           color,
           alpha: 1,
           decay: 3
@@ -2323,7 +2294,7 @@
       ctx.closePath();
       ctx.fillStyle = fill;
       ctx.strokeStyle = '#000000';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 1.8;
       ctx.fill();
       ctx.stroke();
       ctx.restore();
@@ -2359,13 +2330,13 @@
 
       const repairLevel = TECH_UPGRADES.find(t => t.id === 'repair').level;
       if (repairLevel > 0 && state.currentWave > 1) {
-        state.coreHp = Math.min(state.maxCoreHp, state.coreHp + (repairLevel * 4));
+        state.coreHp = Math.min(state.maxCoreHp, state.coreHp + (repairLevel * 5));
       }
 
       const banner = document.getElementById('wave-banner');
       const isBossWave = (state.currentWave % 5 === 0);
       banner.className = isBossWave ? 'show boss' : 'show';
-      banner.innerText = isBossWave ? `ALERTA: CHEFÃO TITÃ!` : `ONDA ${state.currentWave}!`;
+      banner.innerText = isBossWave ? `ALERTA: TITÃ CHEFÃO!` : `ONDA ${state.currentWave}!`;
       setTimeout(() => banner.className = '', 2200);
 
       spawnQueue = [];
@@ -2373,7 +2344,7 @@
 
       if (isBossWave) {
         document.getElementById('boss-hud').classList.add('active');
-        document.getElementById('boss-name-text').innerText = `TITÃ MECÂNICO V-${state.currentWave}`;
+        document.getElementById('boss-name-text').innerText = `TITÃ LUNAR V-${state.currentWave}`;
         spawnQueue.push({ type: 'boss', delay: 1.5 });
         for (let i = 0; i < 8; i++) spawnQueue.push({ type: 'scout', delay: 0.8 });
         for (let i = 0; i < 4; i++) spawnQueue.push({ type: 'tank', delay: 1.8 });
@@ -2396,8 +2367,8 @@
         document.getElementById('btn-next-wave').disabled = false;
 
         state.credits += 60 + state.currentWave * 15;
-        state.nanites += 5 + state.currentWave * 2;
-        createComicPopup(525, 300, 'ONDA VENCIDA!', '#ffd000');
+        state.mana = Math.min(state.maxMana, state.mana + 20 + state.currentWave * 2);
+        createComicPopup(512, 288, 'ONDA VENCIDA!', '#ffd000');
         updateHud();
 
         if (state.currentWave >= state.maxWaves) {
@@ -2407,22 +2378,36 @@
     }
 
     /* ==========================================================================
-       8. COMMANDER ACTIVE ABILITIES
+       8. COMMANDER ACTIVE ABILITIES (CONSUMES MANA + COOLDOWN)
        ========================================================================== */
+    const ABILITY_COSTS = {
+      emp: 30,
+      overdrive: 45,
+      airstrike: 50
+    };
+
     function triggerAbility(type) {
       sound.init();
+      const manaCost = ABILITY_COSTS[type];
+
       if (state.cooldowns[type] > 0) return;
 
+      if (state.mana < manaCost) {
+        createComicPopup(state.mousePos.x || 512, state.mousePos.y || 250, 'SEM MANA!', '#ef4444');
+        return;
+      }
+
       if (type === 'emp') {
-        state.cooldowns.emp = 18;
+        state.mana -= manaCost;
+        state.cooldowns.emp = 10;
         sound.playAbility();
-        triggerScreenShake(10);
-        createComicPopup(525, 250, 'SUPER PEM!', '#00e5ff');
+        triggerScreenShake(8);
+        createComicPopup(512, 250, 'SUPER PEM!', '#00e5ff');
         state.particles.push({
           type: 'empWave',
-          x: 525, y: 315,
+          x: 512, y: 288,
           currentRadius: 20,
-          maxRadius: 700,
+          maxRadius: 650,
           alpha: 1
         });
         state.enemies.forEach(e => {
@@ -2430,19 +2415,23 @@
           e.applySlow(0.05, 4.0);
         });
       } else if (type === 'overdrive') {
-        state.cooldowns.overdrive = 25;
+        state.mana -= manaCost;
+        state.cooldowns.overdrive = 14;
         state.overdriveActiveTime = 6;
         sound.playAbility();
-        createComicPopup(525, 250, 'OVERDRIVE 2X!', '#ffd000');
+        createComicPopup(512, 250, 'OVERDRIVE 2X!', '#ffd000');
       } else if (type === 'airstrike') {
         state.airstrikeTargeting = true;
       }
+      updateHud();
       updateSkillButtons();
     }
 
     function executeAirstrike(x, y) {
+      const manaCost = ABILITY_COSTS.airstrike;
       state.airstrikeTargeting = false;
-      state.cooldowns.airstrike = 20;
+      state.mana -= manaCost;
+      state.cooldowns.airstrike = 12;
       sound.playAbility();
       createComicPopup(x, y - 20, 'AIRSTRIKE!', '#ff0055');
 
@@ -2463,6 +2452,7 @@
           });
         }, i * 150);
       }
+      updateHud();
       updateSkillButtons();
     }
 
@@ -2472,7 +2462,14 @@
         const btn = document.getElementById('skill-' + s);
         const cdOverlay = document.getElementById('cd-' + s);
         const cdText = document.getElementById('cdt-' + s);
-        const maxCd = s === 'emp' ? 18 : (s === 'overdrive' ? 25 : 20);
+        const maxCd = s === 'emp' ? 10 : (s === 'overdrive' ? 14 : 12);
+        const manaCost = ABILITY_COSTS[s];
+
+        if (state.mana < manaCost) {
+          btn.classList.add('no-mana');
+        } else {
+          btn.classList.remove('no-mana');
+        }
 
         if (state.cooldowns[s] > 0) {
           btn.classList.add('cooldown');
@@ -2487,7 +2484,7 @@
     }
 
     /* ==========================================================================
-       9. UI, SELECTION & INSPECTOR CONTROLLER
+       9. UI & INSPECTOR CONTROLLER
        ========================================================================== */
     function renderTurretDeck() {
       const container = document.getElementById('turret-cards-container');
@@ -2523,7 +2520,7 @@
 
       if (!t) {
         panel.innerHTML = `
-          <div style="margin: auto; color: var(--text-muted); font-size: 0.9rem; text-align: center;">
+          <div style="margin: auto; color: var(--text-muted); font-size: 0.88rem; text-align: center;">
             Selecione uma torre no mapa para inspecionar, evoluir ou escolher especializações!
           </div>
         `;
@@ -2643,7 +2640,7 @@
       document.getElementById('branch-modal').classList.remove('active');
     });
 
-    // Tech Tree Controller
+    // Tech Tree Controller (Costs Mana)
     function renderTechTree() {
       const grid = document.getElementById('tech-grid');
       grid.innerHTML = '';
@@ -2651,7 +2648,7 @@
       TECH_UPGRADES.forEach(tech => {
         const cost = Math.round(tech.cost * Math.pow(tech.costScale, tech.level));
         const isMax = tech.level >= tech.maxLevel;
-        const canAfford = state.nanites >= cost && !isMax;
+        const canAfford = state.mana >= cost && !isMax;
 
         const item = document.createElement('div');
         item.className = 'tech-item';
@@ -2668,9 +2665,13 @@
 
         if (!isMax) {
           item.querySelector('.btn-research').addEventListener('click', () => {
-            if (state.nanites >= cost) {
-              state.nanites -= cost;
+            if (state.mana >= cost) {
+              state.mana -= cost;
               tech.level++;
+              if (tech.id === 'manaCap') {
+                state.maxMana += 25;
+                state.manaRegen += 1.0;
+              }
               sound.playUpgrade();
               updateHud();
               renderTechTree();
@@ -2694,7 +2695,9 @@
 
     function updateHud() {
       document.getElementById('hud-credits').innerText = Math.round(state.credits);
-      document.getElementById('hud-nanites').innerText = state.nanites;
+      document.getElementById('hud-mana-text').innerText = `${Math.floor(state.mana)} / ${state.maxMana}`;
+      const manaPercent = Math.max(0, (state.mana / state.maxMana) * 100);
+      document.getElementById('hud-mana-bar').style.width = manaPercent + '%';
       document.getElementById('hud-wave').innerText = `${state.currentWave} / ${state.maxWaves}`;
 
       const hpPercent = Math.max(0, (state.coreHp / state.maxCoreHp) * 100);
@@ -2711,13 +2714,13 @@
       const msg = document.getElementById('endgame-msg');
 
       if (victory) {
-        title.innerText = '★ VITÓRIA DO NÚCLEO! ★';
+        title.innerText = '★ VITÓRIA DA BASE LUNAR! ★';
         title.className = 'endgame-title victory';
-        msg.innerText = 'Todas as 20 ondas de robôs foram destruídas!';
+        msg.innerText = 'Todas as 20 ondas de robôs invasores foram destruídas!';
       } else {
-        title.innerText = '☠ O NÚCLEO CAIU! ☠';
+        title.innerText = '☠ A BASE LUNAR CAIU! ☠';
         title.className = 'endgame-title defeat';
-        msg.innerText = 'O Núcleo Quântico foi sobrecarregado.';
+        msg.innerText = 'O Airlock do Núcleo foi sobrecarregado.';
       }
 
       document.getElementById('stat-enemies-killed').innerText = state.totalEnemiesKilled;
@@ -2737,7 +2740,7 @@
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
-    // Passive Energy Reactor Loop
+    // Passive Energy & Mana Loop
     setInterval(() => {
       const reactorLevel = TECH_UPGRADES.find(t => t.id === 'reactor').level;
       if (reactorLevel > 0) {
@@ -2761,6 +2764,10 @@
 
     function update(dt) {
       if (screenShakeAmount > 0) screenShakeAmount = Math.max(0, screenShakeAmount - dt * 15);
+
+      // Mana continuous regeneration
+      state.mana = Math.min(state.maxMana, state.mana + state.manaRegen * dt);
+      updateHud();
 
       if (state.overdriveActiveTime > 0) {
         state.overdriveActiveTime -= dt;
@@ -2832,57 +2839,22 @@
         ctx.translate(sx, sy);
       }
 
-      // Background
-      ctx.fillStyle = '#0f162b';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Cartoon Grid Floor Tiles
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-      ctx.lineWidth = 1.5;
-      const gridSize = 42;
-      for (let x = 0; x < canvas.width; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-      }
-      for (let y = 0; y < canvas.height; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
+      // 1. Draw Map Background Image
+      if (mapLoaded) {
+        ctx.drawImage(mapBgImg, 0, 0, canvas.width, canvas.height);
+      } else {
+        ctx.fillStyle = '#0f162b';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
 
-      // Draw Cartoon Conveyor Path
+      // 2. Subtle Animated Glowing Energy Line on Path
       ctx.save();
       ctx.lineJoin = 'round';
       ctx.lineCap = 'round';
-
-      // Path Outer Trench (Black outline)
-      ctx.strokeStyle = '#000000';
-      ctx.lineWidth = 48;
-      ctx.beginPath();
-      WAYPOINTS.forEach((wp, idx) => {
-        if (idx === 0) ctx.moveTo(wp.x, wp.y);
-        else ctx.lineTo(wp.x, wp.y);
-      });
-      ctx.stroke();
-
-      // Path Trench Fill (Cobalt Blue)
-      ctx.strokeStyle = '#25355e';
-      ctx.lineWidth = 40;
-      ctx.beginPath();
-      WAYPOINTS.forEach((wp, idx) => {
-        if (idx === 0) ctx.moveTo(wp.x, wp.y);
-        else ctx.lineTo(wp.x, wp.y);
-      });
-      ctx.stroke();
-
-      // Cartoon Center Flow Dashes
-      const flowOffset = (Date.now() * 0.04) % 24;
-      ctx.strokeStyle = state.overdriveActiveTime > 0 ? '#ffd000' : '#00e5ff';
-      ctx.lineWidth = 8;
-      ctx.setLineDash([14, 10]);
+      const flowOffset = (Date.now() * 0.04) % 20;
+      ctx.strokeStyle = state.overdriveActiveTime > 0 ? 'rgba(255, 208, 0, 0.7)' : 'rgba(0, 229, 255, 0.45)';
+      ctx.lineWidth = 4;
+      ctx.setLineDash([8, 12]);
       ctx.lineDashOffset = -flowOffset;
       ctx.beginPath();
       WAYPOINTS.forEach((wp, idx) => {
@@ -2893,86 +2865,47 @@
       ctx.setLineDash([]);
       ctx.restore();
 
-      // Draw Turret Placement Slots (Chunky Cartoon Pads)
+      // 3. Draw Turret Placement Bases
       TURRET_SLOTS.forEach(slot => {
         const hasTurret = state.turrets.some(t => t.slot === slot);
         ctx.save();
         ctx.translate(slot.x, slot.y);
 
         if (!hasTurret) {
-          ctx.strokeStyle = '#000000';
-          ctx.lineWidth = 3;
-          ctx.fillStyle = state.selectedTurretType ? 'rgba(0, 229, 255, 0.25)' : 'rgba(30, 41, 74, 0.7)';
+          const isSelected = state.selectedTurretType !== null;
+          ctx.strokeStyle = isSelected ? '#ffd000' : 'rgba(0, 229, 255, 0.35)';
+          ctx.lineWidth = isSelected ? 2.5 : 1.5;
+          ctx.fillStyle = isSelected ? 'rgba(255, 208, 0, 0.18)' : 'rgba(0, 0, 0, 0.2)';
           ctx.beginPath();
-          drawHexagon(ctx, 0, 0, 24);
+          drawHexagon(ctx, 0, 0, 22);
           ctx.fill();
           ctx.stroke();
 
-          // Center Bolt
-          ctx.fillStyle = state.selectedTurretType ? '#ffd000' : '#475569';
+          // Center Indicator
+          ctx.fillStyle = isSelected ? '#ffd000' : 'rgba(255, 255, 255, 0.3)';
           ctx.beginPath();
-          ctx.arc(0, 0, 7, 0, Math.PI * 2);
+          ctx.arc(0, 0, 4, 0, Math.PI * 2);
           ctx.fill();
-          ctx.stroke();
         }
         ctx.restore();
       });
 
-      // Draw Cartoon Quantum Core Base
-      ctx.save();
-      const coreX = WAYPOINTS[WAYPOINTS.length - 1].x;
-      const coreY = WAYPOINTS[WAYPOINTS.length - 1].y;
-      ctx.translate(coreX, coreY);
-
-      // Rotating cute cartoon containment dome
-      const time = Date.now() * 0.003;
-      ctx.fillStyle = '#0284c7';
-      ctx.strokeStyle = '#000000';
-      ctx.lineWidth = 3.5;
-      ctx.beginPath();
-      ctx.arc(0, 0, 36, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-
-      // Bouncing glowing power orb
-      const orbScale = 1 + Math.sin(time * 3) * 0.15;
-      ctx.fillStyle = '#00e5ff';
-      ctx.beginPath();
-      ctx.arc(0, 0, 18 * orbScale, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-
-      // Cute eyes on core!
-      ctx.fillStyle = '#fff';
-      ctx.beginPath();
-      ctx.arc(-6, -2, 4, 0, Math.PI * 2);
-      ctx.arc(6, -2, 4, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#000';
-      ctx.beginPath();
-      ctx.arc(-5, -2, 2, 0, Math.PI * 2);
-      ctx.arc(7, -2, 2, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.restore();
-
-      // Draw Enemies
+      // 4. Draw Enemies
       state.enemies.forEach(e => e.draw(ctx));
 
-      // Draw Turrets
+      // 5. Draw Turrets
       state.turrets.forEach(t => t.draw(ctx));
 
-      // Draw Projectiles
+      // 6. Draw Projectiles
       state.projectiles.forEach(p => p.draw(ctx));
 
-      // Draw Particles (Sparks & Puffs)
+      // 7. Draw Particles (Sparks & Puffs)
       state.particles.forEach(pt => {
         ctx.save();
         if (pt.type === 'puff') {
-          // Cartoon Puffy Smoke
           ctx.fillStyle = pt.color;
           ctx.strokeStyle = '#000000';
-          ctx.lineWidth = 2.5;
+          ctx.lineWidth = 2;
           ctx.globalAlpha = Math.max(0, pt.alpha);
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, pt.radius, 0, Math.PI * 2);
@@ -2981,7 +2914,7 @@
         } else if (pt.type === 'spark') {
           ctx.fillStyle = pt.color;
           ctx.strokeStyle = '#000';
-          ctx.lineWidth = 1.5;
+          ctx.lineWidth = 1.2;
           ctx.globalAlpha = Math.max(0, pt.alpha);
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, pt.radius, 0, Math.PI * 2);
@@ -2989,18 +2922,18 @@
           ctx.stroke();
         } else if (pt.type === 'empWave') {
           ctx.strokeStyle = '#000';
-          ctx.lineWidth = 6;
+          ctx.lineWidth = 5;
           ctx.globalAlpha = Math.max(0, pt.alpha);
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, pt.currentRadius, 0, Math.PI * 2);
           ctx.stroke();
 
           ctx.strokeStyle = '#00e5ff';
-          ctx.lineWidth = 3.5;
+          ctx.lineWidth = 3;
           ctx.stroke();
         } else if (pt.type === 'lightning') {
           ctx.strokeStyle = '#000';
-          ctx.lineWidth = 6;
+          ctx.lineWidth = 5;
           ctx.globalAlpha = Math.max(0, pt.alpha);
           ctx.beginPath();
           pt.points.forEach((p, idx) => {
@@ -3012,41 +2945,39 @@
           ctx.stroke();
 
           ctx.strokeStyle = '#c084fc';
-          ctx.lineWidth = 3.5;
+          ctx.lineWidth = 3;
           ctx.stroke();
         }
         ctx.restore();
       });
 
-      // Draw Comic Popups ("POW!", "BOOM!")
+      // 8. Draw Comic Popups ("POW!", "BOOM!")
       state.comicPopups.forEach(cp => {
         ctx.save();
         ctx.translate(cp.x, cp.y);
         ctx.scale(cp.scale, cp.scale);
         ctx.globalAlpha = Math.max(0, cp.alpha);
 
-        ctx.font = 'bold 24px "Luckiest Guy", cursive';
+        ctx.font = 'bold 22px "Luckiest Guy", cursive';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        // Thick Black Outline
         ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 4.5;
         ctx.strokeText(cp.text, 0, 0);
 
-        // Vibrant Fill
         ctx.fillStyle = cp.color;
         ctx.fillText(cp.text, 0, 0);
         ctx.restore();
       });
 
-      // Draw Floating Damage Texts
+      // 9. Draw Floating Damage Texts
       state.floatingTexts.forEach(ft => {
         ctx.save();
-        ctx.font = 'bold 15px Fredoka';
+        ctx.font = 'bold 14px Fredoka';
         ctx.textAlign = 'center';
         ctx.strokeStyle = '#000';
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 2.5;
         ctx.globalAlpha = Math.max(0, ft.alpha);
         ctx.strokeText(ft.text, ft.x, ft.y);
         ctx.fillStyle = ft.color;
@@ -3054,7 +2985,7 @@
         ctx.restore();
       });
 
-      // Ghost Turret Preview if selected
+      // 10. Ghost Turret Preview if selected
       if (state.selectedTurretType) {
         const tConf = TURRET_TYPES[state.selectedTurretType];
         const hoveredSlot = getHoveredSlot(state.mousePos.x, state.mousePos.y);
@@ -3064,36 +2995,36 @@
         const py = hoveredSlot ? hoveredSlot.y : state.mousePos.y;
 
         ctx.strokeStyle = '#ffd000';
-        ctx.lineWidth = 2.5;
-        ctx.setLineDash([8, 6]);
-        ctx.fillStyle = 'rgba(255, 208, 0, 0.1)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([6, 5]);
+        ctx.fillStyle = 'rgba(255, 208, 0, 0.12)';
         ctx.beginPath();
         ctx.arc(px, py, tConf.range, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
         ctx.setLineDash([]);
 
-        ctx.font = '28px sans-serif';
+        ctx.font = '26px sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(tConf.icon, px, py);
         ctx.restore();
       }
 
-      // Airstrike Target Reticle
+      // 11. Airstrike Target Reticle
       if (state.airstrikeTargeting) {
         ctx.save();
         ctx.strokeStyle = '#ff0055';
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 2.5;
         ctx.beginPath();
         ctx.arc(state.mousePos.x, state.mousePos.y, 85, 0, Math.PI * 2);
         ctx.stroke();
 
         ctx.beginPath();
-        ctx.moveTo(state.mousePos.x - 100, state.mousePos.y);
-        ctx.lineTo(state.mousePos.x + 100, state.mousePos.y);
-        ctx.moveTo(state.mousePos.x, state.mousePos.y - 100);
-        ctx.lineTo(state.mousePos.x, state.mousePos.y + 100);
+        ctx.moveTo(state.mousePos.x - 95, state.mousePos.y);
+        ctx.lineTo(state.mousePos.x + 95, state.mousePos.y);
+        ctx.moveTo(state.mousePos.x, state.mousePos.y - 95);
+        ctx.lineTo(state.mousePos.x, state.mousePos.y + 95);
         ctx.stroke();
         ctx.restore();
       }
@@ -3102,7 +3033,7 @@
     }
 
     function getHoveredSlot(x, y) {
-      return TURRET_SLOTS.find(slot => Math.hypot(slot.x - x, slot.y - y) <= 28);
+      return TURRET_SLOTS.find(slot => Math.hypot(slot.x - x, slot.y - y) <= 26);
     }
 
     /* ==========================================================================

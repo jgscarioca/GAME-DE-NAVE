@@ -3,30 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>CYBER CORE: MECHA TOWER DEFENSE</title>
-  <meta name="description" content="Jogo tático de Tower Defense com temática robótica futurista, upgrades ramificados, habilidades orbitais e áudio procedural." />
+  <title>CYBER CORE: MECHA TOWER DEFENSE (CARTOON EDITION)</title>
+  <meta name="description" content="Jogo de Tower Defense cartoonesco com robôs animados, upgrades ramificados, onomatopeias e física elástica squash & stretch." />
   
-  <!-- Google Fonts: Orbitron, Rajdhani, Share Tech Mono -->
+  <!-- Google Fonts: Fredoka (Cartoon UI) & Luckiest Guy (Comic Headings) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700;800&family=Luckiest+Guy&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --bg-dark: #07090e;
-      --bg-panel: rgba(14, 20, 35, 0.85);
-      --bg-card: rgba(22, 32, 56, 0.7);
-      --cyan-neon: #00f0ff;
-      --cyan-glow: rgba(0, 240, 255, 0.4);
-      --amber-neon: #ffb800;
-      --amber-glow: rgba(255, 184, 0, 0.4);
-      --magenta-neon: #ff007f;
-      --magenta-glow: rgba(255, 0, 127, 0.4);
-      --emerald-neon: #00ff88;
-      --purple-neon: #9d00ff;
-      --border-color: rgba(0, 240, 255, 0.25);
-      --text-main: #e2e8f0;
-      --text-muted: #94a3b8;
+      --bg-dark: #0b1021;
+      --bg-panel: rgba(20, 28, 54, 0.94);
+      --bg-card: rgba(28, 40, 76, 0.9);
+      --comic-border: #000000;
+      --cyan-cartoon: #00e5ff;
+      --yellow-cartoon: #ffd000;
+      --pink-cartoon: #ff1475;
+      --green-cartoon: #00e676;
+      --purple-cartoon: #a855f7;
+      --orange-cartoon: #ff7700;
+      --text-main: #ffffff;
+      --text-muted: #a0aec0;
     }
 
     * {
@@ -38,9 +36,9 @@
     }
 
     body {
-      background: radial-gradient(circle at 50% 20%, #111a33 0%, var(--bg-dark) 80%);
+      background: radial-gradient(circle at 50% 15%, #182245 0%, var(--bg-dark) 85%);
       color: var(--text-main);
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Fredoka', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -54,7 +52,7 @@
       width: 100%;
       max-width: 1160px;
       padding: 10px 18px;
-      margin-top: 6px;
+      margin-top: 8px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -62,9 +60,9 @@
       gap: 12px;
       background: var(--bg-panel);
       backdrop-filter: blur(12px);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 15px var(--cyan-glow);
+      border: 3px solid var(--comic-border);
+      border-radius: 16px;
+      box-shadow: 0 6px 0 var(--comic-border), 0 0 20px rgba(0, 229, 255, 0.25);
       z-index: 10;
     }
 
@@ -75,37 +73,37 @@
     }
 
     .core-logo {
-      width: 32px;
-      height: 32px;
-      border: 2px solid var(--cyan-neon);
-      border-radius: 6px;
+      width: 38px;
+      height: 38px;
+      background: var(--yellow-cartoon);
+      border: 3px solid var(--comic-border);
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 12px var(--cyan-glow);
-      animation: pulseLogo 2s infinite ease-in-out;
+      font-size: 1.3rem;
+      box-shadow: 0 4px 0 var(--comic-border);
+      animation: bounceLogo 1.6s infinite ease-in-out;
     }
 
-    @keyframes pulseLogo {
-      0%, 100% { transform: scale(1); filter: brightness(1); }
-      50% { transform: scale(1.08); filter: brightness(1.3); }
+    @keyframes bounceLogo {
+      0%, 100% { transform: scale(1) translateY(0); }
+      50% { transform: scale(1.1) translateY(-3px); }
     }
 
     .title-box h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 800;
-      letter-spacing: 2px;
-      background: linear-gradient(90deg, #fff, var(--cyan-neon));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 10px var(--cyan-glow);
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 1.4rem;
+      letter-spacing: 1.5px;
+      color: var(--yellow-cartoon);
+      -webkit-text-stroke: 1.5px var(--comic-border);
+      text-shadow: 2px 2px 0 var(--comic-border);
     }
 
     .status-group {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
@@ -114,20 +112,18 @@
       align-items: center;
       gap: 8px;
       background: var(--bg-card);
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      font-family: 'Share Tech Mono', monospace;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 2.5px solid var(--comic-border);
+      box-shadow: 0 3px 0 var(--comic-border);
       font-size: 0.95rem;
+      font-weight: 800;
     }
 
-    .stat-badge .icon {
-      font-size: 1.1rem;
-    }
-
-    .stat-badge.credits .val { color: var(--amber-neon); font-weight: bold; text-shadow: 0 0 8px var(--amber-glow); }
-    .stat-badge.nanites .val { color: var(--cyan-neon); font-weight: bold; text-shadow: 0 0 8px var(--cyan-glow); }
-    .stat-badge.wave .val { color: var(--emerald-neon); font-weight: bold; }
+    .stat-badge .icon { font-size: 1.2rem; }
+    .stat-badge.credits .val { color: var(--yellow-cartoon); }
+    .stat-badge.nanites .val { color: var(--cyan-cartoon); }
+    .stat-badge.wave .val { color: var(--green-cartoon); }
 
     /* Core Health Bar */
     .core-health-container {
@@ -138,34 +134,33 @@
     }
 
     .core-health-label {
-      font-size: 0.75rem;
-      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
       display: flex;
       justify-content: space-between;
-      color: var(--text-muted);
+      color: #cbd5e1;
     }
 
     .health-bar-track {
       width: 100%;
-      height: 10px;
-      background: #1e293b;
-      border-radius: 5px;
+      height: 14px;
+      background: #0f172a;
+      border-radius: 8px;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 2.5px solid var(--comic-border);
+      box-shadow: 0 2px 0 var(--comic-border);
       position: relative;
     }
 
     .health-bar-fill {
       height: 100%;
       width: 100%;
-      background: linear-gradient(90deg, #10b981, #00f0ff);
-      transition: width 0.3s ease;
-      box-shadow: 0 0 10px var(--cyan-glow);
+      background: linear-gradient(90deg, #10b981, #00e676);
+      transition: width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .health-bar-fill.warning {
-      background: linear-gradient(90deg, #f59e0b, #ef4444);
-      box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+      background: linear-gradient(90deg, #f59e0b, #ff0055);
     }
 
     /* Controls Group */
@@ -176,32 +171,37 @@
     }
 
     .btn-hud {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 6px 12px;
-      border-radius: 6px;
+      background: var(--cyan-cartoon);
+      color: #000;
+      border: 2.5px solid var(--comic-border);
+      padding: 7px 14px;
+      border-radius: 12px;
       cursor: pointer;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      transition: all 0.2s;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 800;
+      box-shadow: 0 4px 0 var(--comic-border);
+      transition: all 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
     }
 
     .btn-hud:hover {
-      background: rgba(0, 240, 255, 0.2);
-      border-color: var(--cyan-neon);
-      transform: translateY(-1px);
-      box-shadow: 0 0 10px var(--cyan-glow);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 var(--comic-border);
+      filter: brightness(1.1);
+    }
+
+    .btn-hud:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 var(--comic-border);
     }
 
     .btn-hud.active {
-      background: var(--cyan-neon);
-      color: #000;
-      box-shadow: 0 0 12px var(--cyan-glow);
+      background: var(--yellow-cartoon);
+      box-shadow: 0 2px 0 var(--comic-border);
+      transform: translateY(2px);
     }
 
     /* Main Stage */
@@ -210,7 +210,7 @@
       max-width: 1160px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       margin: 8px 0;
       position: relative;
     }
@@ -219,10 +219,10 @@
     #canvas-wrapper {
       position: relative;
       width: 100%;
-      background: #090d16;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 30px rgba(0, 240, 255, 0.05);
+      background: #0f162b;
+      border: 3.5px solid var(--comic-border);
+      border-radius: 18px;
+      box-shadow: 0 10px 0 var(--comic-border), 0 0 30px rgba(0, 0, 0, 0.7);
       overflow: hidden;
     }
 
@@ -230,25 +230,26 @@
       display: block;
       width: 100%;
       height: auto;
-      image-rendering: -webkit-optimize-contrast;
+      image-rendering: auto;
     }
 
     /* Active Abilities Floating HUD */
     #commander-skills {
       position: absolute;
-      top: 12px;
-      left: 14px;
+      top: 14px;
+      left: 16px;
       display: flex;
       gap: 10px;
       z-index: 5;
     }
 
     .skill-btn {
-      width: 58px;
-      height: 58px;
-      background: rgba(14, 20, 35, 0.85);
-      border: 2px solid var(--border-color);
-      border-radius: 8px;
+      width: 60px;
+      height: 60px;
+      background: var(--bg-panel);
+      border: 3px solid var(--comic-border);
+      border-radius: 14px;
+      box-shadow: 0 4px 0 var(--comic-border);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -256,25 +257,28 @@
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      backdrop-filter: blur(8px);
-      transition: all 0.2s;
+      transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .skill-btn:hover:not(.cooldown) {
-      border-color: var(--cyan-neon);
-      box-shadow: 0 0 14px var(--cyan-glow);
-      transform: scale(1.05);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 7px 0 var(--comic-border);
     }
 
-    .skill-btn .skill-icon { font-size: 1.4rem; }
+    .skill-btn:active:not(.cooldown) {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 var(--comic-border);
+    }
+
+    .skill-btn .skill-icon { font-size: 1.5rem; }
     .skill-btn .skill-key {
       position: absolute;
       bottom: 2px;
       right: 4px;
-      font-size: 0.65rem;
-      font-family: 'Orbitron', sans-serif;
-      color: var(--cyan-neon);
-      font-weight: bold;
+      font-size: 0.7rem;
+      font-family: 'Luckiest Guy', cursive;
+      color: var(--yellow-cartoon);
+      -webkit-text-stroke: 1px var(--comic-border);
     }
 
     .skill-btn .cooldown-overlay {
@@ -289,57 +293,56 @@
 
     .skill-btn .cooldown-text {
       position: absolute;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.8rem;
-      font-weight: bold;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 1.1rem;
       color: #fff;
+      -webkit-text-stroke: 1px var(--comic-border);
       display: none;
     }
 
     .skill-btn.cooldown .cooldown-text { display: block; }
-    .skill-btn.cooldown { filter: grayscale(0.8); cursor: not-allowed; }
+    .skill-btn.cooldown { filter: grayscale(0.85); cursor: not-allowed; }
 
     /* Wave Announcement & Boss Banner */
     #wave-banner {
       position: absolute;
       top: 45%;
       left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 4px;
+      transform: translate(-50%, -50%) scale(0.6);
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 2.8rem;
+      letter-spacing: 2px;
       text-align: center;
-      color: #fff;
-      text-shadow: 0 0 20px var(--cyan-neon), 0 0 40px var(--cyan-neon);
+      color: var(--yellow-cartoon);
+      -webkit-text-stroke: 3px var(--comic-border);
+      text-shadow: 4px 4px 0 var(--comic-border);
       pointer-events: none;
       opacity: 0;
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       z-index: 20;
     }
 
     #wave-banner.show {
       opacity: 1;
-      transform: translate(-50%, -50%) scale(1.1);
+      transform: translate(-50%, -50%) scale(1.15);
     }
 
     #wave-banner.boss {
-      color: #ff0055;
-      text-shadow: 0 0 20px #ff0055, 0 0 40px #ff0055;
+      color: var(--pink-cartoon);
+      font-size: 3.2rem;
     }
 
     /* Boss HP Overlay */
     #boss-hud {
       position: absolute;
       top: 14px;
-      right: 14px;
-      width: 280px;
-      background: rgba(10, 15, 25, 0.9);
-      border: 1px solid #ff0055;
-      border-radius: 8px;
-      padding: 8px 12px;
-      box-shadow: 0 0 16px rgba(255, 0, 85, 0.4);
+      right: 16px;
+      width: 300px;
+      background: var(--bg-panel);
+      border: 3px solid var(--comic-border);
+      border-radius: 14px;
+      padding: 10px 14px;
+      box-shadow: 0 5px 0 var(--comic-border);
       display: none;
       z-index: 5;
     }
@@ -347,36 +350,36 @@
     #boss-hud.active { display: block; }
 
     .boss-name {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.8rem;
-      font-weight: bold;
-      color: #ff0055;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 1rem;
+      color: var(--pink-cartoon);
       letter-spacing: 1px;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       display: flex;
       justify-content: space-between;
+      -webkit-text-stroke: 1px var(--comic-border);
     }
 
     .boss-bar-track {
       width: 100%;
-      height: 8px;
+      height: 12px;
       background: #200d18;
-      border-radius: 4px;
+      border-radius: 6px;
       overflow: hidden;
-      border: 1px solid rgba(255, 0, 85, 0.4);
+      border: 2px solid var(--comic-border);
     }
 
     .boss-bar-fill {
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, #ff0055, #ff5e00);
+      background: linear-gradient(90deg, #ff0055, #ff7700);
       transition: width 0.2s linear;
     }
 
     /* Bottom Control & Deck Interface */
     #bottom-deck {
       display: grid;
-      grid-template-columns: 1fr 340px;
+      grid-template-columns: 1fr 350px;
       gap: 12px;
       width: 100%;
     }
@@ -390,111 +393,111 @@
     /* Turret Selector Deck */
     .deck-panel {
       background: var(--bg-panel);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
+      border: 3px solid var(--comic-border);
+      border-radius: 16px;
       padding: 12px 16px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 6px 0 var(--comic-border);
     }
 
     .deck-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      letter-spacing: 1.5px;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 1.05rem;
+      color: var(--yellow-cartoon);
+      letter-spacing: 1px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      -webkit-text-stroke: 1px var(--comic-border);
     }
 
     .turret-cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
       gap: 10px;
     }
 
     .turret-card {
       background: var(--bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
+      border: 3px solid var(--comic-border);
+      border-radius: 14px;
       padding: 10px 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 6px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 0 var(--comic-border);
       position: relative;
     }
 
     .turret-card:hover {
-      border-color: var(--cyan-neon);
-      background: rgba(0, 240, 255, 0.1);
-      transform: translateY(-2px);
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 7px 0 var(--comic-border);
+      background: rgba(0, 229, 255, 0.15);
     }
 
     .turret-card.selected {
-      border-color: var(--cyan-neon);
-      background: rgba(0, 240, 255, 0.18);
-      box-shadow: 0 0 12px var(--cyan-glow);
+      border-color: var(--yellow-cartoon);
+      background: rgba(255, 208, 0, 0.25);
+      box-shadow: 0 4px 0 var(--comic-border), 0 0 16px rgba(255, 208, 0, 0.5);
+      transform: translateY(-2px);
     }
 
     .turret-card.cant-afford {
-      opacity: 0.45;
-      filter: grayscale(0.6);
+      opacity: 0.5;
+      filter: grayscale(0.7);
     }
 
     .card-key {
       position: absolute;
       top: 4px;
       left: 6px;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.65rem;
-      color: var(--text-muted);
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 0.75rem;
+      color: var(--yellow-cartoon);
+      -webkit-text-stroke: 1px var(--comic-border);
     }
 
     .turret-card-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.4rem;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 1.6rem;
+      background: rgba(0, 0, 0, 0.25);
+      border: 2px solid var(--comic-border);
     }
 
     .turret-card-name {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 700;
+      font-size: 0.78rem;
+      font-weight: 800;
       text-align: center;
     }
 
     .turret-card-cost {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.85rem;
-      color: var(--amber-neon);
-      font-weight: bold;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 0.95rem;
+      color: var(--yellow-cartoon);
+      -webkit-text-stroke: 1px var(--comic-border);
     }
 
     /* Inspector & Upgrade Panel */
     .inspector-panel {
       background: var(--bg-panel);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
+      border: 3px solid var(--comic-border);
+      border-radius: 16px;
       padding: 12px 16px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      min-height: 140px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      min-height: 150px;
+      box-shadow: 0 6px 0 var(--comic-border);
     }
 
     .inspector-content {
@@ -511,50 +514,51 @@
     }
 
     .tower-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 800;
-      color: var(--cyan-neon);
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 1.15rem;
+      color: var(--cyan-cartoon);
+      -webkit-text-stroke: 1px var(--comic-border);
     }
 
     .tower-level-badge {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.75rem;
-      background: rgba(0, 240, 255, 0.15);
-      border: 1px solid var(--cyan-neon);
-      padding: 2px 8px;
-      border-radius: 4px;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 0.85rem;
+      background: var(--yellow-cartoon);
+      color: #000;
+      border: 2px solid var(--comic-border);
+      padding: 2px 10px;
+      border-radius: 12px;
+      box-shadow: 0 2px 0 var(--comic-border);
     }
 
     .stats-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 6px;
-      font-size: 0.8rem;
-      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
       color: var(--text-muted);
     }
 
-    .stats-row span strong {
-      color: #fff;
-    }
+    .stats-row span strong { color: #fff; }
 
     .priority-select-box {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
+      font-weight: 800;
       margin-top: 2px;
     }
 
     .priority-select-box select {
       background: var(--bg-card);
       color: var(--text-main);
-      border: 1px solid var(--border-color);
-      padding: 3px 6px;
-      border-radius: 4px;
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 600;
+      border: 2px solid var(--comic-border);
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
     }
 
     .inspector-actions {
@@ -565,21 +569,23 @@
 
     .btn-upgrade {
       flex: 2;
-      background: linear-gradient(135deg, #0ea5e9, #0284c7);
-      border: 1px solid var(--cyan-neon);
-      color: #fff;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 700;
-      font-size: 0.8rem;
+      background: var(--green-cartoon);
+      border: 2.5px solid var(--comic-border);
+      color: #000;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
       padding: 8px 10px;
-      border-radius: 6px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: all 0.2s;
+      box-shadow: 0 3px 0 var(--comic-border);
+      transition: all 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .btn-upgrade:hover:not(:disabled) {
-      box-shadow: 0 0 12px var(--cyan-glow);
-      filter: brightness(1.2);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 0 var(--comic-border);
+      filter: brightness(1.1);
     }
 
     .btn-upgrade:disabled {
@@ -590,21 +596,23 @@
 
     .btn-sell {
       flex: 1;
-      background: rgba(239, 68, 68, 0.2);
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      color: #f87171;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 700;
-      font-size: 0.78rem;
+      background: #ef4444;
+      border: 2.5px solid var(--comic-border);
+      color: #fff;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 800;
+      font-size: 0.82rem;
       padding: 8px;
-      border-radius: 6px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: all 0.2s;
+      box-shadow: 0 3px 0 var(--comic-border);
+      transition: all 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .btn-sell:hover {
-      background: rgba(239, 68, 68, 0.4);
-      border-color: #ef4444;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 0 var(--comic-border);
+      filter: brightness(1.1);
     }
 
     /* Level 4 Branch Specialization Modal */
@@ -623,16 +631,14 @@
       padding: 20px;
     }
 
-    #branch-modal.active {
-      display: flex;
-    }
+    #branch-modal.active { display: flex; }
 
     .branch-dialog {
       background: var(--bg-panel);
-      border: 2px solid var(--cyan-neon);
-      box-shadow: 0 0 30px var(--cyan-glow);
-      border-radius: 12px;
-      padding: 24px;
+      border: 4px solid var(--comic-border);
+      box-shadow: 0 10px 0 var(--comic-border), 0 0 30px rgba(0, 229, 255, 0.4);
+      border-radius: 20px;
+      padding: 26px;
       max-width: 580px;
       width: 100%;
       display: flex;
@@ -642,10 +648,10 @@
     }
 
     .branch-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.3rem;
-      color: var(--cyan-neon);
-      text-shadow: 0 0 10px var(--cyan-glow);
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 1.6rem;
+      color: var(--yellow-cartoon);
+      -webkit-text-stroke: 1.5px var(--comic-border);
     }
 
     .branch-options-grid {
@@ -656,47 +662,46 @@
     }
 
     @media (max-width: 500px) {
-      .branch-options-grid {
-        grid-template-columns: 1fr;
-      }
+      .branch-options-grid { grid-template-columns: 1fr; }
     }
 
     .branch-card {
       background: var(--bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
+      border: 3px solid var(--comic-border);
+      border-radius: 16px;
       padding: 16px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      transition: all 0.2s;
+      box-shadow: 0 4px 0 var(--comic-border);
+      transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .branch-card:hover {
-      border-color: var(--emerald-neon);
-      transform: translateY(-3px);
-      box-shadow: 0 0 16px rgba(0, 255, 136, 0.4);
+      border-color: var(--green-cartoon);
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 8px 0 var(--comic-border);
     }
 
     .branch-name {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--emerald-neon);
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 1.15rem;
+      color: var(--green-cartoon);
+      -webkit-text-stroke: 1px var(--comic-border);
     }
 
     .branch-desc {
       font-size: 0.85rem;
       color: var(--text-muted);
-      line-height: 1.3;
+      line-height: 1.35;
     }
 
     .branch-cost {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 1rem;
-      color: var(--amber-neon);
-      font-weight: bold;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 1.1rem;
+      color: var(--yellow-cartoon);
+      -webkit-text-stroke: 1px var(--comic-border);
       margin-top: auto;
     }
 
@@ -720,10 +725,10 @@
 
     .tech-tree-dialog {
       background: var(--bg-panel);
-      border: 2px solid var(--purple-neon);
-      box-shadow: 0 0 30px rgba(157, 0, 255, 0.4);
-      border-radius: 12px;
-      padding: 24px;
+      border: 4px solid var(--comic-border);
+      box-shadow: 0 10px 0 var(--comic-border), 0 0 30px rgba(168, 85, 247, 0.4);
+      border-radius: 20px;
+      padding: 26px;
       max-width: 620px;
       width: 100%;
       display: flex;
@@ -739,21 +744,22 @@
 
     .tech-item {
       background: var(--bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
+      border: 2.5px solid var(--comic-border);
+      border-radius: 14px;
       padding: 12px;
       display: flex;
       flex-direction: column;
       gap: 6px;
+      box-shadow: 0 3px 0 var(--comic-border);
     }
 
     .tech-item-name {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.88rem;
-      font-weight: bold;
-      color: var(--purple-neon);
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 1rem;
+      color: var(--purple-cartoon);
       display: flex;
       justify-content: space-between;
+      -webkit-text-stroke: 1px var(--comic-border);
     }
 
     .tech-item-desc {
@@ -763,20 +769,23 @@
 
     .btn-research {
       margin-top: 6px;
-      background: rgba(157, 0, 255, 0.2);
-      border: 1px solid var(--purple-neon);
+      background: var(--purple-cartoon);
+      border: 2px solid var(--comic-border);
       color: #fff;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.75rem;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 800;
+      font-size: 0.8rem;
       padding: 6px;
-      border-radius: 4px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: all 0.2s;
+      box-shadow: 0 2px 0 var(--comic-border);
+      transition: all 0.1s;
     }
 
     .btn-research:hover:not(:disabled) {
-      background: var(--purple-neon);
-      box-shadow: 0 0 12px rgba(157, 0, 255, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 0 var(--comic-border);
+      filter: brightness(1.15);
     }
 
     .btn-research:disabled {
@@ -804,10 +813,10 @@
 
     .endgame-dialog {
       background: var(--bg-panel);
-      border: 2px solid var(--cyan-neon);
-      box-shadow: 0 0 35px var(--cyan-glow);
-      border-radius: 12px;
-      padding: 30px;
+      border: 4px solid var(--comic-border);
+      box-shadow: 0 10px 0 var(--comic-border);
+      border-radius: 22px;
+      padding: 32px;
       max-width: 480px;
       width: 100%;
       display: flex;
@@ -818,62 +827,60 @@
     }
 
     .endgame-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 900;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 2.2rem;
       letter-spacing: 2px;
+      -webkit-text-stroke: 2px var(--comic-border);
     }
 
     .endgame-title.defeat {
       color: #ff0055;
-      text-shadow: 0 0 16px #ff0055;
     }
 
     .endgame-title.victory {
-      color: var(--emerald-neon);
-      text-shadow: 0 0 16px var(--emerald-neon);
+      color: var(--yellow-cartoon);
     }
 
     .endgame-stats {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.95rem;
+      font-size: 1rem;
+      font-weight: 700;
       color: var(--text-muted);
       display: flex;
       flex-direction: column;
       gap: 6px;
       width: 100%;
       background: rgba(0, 0, 0, 0.3);
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 14px;
+      border-radius: 12px;
+      border: 2px solid var(--comic-border);
     }
 
     .btn-restart {
-      background: linear-gradient(135deg, #00f0ff, #00a0ff);
+      background: var(--yellow-cartoon);
       color: #000;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 800;
-      font-size: 1rem;
-      padding: 12px 28px;
-      border-radius: 8px;
-      border: none;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 1.3rem;
+      letter-spacing: 1px;
+      padding: 12px 32px;
+      border-radius: 14px;
+      border: 3px solid var(--comic-border);
       cursor: pointer;
-      box-shadow: 0 0 20px var(--cyan-glow);
-      transition: all 0.2s;
+      box-shadow: 0 6px 0 var(--comic-border);
+      transition: all 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .btn-restart:hover {
-      transform: scale(1.05);
-      filter: brightness(1.2);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 9px 0 var(--comic-border);
     }
 
-    /* Close button for modals */
     .modal-close-btn {
       align-self: flex-end;
       background: transparent;
       border: none;
       color: var(--text-muted);
-      font-size: 1.2rem;
+      font-size: 1.4rem;
+      font-weight: bold;
       cursor: pointer;
     }
 
@@ -885,7 +892,7 @@
   <!-- Top Header HUD -->
   <header id="header-hud">
     <div class="title-box">
-      <div class="core-logo">⚙️</div>
+      <div class="core-logo">🤖</div>
       <h1>CYBER CORE: MECHA TD</h1>
     </div>
 
@@ -894,7 +901,7 @@
       <div class="stat-badge credits" title="Energia para construir e evoluir torres">
         <span class="icon">⚡</span>
         <span>ENERGIA:</span>
-        <span class="val" id="hud-credits">250</span>
+        <span class="val" id="hud-credits">300</span>
       </div>
 
       <div class="stat-badge nanites" title="Nanitas obtidas ao derrotar inimigos para upgrades do Núcleo">
@@ -924,12 +931,12 @@
     <!-- Controls & Speed -->
     <div class="controls-group">
       <button class="btn-hud" id="btn-next-wave" title="Iniciar próxima onda de invasores">
-        ▶ INICIAR ONDA
+        ▶ ONDA
       </button>
       <button class="btn-hud" id="btn-speed-1x">1x</button>
       <button class="btn-hud" id="btn-speed-2x">2x</button>
       <button class="btn-hud" id="btn-tech-tree" title="Árvore de Pesquisa Tecnológica do Núcleo">
-        🔬 PESQUISA
+        🔬 LAB
       </button>
       <button class="btn-hud" id="btn-audio" title="Ativar/Desativar Efeitos Sonoros">
         🔊 SOM
@@ -986,8 +993,8 @@
       <!-- Turret Selector Grid -->
       <div class="deck-panel">
         <div class="deck-title">
-          <span>SISTEMAS DEFENSIVOS [ATALHOS 1-5]</span>
-          <span style="font-size: 0.75rem; color: var(--text-muted)">Clique na torre e posicione nas bases do mapa</span>
+          <span>TORRES ROBÓTICAS [TECLAS 1-5]</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted)">Clique e posicione nas bases hexagonais</span>
         </div>
         <div class="turret-cards-grid" id="turret-cards-container">
           <!-- Dynamically populated via JS -->
@@ -996,10 +1003,10 @@
 
       <!-- Inspector & Upgrade Station -->
       <div class="inspector-panel" id="inspector-panel">
-        <div class="deck-title">INSPEÇÃO DA UNIDADE</div>
+        <div class="deck-title">INSPEÇÃO DA TORRE</div>
         <div class="inspector-content" id="inspector-content">
-          <div style="margin: auto; color: var(--text-muted); font-size: 0.85rem; text-align: center;">
-            Selecione uma torre no mapa para verificar status, evoluir níveis ou customizar alvos.
+          <div style="margin: auto; color: var(--text-muted); font-size: 0.9rem; text-align: center;">
+            Selecione uma torre no mapa para inspecionar, evoluir ou escolher especializações!
           </div>
         </div>
       </div>
@@ -1009,15 +1016,15 @@
   <!-- Level 4 Branch Specialization Modal -->
   <div id="branch-modal">
     <div class="branch-dialog">
-      <div class="branch-title">⚡ PROTOCOLO SUPREMO: NÍVEL 4</div>
-      <p style="font-size: 0.9rem; color: var(--text-muted)">
-        Esta unidade atingiu o ápice de evolução. Selecione uma das duas especializações tecnológicas exclusivas:
+      <div class="branch-title">⚡ ESPECIALIZAÇÃO MÁXIMA (NÍVEL 4)</div>
+      <p style="font-size: 0.95rem; color: var(--text-muted)">
+        Selecione uma das duas especializações tecnológicas exclusivas para esta unidade:
       </p>
       <div class="branch-options-grid" id="branch-options-grid">
         <!-- Branch cards inserted dynamically -->
       </div>
-      <button class="btn-hud modal-close-btn" id="btn-close-branch" style="align-self: center; margin-top: 8px;">
-        Cancelar
+      <button class="btn-hud modal-close-btn" id="btn-close-branch" style="align-self: center; margin-top: 10px;">
+        Voltar
       </button>
     </div>
   </div>
@@ -1026,13 +1033,13 @@
   <div id="tech-tree-modal">
     <div class="tech-tree-dialog">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h2 style="font-family: 'Orbitron'; font-size: 1.2rem; color: var(--purple-neon)">
-          🔬 MATRIZ DE PESQUISA DO NÚCLEO
+        <h2 style="font-family: 'Luckiest Guy'; font-size: 1.5rem; color: var(--purple-cartoon); -webkit-text-stroke: 1.5px var(--comic-border);">
+          🔬 LABORATÓRIO DO NÚCLEO
         </h2>
         <button class="modal-close-btn" id="btn-close-tech">✕</button>
       </div>
-      <p style="font-size: 0.85rem; color: var(--text-muted)">
-        Gaste Nanitas coletadas dos robôs derrotados para aprimorar passivamente todas as defesas.
+      <p style="font-size: 0.9rem; color: var(--text-muted)">
+        Gaste Nanitas coletadas dos robôs para aplicar melhorias passivas a todas as defesas.
       </p>
       <div class="tech-grid" id="tech-grid">
         <!-- Tech upgrades populated dynamically -->
@@ -1043,9 +1050,9 @@
   <!-- Game Over / Victory Modal -->
   <div id="endgame-modal">
     <div class="endgame-dialog">
-      <div class="endgame-title" id="endgame-title">VITÓRIA DO NÚCLEO</div>
-      <p id="endgame-msg" style="color: var(--text-muted); font-size: 0.95rem;">
-        Todas as 20 ondas mecânicas foram aniquiladas com sucesso!
+      <div class="endgame-title" id="endgame-title">VITÓRIA DO NÚCLEO!</div>
+      <p id="endgame-msg" style="color: var(--text-muted); font-size: 1rem;">
+        Todas as 20 ondas de robôs invasores foram aniquiladas com sucesso!
       </p>
       <div class="endgame-stats">
         <div>Inimigos Destruídos: <strong id="stat-enemies-killed">0</strong></div>
@@ -1088,45 +1095,45 @@
         switch (type) {
           case 'gatling':
             osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(450, now);
-            osc.frequency.exponentialRampToValueAtTime(80, now + 0.08);
-            gain.gain.setValueAtTime(0.08, now);
+            osc.frequency.setValueAtTime(500, now);
+            osc.frequency.exponentialRampToValueAtTime(100, now + 0.08);
+            gain.gain.setValueAtTime(0.09, now);
             gain.gain.linearRampToValueAtTime(0, now + 0.08);
             osc.start(now);
             osc.stop(now + 0.08);
             break;
           case 'laser':
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(900, now);
-            osc.frequency.exponentialRampToValueAtTime(300, now + 0.15);
+            osc.frequency.setValueAtTime(1000, now);
+            osc.frequency.exponentialRampToValueAtTime(350, now + 0.12);
             gain.gain.setValueAtTime(0.06, now);
-            gain.gain.linearRampToValueAtTime(0, now + 0.15);
+            gain.gain.linearRampToValueAtTime(0, now + 0.12);
             osc.start(now);
-            osc.stop(now + 0.15);
+            osc.stop(now + 0.12);
             break;
           case 'mortar':
             osc.type = 'triangle';
-            osc.frequency.setValueAtTime(160, now);
-            osc.frequency.exponentialRampToValueAtTime(30, now + 0.28);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.linearRampToValueAtTime(0, now + 0.28);
+            osc.frequency.setValueAtTime(180, now);
+            osc.frequency.exponentialRampToValueAtTime(40, now + 0.26);
+            gain.gain.setValueAtTime(0.22, now);
+            gain.gain.linearRampToValueAtTime(0, now + 0.26);
             osc.start(now);
-            osc.stop(now + 0.28);
+            osc.stop(now + 0.26);
             break;
           case 'emp':
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(600, now);
-            osc.frequency.exponentialRampToValueAtTime(100, now + 0.35);
-            gain.gain.setValueAtTime(0.15, now);
-            gain.gain.linearRampToValueAtTime(0, now + 0.35);
+            osc.frequency.setValueAtTime(700, now);
+            osc.frequency.exponentialRampToValueAtTime(120, now + 0.3);
+            gain.gain.setValueAtTime(0.16, now);
+            gain.gain.linearRampToValueAtTime(0, now + 0.3);
             osc.start(now);
-            osc.stop(now + 0.35);
+            osc.stop(now + 0.3);
             break;
           case 'tesla':
             osc.type = 'square';
-            osc.frequency.setValueAtTime(800 + Math.random() * 400, now);
-            osc.frequency.linearRampToValueAtTime(200, now + 0.12);
-            gain.gain.setValueAtTime(0.07, now);
+            osc.frequency.setValueAtTime(900 + Math.random() * 400, now);
+            osc.frequency.linearRampToValueAtTime(250, now + 0.12);
+            gain.gain.setValueAtTime(0.08, now);
             gain.gain.linearRampToValueAtTime(0, now + 0.12);
             osc.start(now);
             osc.stop(now + 0.12);
@@ -1140,30 +1147,30 @@
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(140, now);
-        osc.frequency.exponentialRampToValueAtTime(25, now + 0.35);
-        gain.gain.setValueAtTime(0.18, now);
-        gain.gain.linearRampToValueAtTime(0, now + 0.35);
+        osc.frequency.setValueAtTime(150, now);
+        osc.frequency.exponentialRampToValueAtTime(30, now + 0.32);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0, now + 0.32);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
-        osc.stop(now + 0.35);
+        osc.stop(now + 0.32);
       }
 
       playUpgrade() {
         if (!this.enabled || !this.ctx) return;
         const now = this.ctx.currentTime;
-        [440, 554, 659, 880].forEach((f, idx) => {
+        [523, 659, 784, 1046].forEach((f, idx) => {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'triangle';
-          osc.frequency.setValueAtTime(f, now + idx * 0.06);
-          gain.gain.setValueAtTime(0.1, now + idx * 0.06);
-          gain.gain.linearRampToValueAtTime(0, now + idx * 0.06 + 0.12);
+          osc.frequency.setValueAtTime(f, now + idx * 0.05);
+          gain.gain.setValueAtTime(0.12, now + idx * 0.05);
+          gain.gain.linearRampToValueAtTime(0, now + idx * 0.05 + 0.1);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
-          osc.start(now + idx * 0.06);
-          osc.stop(now + idx * 0.06 + 0.12);
+          osc.start(now + idx * 0.05);
+          osc.stop(now + idx * 0.05 + 0.1);
         });
       }
 
@@ -1173,14 +1180,14 @@
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(200, now);
-        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.4);
-        gain.gain.setValueAtTime(0.2, now);
-        gain.gain.linearRampToValueAtTime(0, now + 0.4);
+        osc.frequency.setValueAtTime(250, now);
+        osc.frequency.exponentialRampToValueAtTime(1400, now + 0.35);
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.linearRampToValueAtTime(0, now + 0.35);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
-        osc.stop(now + 0.4);
+        osc.stop(now + 0.35);
       }
     }
 
@@ -1195,10 +1202,10 @@
         name: 'Gatling Vulcan',
         icon: '🔫',
         cost: 100,
-        range: 130,
-        damage: 14,
-        fireRate: 0.16, // seconds per shot
-        color: '#00f0ff',
+        range: 135,
+        damage: 15,
+        fireRate: 0.16,
+        color: '#00e5ff',
         desc: 'Disparos contínuos ultrarrápidos contra drones leves.',
         branches: {
           A: { name: 'Hyper-Overclock', desc: '+120% Cadência de tiro insana e cartucho duplo.', cost: 350, rateMult: 0.45, dmgMult: 1.3 },
@@ -1210,11 +1217,11 @@
         name: 'Laser Térmico',
         icon: '🔦',
         cost: 160,
-        range: 155,
-        damage: 42, // DPS
+        range: 160,
+        damage: 44,
         fireRate: 0.05,
         isBeam: true,
-        color: '#ff007f',
+        color: '#ff1475',
         desc: 'Feixe sustentado que aquece e derrete blindagens.',
         branches: {
           A: { name: 'Prisma Tríplice', desc: 'Fraciona o laser em até 3 alvos simultâneos.', cost: 420, multiBeam: 3 },
@@ -1226,11 +1233,11 @@
         name: 'Canhão Plasma',
         icon: '💣',
         cost: 210,
-        range: 190,
-        damage: 75,
+        range: 195,
+        damage: 80,
         fireRate: 1.6,
         splashRadius: 75,
-        color: '#ff9900',
+        color: '#ff7700',
         desc: 'Projétil parabólico com grande explosão de área.',
         branches: {
           A: { name: 'Bombardeio Cluster', desc: 'Explosão principal solta 3 submunições explosivas.', cost: 460, cluster: true },
@@ -1242,8 +1249,8 @@
         name: 'Pulso PEM Criogênico',
         icon: '❄️',
         cost: 150,
-        range: 135,
-        damage: 18,
+        range: 140,
+        damage: 20,
         fireRate: 1.4,
         slowAmount: 0.5,
         slowDuration: 2.5,
@@ -1259,8 +1266,8 @@
         name: 'Arco Voltaico Tesla',
         icon: '⚡',
         cost: 240,
-        range: 145,
-        damage: 55,
+        range: 150,
+        damage: 58,
         fireRate: 1.1,
         chainCount: 3,
         color: '#a855f7',
@@ -1272,7 +1279,6 @@
       }
     };
 
-    // Global Tech Tree Upgrades
     const TECH_UPGRADES = [
       { id: 'reactor', name: 'Reator Auxiliar', desc: '+1 de Energia gerada automaticamente por segundo.', level: 0, maxLevel: 5, cost: 25, costScale: 1.6 },
       { id: 'targeting', name: 'Matriz de Precisão', desc: '+5% de Chance Crítica para todas as torres.', level: 0, maxLevel: 5, cost: 30, costScale: 1.5 },
@@ -1283,7 +1289,6 @@
     /* ==========================================================================
        3. MAP PATHS & DEFENSE SLOTS
        ========================================================================== */
-    // Path points from entrance (left) to Core (right)
     const WAYPOINTS = [
       { x: -30, y: 140 },
       { x: 190, y: 140 },
@@ -1294,10 +1299,9 @@
       { x: 670, y: 490 },
       { x: 890, y: 490 },
       { x: 890, y: 315 },
-      { x: 1000, y: 315 } // Core position
+      { x: 1000, y: 315 }
     ];
 
-    // Allowed Turret Placement Slots
     const TURRET_SLOTS = [
       { x: 100, y: 70 },
       { x: 100, y: 220 },
@@ -1336,6 +1340,7 @@
       projectiles: [],
       particles: [],
       floatingTexts: [],
+      comicPopups: [],
       cooldowns: {
         emp: 0,
         overdrive: 0,
@@ -1349,7 +1354,7 @@
     };
 
     /* ==========================================================================
-       5. CLASSES: TURRETS, ENEMIES, PROJECTILES, PARTICLES
+       5. CLASSES: TURRETS (SQUASH & STRETCH), ENEMIES (LED EYES)
        ========================================================================== */
 
     class Turret {
@@ -1360,16 +1365,19 @@
         this.typeId = typeConfig.id;
         this.config = typeConfig;
         this.level = 1;
-        this.branch = null; // 'A' or 'B'
+        this.branch = null;
         this.kills = 0;
         this.damageDealt = 0;
         this.fireTimer = 0;
         this.angle = 0;
         this.target = null;
-        this.targetPriority = 'first'; // 'first', 'strongest', 'weakest', 'closest'
+        this.targetPriority = 'first';
         this.investedCost = typeConfig.cost;
 
-        // Dynamic stats
+        // Cartoon Squash & Stretch Recoil
+        this.recoilAnim = 0;
+        this.barrelRecoilOffset = 0;
+
         this.range = typeConfig.range;
         this.damage = typeConfig.damage;
         this.fireRate = typeConfig.fireRate;
@@ -1383,7 +1391,6 @@
       getEffectiveFireRate() {
         let rate = this.fireRate;
         if (state.overdriveActiveTime > 0) rate *= 0.5;
-        // Check tesla resonance aura buff
         for (let t of state.turrets) {
           if (t.branch === 'B' && t.typeId === 'tesla' && t !== this) {
             const d = Math.hypot(t.x - this.x, t.y - this.y);
@@ -1404,6 +1411,8 @@
         this.damage = Math.round(this.damage * 1.45);
         this.range = Math.round(this.range * 1.15);
         this.fireRate = Math.max(0.04, this.fireRate * 0.88);
+        this.recoilAnim = 1.0;
+        createComicPopup(this.x, this.y - 20, 'LEVEL UP!', '#ffd000');
         sound.playUpgrade();
       }
 
@@ -1415,6 +1424,8 @@
         if (b.rateMult) this.fireRate *= b.rateMult;
         if (b.dmgMult) this.damage *= b.dmgMult;
         if (b.splashMult) this.config.splashRadius = (this.config.splashRadius || 70) * b.splashMult;
+        this.recoilAnim = 1.5;
+        createComicPopup(this.x, this.y - 25, 'MAX POW!', '#00e676');
         sound.playUpgrade();
       }
 
@@ -1430,19 +1441,26 @@
 
       update(dt) {
         this.fireTimer -= dt;
+
+        // Recoil decay (Squash & Stretch spring physics)
+        if (this.recoilAnim > 0) {
+          this.recoilAnim = Math.max(0, this.recoilAnim - dt * 6);
+        }
+
         this.findTarget();
 
         if (this.target) {
           this.angle = Math.atan2(this.target.y - this.y, this.target.x - this.x);
 
           if (this.config.isBeam) {
-            // Laser beam sustained tick
             if (this.fireTimer <= 0) {
               this.fireTimer = this.getEffectiveFireRate();
               let d = this.damage * this.fireTimer;
-              // Crit check
               const critLevel = TECH_UPGRADES.find(t => t.id === 'targeting').level;
-              if (Math.random() < critLevel * 0.05) d *= 2;
+              if (Math.random() < critLevel * 0.05) {
+                d *= 2;
+                createComicPopup(this.target.x, this.target.y - 10, 'CRIT!', '#ff1475');
+              }
               this.target.takeDamage(d, 'laser');
               this.damageDealt += d;
               state.totalDamageDealt += d;
@@ -1450,7 +1468,6 @@
               sound.playShoot('laser');
             }
 
-            // If branch A (Triple beam), target 2 extra enemies
             if (this.branch === 'A') {
               let extras = state.enemies.filter(e => e !== this.target && Math.hypot(e.x - this.x, e.y - this.y) <= this.getEffectiveRange()).slice(0, 2);
               extras.forEach(ext => {
@@ -1494,6 +1511,9 @@
         if (!this.target) return;
         sound.playShoot(this.typeId);
 
+        // Trigger Squash & Stretch Recoil
+        this.recoilAnim = 1.0;
+
         let dmg = this.damage;
         let isCrit = false;
         const critLevel = TECH_UPGRADES.find(t => t.id === 'targeting').level;
@@ -1503,6 +1523,7 @@
         if (Math.random() < critProb) {
           dmg *= (this.branch === 'B' && this.typeId === 'gatling') ? 2.5 : 2;
           isCrit = true;
+          createComicPopup(this.x + Math.cos(this.angle) * 30, this.y + Math.sin(this.angle) * 30 - 15, 'CRIT!', '#ffd000');
         }
 
         if (this.typeId === 'gatling') {
@@ -1518,115 +1539,197 @@
 
       draw(ctx) {
         const effRange = this.getEffectiveRange();
-        // Base plate
         ctx.save();
         ctx.translate(this.x, this.y);
 
-        // Selection ring
+        // Selection ring & Range
         if (state.inspectedTurret === this) {
-          ctx.strokeStyle = '#00f0ff';
-          ctx.lineWidth = 2;
+          ctx.strokeStyle = '#ffd000';
+          ctx.lineWidth = 3.5;
           ctx.beginPath();
-          ctx.arc(0, 0, 24, 0, Math.PI * 2);
+          ctx.arc(0, 0, 26, 0, Math.PI * 2);
           ctx.stroke();
 
-          // Range circle
-          ctx.strokeStyle = 'rgba(0, 240, 255, 0.28)';
-          ctx.fillStyle = 'rgba(0, 240, 255, 0.04)';
+          // Range circle cartoon dashed
+          ctx.strokeStyle = 'rgba(0, 229, 255, 0.45)';
+          ctx.lineWidth = 2.5;
+          ctx.setLineDash([8, 6]);
+          ctx.fillStyle = 'rgba(0, 229, 255, 0.06)';
           ctx.beginPath();
           ctx.arc(0, 0, effRange, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
+          ctx.setLineDash([]);
         }
 
-        // Platform
-        ctx.fillStyle = '#162038';
-        ctx.strokeStyle = this.config.color;
-        ctx.lineWidth = 2;
+        // Base plate (Chunky Cartoon Hexagon with 3D drop bevel)
+        ctx.fillStyle = '#1e293b';
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 3.5;
         ctx.beginPath();
-        drawHexagon(ctx, 0, 0, 20);
+        drawHexagon(ctx, 0, 3, 22);
         ctx.fill();
         ctx.stroke();
 
-        // Level indicators
+        ctx.fillStyle = '#334155';
+        ctx.beginPath();
+        drawHexagon(ctx, 0, 0, 22);
+        ctx.fill();
+        ctx.stroke();
+
+        // Level Stars / Bolts
         for (let i = 0; i < this.level; i++) {
-          ctx.fillStyle = this.level === 4 ? '#00ff88' : '#ffb800';
+          ctx.fillStyle = this.level === 4 ? '#00e676' : '#ffd000';
+          ctx.strokeStyle = '#000';
+          ctx.lineWidth = 1.5;
           ctx.beginPath();
-          ctx.arc(-10 + i * 7, 14, 2.5, 0, Math.PI * 2);
+          ctx.arc(-11 + i * 7.5, 14, 3.5, 0, Math.PI * 2);
           ctx.fill();
+          ctx.stroke();
         }
 
-        // Turret Head & Barrels (Rotated)
+        // SQUASH & STRETCH TRANSFORM ON BARREL / TURRET HEAD
         ctx.rotate(this.angle);
 
-        ctx.fillStyle = '#0f172a';
-        ctx.strokeStyle = '#cbd5e1';
-        ctx.lineWidth = 1.5;
+        // Elastic recoil formula
+        const squash = Math.sin(this.recoilAnim * Math.PI);
+        const scaleX = 1 - squash * 0.28; // Recoils backward
+        const scaleY = 1 + squash * 0.22; // Bulges sideways
+        ctx.scale(scaleX, scaleY);
+
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#000000';
 
         if (this.typeId === 'gatling') {
-          // Double barrels
-          ctx.fillStyle = '#334155';
-          ctx.fillRect(6, -6, 16, 4);
-          ctx.fillRect(6, 2, 16, 4);
+          // Double Chunky Barrels
+          ctx.fillStyle = '#64748b';
+          ctx.fillRect(8, -8, 18, 6);
+          ctx.strokeRect(8, -8, 18, 6);
+          ctx.fillRect(8, 2, 18, 6);
+          ctx.strokeRect(8, 2, 18, 6);
+
+          // Turret Core Dome
           ctx.fillStyle = this.config.color;
           ctx.beginPath();
-          ctx.arc(0, 0, 10, 0, Math.PI * 2);
+          ctx.arc(0, 0, 13, 0, Math.PI * 2);
           ctx.fill();
+          ctx.stroke();
+
+          // Cute Center Eye Visor
+          ctx.fillStyle = '#fff';
+          ctx.beginPath();
+          ctx.arc(4, 0, 4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#000';
+          ctx.beginPath();
+          ctx.arc(5, 0, 2, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Muzzle Flash Cartoon Star
+          if (this.recoilAnim > 0.6) {
+            drawCartoonStar(ctx, 28, -5, 8, 4, '#ffd000');
+          }
         } else if (this.typeId === 'laser') {
-          // Prism emitter
-          ctx.fillStyle = '#3b0764';
-          ctx.fillRect(4, -4, 18, 8);
+          // Prism Head
+          ctx.fillStyle = '#7c3aed';
+          ctx.fillRect(4, -6, 18, 12);
+          ctx.strokeRect(4, -6, 18, 12);
+
           ctx.fillStyle = this.config.color;
           ctx.beginPath();
-          ctx.moveTo(22, -6);
-          ctx.lineTo(28, 0);
-          ctx.lineTo(22, 6);
+          ctx.moveTo(22, -8);
+          ctx.lineTo(30, 0);
+          ctx.lineTo(22, 8);
           ctx.closePath();
           ctx.fill();
-          ctx.beginPath();
-          ctx.arc(0, 0, 11, 0, Math.PI * 2);
           ctx.stroke();
+
+          // Eyeball
+          ctx.fillStyle = '#fff';
+          ctx.beginPath();
+          ctx.arc(0, 0, 13, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#ff1475';
+          ctx.beginPath();
+          ctx.arc(4, 0, 6, 0, Math.PI * 2);
+          ctx.fill();
         } else if (this.typeId === 'mortar') {
-          // Heavy Cannon
-          ctx.fillStyle = '#78350f';
-          ctx.fillRect(4, -7, 20, 14);
-          ctx.fillStyle = '#f59e0b';
-          ctx.fillRect(16, -9, 8, 18);
+          // Chunky Fat Cannon Barrel
+          ctx.fillStyle = '#d97706';
+          ctx.beginPath();
+          ctx.moveTo(6, -11);
+          ctx.lineTo(24, -13);
+          ctx.lineTo(24, 13);
+          ctx.lineTo(6, 11);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          // Lip on muzzle
+          ctx.fillStyle = '#ff7700';
+          ctx.fillRect(23, -15, 6, 30);
+          ctx.strokeRect(23, -15, 6, 30);
+
+          ctx.fillStyle = '#92400e';
+          ctx.beginPath();
+          ctx.arc(0, 0, 14, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
         } else if (this.typeId === 'emp') {
-          // Ring emitter
+          // Bouncy Antenna Coil
           ctx.fillStyle = '#0284c7';
           ctx.beginPath();
-          ctx.arc(0, 0, 12, 0, Math.PI * 2);
+          ctx.arc(0, 0, 15, 0, Math.PI * 2);
           ctx.fill();
-          ctx.strokeStyle = '#38bdf8';
+          ctx.stroke();
+
+          ctx.fillStyle = '#38bdf8';
           ctx.beginPath();
-          ctx.arc(0, 0, 16, 0, Math.PI * 2);
+          ctx.arc(6, 0, 8, 0, Math.PI * 2);
+          ctx.fill();
           ctx.stroke();
         } else if (this.typeId === 'tesla') {
-          // Tesla rod
-          ctx.fillStyle = '#581c87';
-          ctx.fillRect(4, -3, 16, 6);
+          // Coiled Spring Spire
+          ctx.fillStyle = '#6b21a8';
+          ctx.fillRect(4, -5, 18, 10);
+          ctx.strokeRect(4, -5, 18, 10);
+
           ctx.fillStyle = '#c084fc';
           ctx.beginPath();
-          ctx.arc(20, 0, 5, 0, Math.PI * 2);
+          ctx.arc(22, 0, 7, 0, Math.PI * 2);
           ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#4c1d95';
+          ctx.beginPath();
+          ctx.arc(0, 0, 14, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
         }
 
         ctx.restore();
 
-        // Draw Laser Beams in world coords
+        // Laser Beam (Chunky Cartoon Beam)
         if (this.config.isBeam && this.target && !this.target.dead) {
           ctx.save();
-          ctx.strokeStyle = this.config.color;
-          ctx.lineWidth = 3 + Math.sin(Date.now() * 0.02);
-          ctx.shadowColor = this.config.color;
-          ctx.shadowBlur = 12;
+          // Black border for beam
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 9;
           ctx.beginPath();
           ctx.moveTo(this.x, this.y);
           ctx.lineTo(this.target.x, this.target.y);
           ctx.stroke();
 
-          // Triple beam secondary lines
+          // Vibrant neon inside
+          ctx.strokeStyle = this.config.color;
+          ctx.lineWidth = 5;
+          ctx.beginPath();
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(this.target.x, this.target.y);
+          ctx.stroke();
+
           if (this.branch === 'A') {
             let extras = state.enemies.filter(e => e !== this.target && Math.hypot(e.x - this.x, e.y - this.y) <= effRange).slice(0, 2);
             extras.forEach(ext => {
@@ -1648,19 +1751,21 @@
         this.x = WAYPOINTS[0].x;
         this.y = WAYPOINTS[0].y;
         this.dead = false;
-        this.progress = 0; // Total distance traveled
+        this.progress = 0;
         this.slowTimer = 0;
         this.slowFactor = 1;
 
-        // Enemy stats based on type
+        // Cartoon Bobbing Walk Cycle
+        this.walkCycle = Math.random() * Math.PI;
+
         switch (type) {
           case 'scout':
             this.name = 'Drone Batedor';
-            this.baseSpeed = 105;
+            this.baseSpeed = 110;
             this.maxHp = 65 * waveMultiplier;
             this.reward = 12;
             this.nanites = 1;
-            this.size = 11;
+            this.size = 13;
             this.color = '#38bdf8';
             break;
           case 'spider':
@@ -1669,7 +1774,7 @@
             this.maxHp = 160 * waveMultiplier;
             this.reward = 18;
             this.nanites = 2;
-            this.size = 14;
+            this.size = 16;
             this.color = '#a855f7';
             break;
           case 'tank':
@@ -1678,28 +1783,26 @@
             this.maxHp = 420 * waveMultiplier;
             this.reward = 32;
             this.nanites = 4;
-            this.size = 18;
+            this.size = 20;
             this.color = '#f59e0b';
-            this.shield = 100 * waveMultiplier;
             break;
           case 'stealth':
             this.name = 'Androide Furtivo';
-            this.baseSpeed = 82;
+            this.baseSpeed = 85;
             this.maxHp = 220 * waveMultiplier;
             this.reward = 28;
             this.nanites = 3;
-            this.size = 13;
-            this.color = '#00ff88';
-            this.cloaked = true;
+            this.size = 15;
+            this.color = '#00e676';
             break;
           case 'boss':
             this.name = 'TITÃ DESTRUIDOR V-' + state.currentWave;
             this.baseSpeed = 38;
             this.maxHp = 1800 * waveMultiplier;
-            this.reward = 150;
+            this.reward = 160;
             this.nanites = 25;
-            this.size = 28;
-            this.color = '#ff0055';
+            this.size = 32;
+            this.color = '#ff1475';
             this.isBoss = true;
             break;
         }
@@ -1711,15 +1814,14 @@
         if (this.dead) return;
         this.hp -= amount;
 
-        // Floating text for big hits
-        if (amount > 20) {
+        if (amount > 30) {
           state.floatingTexts.push({
-            x: this.x + (Math.random() * 20 - 10),
-            y: this.y - 12,
+            x: this.x + (Math.random() * 24 - 12),
+            y: this.y - 14,
             text: Math.round(amount),
-            color: source === 'crit' ? '#ff0055' : (source === 'laser' ? '#ff007f' : '#ffffff'),
+            color: source === 'crit' ? '#ffd000' : '#ffffff',
             alpha: 1,
-            vy: -25
+            vy: -32
           });
         }
 
@@ -1740,10 +1842,18 @@
         state.nanites += this.nanites;
         state.totalEnemiesKilled++;
         sound.playExplosion();
-        createExplosionParticles(this.x, this.y, this.color, this.isBoss ? 45 : 18);
+
+        // Onomatopeia on defeat
+        const comicWords = ['BOOM!', 'POW!', 'KABOOM!', 'POP!', 'SMASH!'];
+        const chosen = comicWords[Math.floor(Math.random() * comicWords.length)];
+        createComicPopup(this.x, this.y - 10, chosen, this.color);
+
+        // Cartoon Puffy Smoke Cloud Explosion
+        createCartoonExplosion(this.x, this.y, this.color, this.isBoss ? 8 : 4);
 
         if (this.isBoss) {
           document.getElementById('boss-hud').classList.remove('active');
+          triggerScreenShake(12);
         }
         updateHud();
       }
@@ -1751,19 +1861,16 @@
       update(dt) {
         if (this.dead) return;
 
-        // Slow status timer
         if (this.slowTimer > 0) {
           this.slowTimer -= dt;
-          if (this.slowTimer <= 0) {
-            this.slowFactor = 1;
-          }
+          if (this.slowTimer <= 0) this.slowFactor = 1;
         }
 
         const currentSpeed = this.baseSpeed * this.slowFactor;
-        const targetWp = WAYPOINTS[this.wpIndex + 1];
+        this.walkCycle += dt * (currentSpeed * 0.08);
 
+        const targetWp = WAYPOINTS[this.wpIndex + 1];
         if (!targetWp) {
-          // Reached the Core!
           this.reachCore();
           return;
         }
@@ -1784,7 +1891,6 @@
           this.progress += step;
         }
 
-        // Update boss bar if active boss
         if (this.isBoss) {
           const bossPercent = Math.max(0, (this.hp / this.maxHp) * 100);
           document.getElementById('boss-bar-fill').style.width = bossPercent + '%';
@@ -1798,6 +1904,7 @@
         state.coreHp = Math.max(0, state.coreHp - damage);
         sound.playExplosion();
         triggerScreenShake(8);
+        createComicPopup(this.x, this.y, 'OUCH!', '#ff0055');
         updateHud();
 
         if (state.coreHp <= 0) {
@@ -1809,60 +1916,87 @@
         if (this.dead) return;
 
         ctx.save();
-        ctx.translate(this.x, this.y);
+        // Cartoon Bobbing Walk
+        const bob = Math.sin(this.walkCycle) * 3;
+        ctx.translate(this.x, this.y + bob);
 
-        // Health bar
-        const barW = this.size * 2.2;
-        const barH = 4;
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        ctx.fillRect(-barW / 2, -this.size - 9, barW, barH);
+        // Health bar (Chunky Rounded)
+        const barW = this.size * 2.4;
+        const barH = 6;
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(-barW / 2 - 1, -this.size - 13, barW + 2, barH + 2);
         const hpPct = Math.max(0, this.hp / this.maxHp);
-        ctx.fillStyle = hpPct > 0.5 ? '#10b981' : (hpPct > 0.25 ? '#f59e0b' : '#ef4444');
-        ctx.fillRect(-barW / 2, -this.size - 9, barW * hpPct, barH);
+        ctx.fillStyle = hpPct > 0.5 ? '#00e676' : (hpPct > 0.25 ? '#ffd000' : '#ff0055');
+        ctx.fillRect(-barW / 2, -this.size - 12, barW * hpPct, barH);
 
-        // Body render
+        // Body Shape with Thick Black Outlines
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#000000';
         ctx.fillStyle = this.color;
-        ctx.strokeStyle = '#fff';
-        ctx.lineWidth = 1.5;
-
-        if (this.slowTimer > 0) {
-          ctx.shadowColor = '#38bdf8';
-          ctx.shadowBlur = 10;
-        }
 
         if (this.type === 'scout') {
-          // Triangular drone
+          // Cute Bumblebee / Saucer Drone
           ctx.beginPath();
-          ctx.moveTo(this.size, 0);
-          ctx.lineTo(-this.size, -this.size * 0.7);
-          ctx.lineTo(-this.size * 0.5, 0);
-          ctx.lineTo(-this.size, this.size * 0.7);
-          ctx.closePath();
+          ctx.ellipse(0, 0, this.size, this.size * 0.75, 0, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
+
+          // Spinning Propeller on top
+          const propX = Math.cos(Date.now() * 0.03) * 10;
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(-propX, -this.size - 2, propX * 2, 3);
+          ctx.strokeRect(-propX, -this.size - 2, propX * 2, 3);
         } else if (this.type === 'spider') {
-          // Octagonal cyber spider
+          // Bouncy Spider Legs
+          ctx.lineWidth = 3;
+          for (let side = -1; side <= 1; side += 2) {
+            const legWiggle = Math.sin(this.walkCycle) * 5;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(side * (this.size + 8), -6 + legWiggle);
+            ctx.lineTo(side * (this.size + 12), 10);
+            ctx.stroke();
+          }
+
+          // Body Dome
           ctx.beginPath();
-          drawHexagon(ctx, 0, 0, this.size);
+          ctx.arc(0, 0, this.size, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
         } else if (this.type === 'tank') {
-          // Heavy square tank
-          ctx.fillRect(-this.size, -this.size, this.size * 2, this.size * 2);
-          ctx.strokeRect(-this.size, -this.size, this.size * 2, this.size * 2);
+          // Treads
+          ctx.fillStyle = '#334155';
+          ctx.fillRect(-this.size - 2, -this.size - 1, (this.size + 2) * 2, this.size * 2 + 2);
+          ctx.strokeRect(-this.size - 2, -this.size - 1, (this.size + 2) * 2, this.size * 2 + 2);
+
+          // Turret chassis
+          ctx.fillStyle = this.color;
+          ctx.fillRect(-this.size + 2, -this.size + 3, (this.size - 2) * 2, (this.size - 2) * 2);
+          ctx.strokeRect(-this.size + 2, -this.size + 3, (this.size - 2) * 2, (this.size - 2) * 2);
         } else if (this.type === 'boss') {
-          // Colossal Titan Boss with double ring & spikes
-          ctx.shadowColor = '#ff0055';
-          ctx.shadowBlur = 20;
+          // Colossal Titan Mecha
           ctx.beginPath();
           ctx.arc(0, 0, this.size, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
 
-          ctx.fillStyle = '#fff';
+          // Spikes/Horns
+          ctx.fillStyle = '#ffd000';
           ctx.beginPath();
-          ctx.arc(0, 0, 8, 0, Math.PI * 2);
+          ctx.moveTo(-16, -this.size);
+          ctx.lineTo(-24, -this.size - 14);
+          ctx.lineTo(-8, -this.size);
+          ctx.closePath();
           ctx.fill();
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.moveTo(16, -this.size);
+          ctx.lineTo(24, -this.size - 14);
+          ctx.lineTo(8, -this.size);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
         } else {
           ctx.beginPath();
           ctx.arc(0, 0, this.size, 0, Math.PI * 2);
@@ -1870,7 +2004,63 @@
           ctx.stroke();
         }
 
+        // DRAW CARTOON LED EYES
+        drawCartoonEyes(ctx, this);
+
         ctx.restore();
+      }
+    }
+
+    function drawCartoonEyes(ctx, enemy) {
+      const eyeR = Math.max(2.5, enemy.size * 0.22);
+      const isSlowed = enemy.slowTimer > 0;
+      const isAngry = (enemy.hp / enemy.maxHp) < 0.4;
+
+      // Eye White Sockets
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 1.5;
+
+      [-eyeR * 1.5, eyeR * 1.5].forEach(ox => {
+        ctx.beginPath();
+        ctx.arc(ox, -2, eyeR, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      });
+
+      // Pupils / Expressions
+      if (isSlowed) {
+        // Spiral / Dizzy Eyes (@ @)
+        ctx.strokeStyle = '#0284c7';
+        ctx.lineWidth = 1.8;
+        [-eyeR * 1.5, eyeR * 1.5].forEach(ox => {
+          ctx.beginPath();
+          ctx.arc(ox, -2, eyeR * 0.6, 0, Math.PI * 1.6);
+          ctx.stroke();
+        });
+      } else if (isAngry) {
+        // Angry Slanted Pupils (> <)
+        ctx.fillStyle = '#ff0055';
+        [-eyeR * 1.5, eyeR * 1.5].forEach(ox => {
+          ctx.beginPath();
+          ctx.arc(ox, -1, eyeR * 0.6, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      } else {
+        // Happy / Alert Big Pupils looking in direction
+        ctx.fillStyle = '#000000';
+        [-eyeR * 1.5, eyeR * 1.5].forEach(ox => {
+          ctx.beginPath();
+          ctx.arc(ox + 1, -2, eyeR * 0.55, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Specular shine dot
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(ox, -3.5, eyeR * 0.2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#000000';
+        });
       }
     }
 
@@ -1883,7 +2073,7 @@
         this.color = color;
         this.isCrit = isCrit;
         this.sourceTurret = sourceTurret;
-        this.speed = 520;
+        this.speed = 540;
         this.dead = false;
       }
 
@@ -1913,11 +2103,12 @@
       draw(ctx) {
         ctx.save();
         ctx.fillStyle = this.color;
-        ctx.shadowColor = this.color;
-        ctx.shadowBlur = 8;
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.isCrit ? 4.5 : 3, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, this.isCrit ? 6 : 4, 0, Math.PI * 2);
         ctx.fill();
+        ctx.stroke();
         ctx.restore();
       }
     }
@@ -1933,8 +2124,8 @@
         this.branch = branch;
         this.sourceTurret = sourceTurret;
         this.progress = 0;
-        this.duration = 0.85; // seconds
-        this.arcHeight = 85;
+        this.duration = 0.85;
+        this.arcHeight = 90;
         this.dead = false;
       }
 
@@ -1949,10 +2140,10 @@
 
       explode() {
         sound.playExplosion();
-        triggerScreenShake(5);
-        createExplosionParticles(this.targetX, this.targetY, '#ff9900', 25);
+        triggerScreenShake(6);
+        createComicPopup(this.targetX, this.targetY - 15, 'KABOOM!', '#ff7700');
+        createCartoonExplosion(this.targetX, this.targetY, '#ff7700', 5);
 
-        // Damage all enemies in splash radius
         state.enemies.forEach(e => {
           const d = Math.hypot(e.x - this.targetX, e.y - this.targetY);
           if (d <= this.radius) {
@@ -1964,14 +2155,14 @@
           }
         });
 
-        // Cluster bombs if Branch A
         if (this.branch === 'A') {
           for (let i = 0; i < 3; i++) {
             const angle = (Math.PI * 2 / 3) * i;
             const cx = this.targetX + Math.cos(angle) * 45;
             const cy = this.targetY + Math.sin(angle) * 45;
             setTimeout(() => {
-              createExplosionParticles(cx, cy, '#ffb800', 12);
+              createCartoonExplosion(cx, cy, '#ffd000', 3);
+              createComicPopup(cx, cy, 'POP!', '#ffd000');
               state.enemies.forEach(e => {
                 if (Math.hypot(e.x - cx, e.y - cy) <= 40) {
                   e.takeDamage(this.damage * 0.4, 'mortar');
@@ -1987,27 +2178,28 @@
         const groundY = this.startY + (this.targetY - this.startY) * this.progress;
         const curY = groundY - Math.sin(this.progress * Math.PI) * this.arcHeight;
 
-        // Shadow on ground
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+        // Shadow
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
         ctx.beginPath();
-        ctx.arc(curX, groundY, 4, 0, Math.PI * 2);
+        ctx.ellipse(curX, groundY, 7, 4, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Shell
+        // Chunky Bomb
         ctx.save();
-        ctx.fillStyle = '#ff9900';
-        ctx.shadowColor = '#ff9900';
-        ctx.shadowBlur = 12;
+        ctx.fillStyle = '#ff7700';
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 2.5;
         ctx.beginPath();
-        ctx.arc(curX, curY, 6, 0, Math.PI * 2);
+        ctx.arc(curX, curY, 8, 0, Math.PI * 2);
         ctx.fill();
+        ctx.stroke();
         ctx.restore();
       }
     }
 
     function createEmpWave(x, y, radius, damage, slowFactor, duration, branch, sourceTurret) {
       sound.playShoot('emp');
-      // Visual pulse
+      createComicPopup(x, y - 20, 'SHOCK!', '#00e5ff');
       state.particles.push({
         type: 'empWave',
         x, y,
@@ -2023,10 +2215,9 @@
           sourceTurret.damageDealt += damage;
           state.totalDamageDealt += damage;
 
-          // Branch A: Freeze Chance
           if (branch === 'A' && Math.random() < 0.25) {
-            e.applySlow(0.01, 1.6);
-            createSparkParticles(e.x, e.y, '#ffffff', 8);
+            e.applySlow(0.01, 1.8);
+            createComicPopup(e.x, e.y - 12, 'FREEZE!', '#ffffff');
           }
         }
       });
@@ -2041,20 +2232,20 @@
       curTarget.takeDamage(curDmg, 'tesla');
       sourceTurret.damageDealt += curDmg;
       state.totalDamageDealt += curDmg;
+      createComicPopup(curTarget.x, curTarget.y - 10, 'ZAP!', '#a855f7');
 
       for (let i = 1; i < chainMax; i++) {
         let nextTarget = state.enemies.find(e => !chained.includes(e) && !e.dead && Math.hypot(e.x - curTarget.x, e.y - curTarget.y) < 130);
         if (!nextTarget) break;
 
         chained.push(nextTarget);
-        if (branch === 'A') curDmg *= 1.15; // Chain damage amp
+        if (branch === 'A') curDmg *= 1.15;
         nextTarget.takeDamage(curDmg, 'tesla');
         sourceTurret.damageDealt += curDmg;
         state.totalDamageDealt += curDmg;
         curTarget = nextTarget;
       }
 
-      // Add visual lightning bolt chain
       state.particles.push({
         type: 'lightning',
         points: [{ x: startX, y: startY }, ...chained.map(t => ({ x: t.x, y: t.y }))],
@@ -2063,21 +2254,31 @@
     }
 
     /* ==========================================================================
-       6. PARTICLE EFFECTS & HELPERS
+       6. CARTOON PUFFS & COMIC POPUP SYSTEM
        ========================================================================== */
-    function createExplosionParticles(x, y, color, count = 20) {
-      for (let i = 0; i < count; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 40 + Math.random() * 120;
+    function createComicPopup(x, y, text, color) {
+      state.comicPopups.push({
+        x, y,
+        text,
+        color,
+        scale: 0.4,
+        alpha: 1,
+        vy: -35
+      });
+    }
+
+    function createCartoonExplosion(x, y, color, puffCount = 5) {
+      for (let i = 0; i < puffCount; i++) {
+        const angle = (Math.PI * 2 / puffCount) * i + Math.random() * 0.4;
+        const dist = 12 + Math.random() * 20;
         state.particles.push({
-          type: 'spark',
-          x, y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          radius: 2 + Math.random() * 3,
-          color,
+          type: 'puff',
+          x: x + Math.cos(angle) * dist,
+          y: y + Math.sin(angle) * dist,
+          radius: 12 + Math.random() * 10,
+          color: Math.random() > 0.4 ? '#ffffff' : color,
           alpha: 1,
-          decay: 1.5 + Math.random() * 1.5
+          decay: 2.2
         });
       }
     }
@@ -2087,14 +2288,45 @@
         state.particles.push({
           type: 'spark',
           x, y,
-          vx: (Math.random() - 0.5) * 80,
-          vy: (Math.random() - 0.5) * 80,
-          radius: 1.5 + Math.random() * 2,
+          vx: (Math.random() - 0.5) * 100,
+          vy: (Math.random() - 0.5) * 100,
+          radius: 2 + Math.random() * 3,
           color,
           alpha: 1,
           decay: 3
         });
       }
+    }
+
+    function drawCartoonStar(ctx, cx, cy, spikes, outerRadius, fill) {
+      let rot = Math.PI / 2 * 3;
+      let x = cx;
+      let y = cy;
+      const step = Math.PI / spikes;
+      const innerRadius = outerRadius * 0.4;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - outerRadius);
+      for (let i = 0; i < spikes; i++) {
+        x = cx + Math.cos(rot) * outerRadius;
+        y = cy + Math.sin(rot) * outerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+
+        x = cx + Math.cos(rot) * innerRadius;
+        y = cy + Math.sin(rot) * innerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+      }
+      ctx.lineTo(cx, cy - outerRadius);
+      ctx.closePath();
+      ctx.fillStyle = fill;
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 2;
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
     }
 
     let screenShakeAmount = 0;
@@ -2125,25 +2357,21 @@
       state.waveActive = true;
       document.getElementById('btn-next-wave').disabled = true;
 
-      // Auto-repair tech from previous wave
       const repairLevel = TECH_UPGRADES.find(t => t.id === 'repair').level;
       if (repairLevel > 0 && state.currentWave > 1) {
         state.coreHp = Math.min(state.maxCoreHp, state.coreHp + (repairLevel * 4));
       }
 
-      // Show banner
       const banner = document.getElementById('wave-banner');
       const isBossWave = (state.currentWave % 5 === 0);
       banner.className = isBossWave ? 'show boss' : 'show';
-      banner.innerText = isBossWave ? `ALERTA: TITÃ CHEFÃO (ONDA ${state.currentWave})` : `ONDA ${state.currentWave}: INICIADA`;
-      setTimeout(() => banner.className = '', 2400);
+      banner.innerText = isBossWave ? `ALERTA: CHEFÃO TITÃ!` : `ONDA ${state.currentWave}!`;
+      setTimeout(() => banner.className = '', 2200);
 
-      // Build wave queue
       spawnQueue = [];
       const waveMult = 1 + (state.currentWave - 1) * 0.28;
 
       if (isBossWave) {
-        // Boss Wave with escorts
         document.getElementById('boss-hud').classList.add('active');
         document.getElementById('boss-name-text').innerText = `TITÃ MECÂNICO V-${state.currentWave}`;
         spawnQueue.push({ type: 'boss', delay: 1.5 });
@@ -2167,9 +2395,9 @@
         state.waveActive = false;
         document.getElementById('btn-next-wave').disabled = false;
 
-        // Wave clear bonus
         state.credits += 60 + state.currentWave * 15;
         state.nanites += 5 + state.currentWave * 2;
+        createComicPopup(525, 300, 'ONDA VENCIDA!', '#ffd000');
         updateHud();
 
         if (state.currentWave >= state.maxWaves) {
@@ -2189,6 +2417,7 @@
         state.cooldowns.emp = 18;
         sound.playAbility();
         triggerScreenShake(10);
+        createComicPopup(525, 250, 'SUPER PEM!', '#00e5ff');
         state.particles.push({
           type: 'empWave',
           x: 525, y: 315,
@@ -2204,6 +2433,7 @@
         state.cooldowns.overdrive = 25;
         state.overdriveActiveTime = 6;
         sound.playAbility();
+        createComicPopup(525, 250, 'OVERDRIVE 2X!', '#ffd000');
       } else if (type === 'airstrike') {
         state.airstrikeTargeting = true;
       }
@@ -2214,6 +2444,7 @@
       state.airstrikeTargeting = false;
       state.cooldowns.airstrike = 20;
       sound.playAbility();
+      createComicPopup(x, y - 20, 'AIRSTRIKE!', '#ff0055');
 
       for (let i = 0; i < 5; i++) {
         setTimeout(() => {
@@ -2223,7 +2454,7 @@
           const impactY = y + offsetY;
           sound.playExplosion();
           triggerScreenShake(6);
-          createExplosionParticles(impactX, impactY, '#ff0055', 30);
+          createCartoonExplosion(impactX, impactY, '#ff0055', 5);
 
           state.enemies.forEach(e => {
             if (Math.hypot(e.x - impactX, e.y - impactY) <= 85) {
@@ -2292,8 +2523,8 @@
 
       if (!t) {
         panel.innerHTML = `
-          <div style="margin: auto; color: var(--text-muted); font-size: 0.85rem; text-align: center;">
-            Selecione uma torre no mapa para verificar status, evoluir níveis ou customizar alvos.
+          <div style="margin: auto; color: var(--text-muted); font-size: 0.9rem; text-align: center;">
+            Selecione uma torre no mapa para inspecionar, evoluir ou escolher especializações!
           </div>
         `;
         return;
@@ -2306,7 +2537,7 @@
       let branchBadge = '';
       if (t.level === 4 && t.branch) {
         const b = t.config.branches[t.branch];
-        branchBadge = `<span style="color: #00ff88; font-size: 0.72rem; display: block;">★ ${b.name}</span>`;
+        branchBadge = `<span style="color: #00e676; font-size: 0.8rem; display: block; font-weight: bold;">★ ${b.name}</span>`;
       }
 
       panel.innerHTML = `
@@ -2326,9 +2557,9 @@
         </div>
 
         <div class="priority-select-box">
-          <label>PRIORIDADE DO ALVO:</label>
+          <label>PRIORIDADE:</label>
           <select id="select-priority">
-            <option value="first" ${t.targetPriority === 'first' ? 'selected' : ''}>Primeiro da Fila</option>
+            <option value="first" ${t.targetPriority === 'first' ? 'selected' : ''}>Primeiro</option>
             <option value="strongest" ${t.targetPriority === 'strongest' ? 'selected' : ''}>Mais Forte</option>
             <option value="weakest" ${t.targetPriority === 'weakest' ? 'selected' : ''}>Mais Fraco</option>
             <option value="closest" ${t.targetPriority === 'closest' ? 'selected' : ''}>Mais Próximo</option>
@@ -2337,7 +2568,7 @@
 
         <div class="inspector-actions">
           ${t.level === 3 ? `
-            <button class="btn-upgrade" id="btn-open-branch">★ ESPECIALIZAR (NVL 4)</button>
+            <button class="btn-upgrade" id="btn-open-branch">★ ESPECIALIZAR</button>
           ` : `
             <button class="btn-upgrade" id="btn-upgrade-turret" ${(!canUpgrade || isMax) ? 'disabled' : ''}>
               ${isMax ? 'NÍVEL MÁXIMO' : `EVOLUIR (⚡ ${upgradeCost})`}
@@ -2399,7 +2630,7 @@
             renderInspector();
             renderTurretDeck();
           } else {
-            alert('Energia insuficiente para este protocolo supremo!');
+            alert('Energia insuficiente para esta especialização!');
           }
         });
         grid.appendChild(card);
@@ -2480,13 +2711,13 @@
       const msg = document.getElementById('endgame-msg');
 
       if (victory) {
-        title.innerText = '★ VITÓRIA SUPREMA DO NÚCLEO ★';
+        title.innerText = '★ VITÓRIA DO NÚCLEO! ★';
         title.className = 'endgame-title victory';
-        msg.innerText = 'Todas as 20 ondas mecânicas foram desintegradas!';
+        msg.innerText = 'Todas as 20 ondas de robôs foram destruídas!';
       } else {
-        title.innerText = '☠ PROTOCOLO DE DEFESA FALHOU ☠';
+        title.innerText = '☠ O NÚCLEO CAIU! ☠';
         title.className = 'endgame-title defeat';
-        msg.innerText = 'O Núcleo Quântico Central foi sobrecarregado e destruído.';
+        msg.innerText = 'O Núcleo Quântico foi sobrecarregado.';
       }
 
       document.getElementById('stat-enemies-killed').innerText = state.totalEnemiesKilled;
@@ -2520,7 +2751,7 @@
     function gameLoop(time) {
       let dt = (time - lastTime) / 1000;
       lastTime = time;
-      if (dt > 0.1) dt = 0.1; // Cap lag spikes
+      if (dt > 0.1) dt = 0.1;
       dt *= state.gameSpeed;
 
       update(dt);
@@ -2529,15 +2760,12 @@
     }
 
     function update(dt) {
-      // Screen shake decay
       if (screenShakeAmount > 0) screenShakeAmount = Math.max(0, screenShakeAmount - dt * 15);
 
-      // Overdrive timer
       if (state.overdriveActiveTime > 0) {
         state.overdriveActiveTime -= dt;
       }
 
-      // Skill Cooldowns
       ['emp', 'overdrive', 'airstrike'].forEach(s => {
         if (state.cooldowns[s] > 0) {
           state.cooldowns[s] = Math.max(0, state.cooldowns[s] - dt);
@@ -2545,7 +2773,6 @@
       });
       updateSkillButtons();
 
-      // Enemy Wave Spawner
       if (spawnQueue.length > 0) {
         spawnTimer -= dt;
         if (spawnTimer <= 0) {
@@ -2555,25 +2782,23 @@
         }
       }
 
-      // Update Turrets
       state.turrets.forEach(t => t.update(dt));
-
-      // Update Enemies
       state.enemies.forEach(e => e.update(dt));
       state.enemies = state.enemies.filter(e => !e.dead);
-
-      // Update Projectiles
       state.projectiles.forEach(p => p.update(dt));
       state.projectiles = state.projectiles.filter(p => !p.dead);
 
-      // Update Particles
+      // Particles
       state.particles.forEach(pt => {
         if (pt.type === 'spark') {
           pt.x += pt.vx * dt;
           pt.y += pt.vy * dt;
           pt.alpha -= pt.decay * dt;
+        } else if (pt.type === 'puff') {
+          pt.radius += 10 * dt;
+          pt.alpha -= pt.decay * dt;
         } else if (pt.type === 'empWave') {
-          pt.currentRadius += 400 * dt;
+          pt.currentRadius += 420 * dt;
           pt.alpha = 1 - (pt.currentRadius / pt.maxRadius);
         } else if (pt.type === 'lightning') {
           pt.alpha -= 8 * dt;
@@ -2581,7 +2806,15 @@
       });
       state.particles = state.particles.filter(pt => pt.alpha > 0);
 
-      // Update Floating Texts
+      // Comic Popups
+      state.comicPopups.forEach(cp => {
+        cp.y += cp.vy * dt;
+        if (cp.scale < 1.1) cp.scale += 4 * dt;
+        cp.alpha -= 1.2 * dt;
+      });
+      state.comicPopups = state.comicPopups.filter(cp => cp.alpha > 0);
+
+      // Floating Texts
       state.floatingTexts.forEach(ft => {
         ft.y += ft.vy * dt;
         ft.alpha -= 1.8 * dt;
@@ -2593,21 +2826,20 @@
 
     function draw() {
       ctx.save();
-      // Apply Screen Shake
       if (screenShakeAmount > 0) {
         const sx = (Math.random() - 0.5) * screenShakeAmount;
         const sy = (Math.random() - 0.5) * screenShakeAmount;
         ctx.translate(sx, sy);
       }
 
-      // Clear Screen with Dark Cyber Texture
-      ctx.fillStyle = '#080c16';
+      // Background
+      ctx.fillStyle = '#0f162b';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Cyber Grid Background
-      ctx.strokeStyle = 'rgba(0, 240, 255, 0.04)';
-      ctx.lineWidth = 1;
-      const gridSize = 35;
+      // Cartoon Grid Floor Tiles
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+      ctx.lineWidth = 1.5;
+      const gridSize = 42;
       for (let x = 0; x < canvas.width; x += gridSize) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
@@ -2621,14 +2853,14 @@
         ctx.stroke();
       }
 
-      // Draw Path track
+      // Draw Cartoon Conveyor Path
       ctx.save();
       ctx.lineJoin = 'round';
       ctx.lineCap = 'round';
 
-      // Path Outer Trench
-      ctx.strokeStyle = 'rgba(30, 41, 59, 0.9)';
-      ctx.lineWidth = 42;
+      // Path Outer Trench (Black outline)
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 48;
       ctx.beginPath();
       WAYPOINTS.forEach((wp, idx) => {
         if (idx === 0) ctx.moveTo(wp.x, wp.y);
@@ -2636,67 +2868,92 @@
       });
       ctx.stroke();
 
-      // Glowing Conduit Center Line
-      ctx.strokeStyle = state.overdriveActiveTime > 0 ? 'rgba(255, 184, 0, 0.6)' : 'rgba(0, 240, 255, 0.35)';
-      ctx.lineWidth = 6;
-      ctx.shadowColor = state.overdriveActiveTime > 0 ? '#ffb800' : '#00f0ff';
-      ctx.shadowBlur = 12;
+      // Path Trench Fill (Cobalt Blue)
+      ctx.strokeStyle = '#25355e';
+      ctx.lineWidth = 40;
       ctx.beginPath();
       WAYPOINTS.forEach((wp, idx) => {
         if (idx === 0) ctx.moveTo(wp.x, wp.y);
         else ctx.lineTo(wp.x, wp.y);
       });
       ctx.stroke();
+
+      // Cartoon Center Flow Dashes
+      const flowOffset = (Date.now() * 0.04) % 24;
+      ctx.strokeStyle = state.overdriveActiveTime > 0 ? '#ffd000' : '#00e5ff';
+      ctx.lineWidth = 8;
+      ctx.setLineDash([14, 10]);
+      ctx.lineDashOffset = -flowOffset;
+      ctx.beginPath();
+      WAYPOINTS.forEach((wp, idx) => {
+        if (idx === 0) ctx.moveTo(wp.x, wp.y);
+        else ctx.lineTo(wp.x, wp.y);
+      });
+      ctx.stroke();
+      ctx.setLineDash([]);
       ctx.restore();
 
-      // Draw Turret Placement Slots
+      // Draw Turret Placement Slots (Chunky Cartoon Pads)
       TURRET_SLOTS.forEach(slot => {
         const hasTurret = state.turrets.some(t => t.slot === slot);
         ctx.save();
         ctx.translate(slot.x, slot.y);
 
         if (!hasTurret) {
-          ctx.strokeStyle = state.selectedTurretType ? 'rgba(0, 240, 255, 0.5)' : 'rgba(255, 255, 255, 0.15)';
-          ctx.lineWidth = 1.5;
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 3;
+          ctx.fillStyle = state.selectedTurretType ? 'rgba(0, 229, 255, 0.25)' : 'rgba(30, 41, 74, 0.7)';
           ctx.beginPath();
-          drawHexagon(ctx, 0, 0, 22);
+          drawHexagon(ctx, 0, 0, 24);
+          ctx.fill();
           ctx.stroke();
 
-          ctx.fillStyle = 'rgba(0, 240, 255, 0.05)';
+          // Center Bolt
+          ctx.fillStyle = state.selectedTurretType ? '#ffd000' : '#475569';
           ctx.beginPath();
-          ctx.arc(0, 0, 10, 0, Math.PI * 2);
+          ctx.arc(0, 0, 7, 0, Math.PI * 2);
           ctx.fill();
+          ctx.stroke();
         }
         ctx.restore();
       });
 
-      // Draw Quantum Core Base (Objective)
+      // Draw Cartoon Quantum Core Base
       ctx.save();
       const coreX = WAYPOINTS[WAYPOINTS.length - 1].x;
       const coreY = WAYPOINTS[WAYPOINTS.length - 1].y;
       ctx.translate(coreX, coreY);
 
-      // Rotating containment rings
-      const time = Date.now() * 0.002;
-      ctx.strokeStyle = '#00f0ff';
-      ctx.lineWidth = 3;
-      ctx.shadowColor = '#00f0ff';
-      ctx.shadowBlur = 18;
-
+      // Rotating cute cartoon containment dome
+      const time = Date.now() * 0.003;
+      ctx.fillStyle = '#0284c7';
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 3.5;
       ctx.beginPath();
-      ctx.arc(0, 0, 36, time, time + Math.PI * 1.5);
-      ctx.stroke();
-
-      ctx.strokeStyle = '#ff007f';
-      ctx.beginPath();
-      ctx.arc(0, 0, 26, -time * 1.5, -time * 1.5 + Math.PI * 1.5);
-      ctx.stroke();
-
-      // Glowing core orb
-      ctx.fillStyle = '#00f0ff';
-      ctx.beginPath();
-      ctx.arc(0, 0, 14, 0, Math.PI * 2);
+      ctx.arc(0, 0, 36, 0, Math.PI * 2);
       ctx.fill();
+      ctx.stroke();
+
+      // Bouncing glowing power orb
+      const orbScale = 1 + Math.sin(time * 3) * 0.15;
+      ctx.fillStyle = '#00e5ff';
+      ctx.beginPath();
+      ctx.arc(0, 0, 18 * orbScale, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Cute eyes on core!
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(-6, -2, 4, 0, Math.PI * 2);
+      ctx.arc(6, -2, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.arc(-5, -2, 2, 0, Math.PI * 2);
+      ctx.arc(7, -2, 2, 0, Math.PI * 2);
+      ctx.fill();
+
       ctx.restore();
 
       // Draw Enemies
@@ -2708,49 +2965,91 @@
       // Draw Projectiles
       state.projectiles.forEach(p => p.draw(ctx));
 
-      // Draw Particles
+      // Draw Particles (Sparks & Puffs)
       state.particles.forEach(pt => {
         ctx.save();
-        if (pt.type === 'spark') {
+        if (pt.type === 'puff') {
+          // Cartoon Puffy Smoke
           ctx.fillStyle = pt.color;
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 2.5;
           ctx.globalAlpha = Math.max(0, pt.alpha);
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, pt.radius, 0, Math.PI * 2);
           ctx.fill();
+          ctx.stroke();
+        } else if (pt.type === 'spark') {
+          ctx.fillStyle = pt.color;
+          ctx.strokeStyle = '#000';
+          ctx.lineWidth = 1.5;
+          ctx.globalAlpha = Math.max(0, pt.alpha);
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, pt.radius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
         } else if (pt.type === 'empWave') {
-          ctx.strokeStyle = '#00f0ff';
-          ctx.lineWidth = 4;
+          ctx.strokeStyle = '#000';
+          ctx.lineWidth = 6;
           ctx.globalAlpha = Math.max(0, pt.alpha);
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, pt.currentRadius, 0, Math.PI * 2);
           ctx.stroke();
+
+          ctx.strokeStyle = '#00e5ff';
+          ctx.lineWidth = 3.5;
+          ctx.stroke();
         } else if (pt.type === 'lightning') {
-          ctx.strokeStyle = '#c084fc';
-          ctx.lineWidth = 3;
+          ctx.strokeStyle = '#000';
+          ctx.lineWidth = 6;
           ctx.globalAlpha = Math.max(0, pt.alpha);
-          ctx.shadowColor = '#c084fc';
-          ctx.shadowBlur = 12;
           ctx.beginPath();
           pt.points.forEach((p, idx) => {
-            if (idx === 0) ctx.moveTo(p.x, p.y);
-            else {
-              // Add jitter to lightning
-              const jx = (p.x + (Math.random() - 0.5) * 12);
-              const jy = (p.y + (Math.random() - 0.5) * 12);
-              ctx.lineTo(jx, jy);
-            }
+            const jx = p.x + (Math.random() - 0.5) * 8;
+            const jy = p.y + (Math.random() - 0.5) * 8;
+            if (idx === 0) ctx.moveTo(jx, jy);
+            else ctx.lineTo(jx, jy);
           });
           ctx.stroke();
+
+          ctx.strokeStyle = '#c084fc';
+          ctx.lineWidth = 3.5;
+          ctx.stroke();
         }
+        ctx.restore();
+      });
+
+      // Draw Comic Popups ("POW!", "BOOM!")
+      state.comicPopups.forEach(cp => {
+        ctx.save();
+        ctx.translate(cp.x, cp.y);
+        ctx.scale(cp.scale, cp.scale);
+        ctx.globalAlpha = Math.max(0, cp.alpha);
+
+        ctx.font = 'bold 24px "Luckiest Guy", cursive';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        // Thick Black Outline
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 5;
+        ctx.strokeText(cp.text, 0, 0);
+
+        // Vibrant Fill
+        ctx.fillStyle = cp.color;
+        ctx.fillText(cp.text, 0, 0);
         ctx.restore();
       });
 
       // Draw Floating Damage Texts
       state.floatingTexts.forEach(ft => {
         ctx.save();
-        ctx.font = 'bold 13px Orbitron';
-        ctx.fillStyle = ft.color;
+        ctx.font = 'bold 15px Fredoka';
+        ctx.textAlign = 'center';
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 3;
         ctx.globalAlpha = Math.max(0, ft.alpha);
+        ctx.strokeText(ft.text, ft.x, ft.y);
+        ctx.fillStyle = ft.color;
         ctx.fillText(ft.text, ft.x, ft.y);
         ctx.restore();
       });
@@ -2764,16 +3063,17 @@
         const px = hoveredSlot ? hoveredSlot.x : state.mousePos.x;
         const py = hoveredSlot ? hoveredSlot.y : state.mousePos.y;
 
-        // Range preview
-        ctx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
-        ctx.fillStyle = 'rgba(0, 240, 255, 0.08)';
+        ctx.strokeStyle = '#ffd000';
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([8, 6]);
+        ctx.fillStyle = 'rgba(255, 208, 0, 0.1)';
         ctx.beginPath();
         ctx.arc(px, py, tConf.range, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
+        ctx.setLineDash([]);
 
-        // Ghost icon
-        ctx.font = '24px sans-serif';
+        ctx.font = '28px sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(tConf.icon, px, py);
@@ -2784,7 +3084,7 @@
       if (state.airstrikeTargeting) {
         ctx.save();
         ctx.strokeStyle = '#ff0055';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.arc(state.mousePos.x, state.mousePos.y, 85, 0, Math.PI * 2);
         ctx.stroke();
@@ -2802,11 +3102,11 @@
     }
 
     function getHoveredSlot(x, y) {
-      return TURRET_SLOTS.find(slot => Math.hypot(slot.x - x, slot.y - y) <= 26);
+      return TURRET_SLOTS.find(slot => Math.hypot(slot.x - x, slot.y - y) <= 28);
     }
 
     /* ==========================================================================
-       11. INPUT LISTENERS (Mouse, Touch, Keyboard)
+       11. INPUT LISTENERS
        ========================================================================== */
     function getCanvasCoords(evt) {
       const rect = canvas.getBoundingClientRect();
@@ -2828,7 +3128,6 @@
       sound.init();
       const coords = getCanvasCoords(e);
 
-      // Handle airstrike placement
       if (state.airstrikeTargeting) {
         executeAirstrike(coords.x, coords.y);
         return;
@@ -2845,7 +3144,6 @@
           renderInspector();
           renderTurretDeck();
         } else if (state.selectedTurretType) {
-          // Build new turret
           const conf = TURRET_TYPES[state.selectedTurretType];
           if (state.credits >= conf.cost) {
             state.credits -= conf.cost;
@@ -2853,6 +3151,7 @@
             state.turrets.push(newTurret);
             state.inspectedTurret = newTurret;
             state.selectedTurretType = null;
+            createComicPopup(slot.x, slot.y - 20, 'BUILD!', '#00e5ff');
             sound.playUpgrade();
             updateHud();
             renderInspector();
@@ -2860,13 +3159,11 @@
           }
         }
       } else {
-        // Deselect if clicked in open area
         state.inspectedTurret = null;
         renderInspector();
       }
     });
 
-    // Keyboard Hotkeys
     window.addEventListener('keydown', (e) => {
       sound.init();
       const key = e.key.toUpperCase();
@@ -2891,7 +3188,6 @@
       }
     });
 
-    // Top Controls
     document.getElementById('btn-next-wave').addEventListener('click', () => {
       sound.init();
       startNextWave();
